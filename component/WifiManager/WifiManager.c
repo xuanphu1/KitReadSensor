@@ -16,6 +16,20 @@ httpd_handle_t server = NULL;
 TaskHandle_t dns_server_task_handle = NULL;
 static const char *TAG = "WiFiManager";
 
+
+
+esp_err_t start_webserver(void);
+esp_err_t stop_webserver(void);
+esp_err_t init_spiffs(void);
+esp_err_t root_handler(httpd_req_t *req);
+esp_err_t wifi_config_handler(httpd_req_t *req);
+esp_err_t wifi_status_handler(httpd_req_t *req);
+esp_err_t redirect_handler(httpd_req_t *req);
+esp_err_t generate_204_handler(httpd_req_t *req);
+esp_err_t common_get_handler(httpd_req_t *req, httpd_err_code_t error);
+esp_err_t captive_portal_handler(httpd_req_t *req);
+void dns_server_task(void *pvParameters);
+
 static void wifi_event_handler(void *arg, esp_event_base_t event_base,
                                int32_t event_id, void *event_data) {
   if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
@@ -82,7 +96,7 @@ esp_err_t wifi_init_common(void) {
 }
 
 void wifi_init_sta(void *pvParameters) {
-  // DataManager_t *data = (DataManager_t *)pvParameters;
+  ESP_ERROR_CHECK(init_spiffs());
   do {
     wifi_event_group = xEventGroupCreate();
     wifi_mutex = xSemaphoreCreateMutex();

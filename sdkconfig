@@ -520,6 +520,24 @@ CONFIG_SCL_GPIO=7
 # end of MRS Project config
 
 #
+# BME configuration
+#
+CONFIG_BME_PIN_NUM_SCL=7
+CONFIG_BME_PIN_NUM_SDA=6
+CONFIG_BME_I2C_PORT=0
+CONFIG_BME_I2C_FREQ_HZ=400000
+# end of BME configuration
+
+#
+# RTC configuration
+#
+CONFIG_RTC_PIN_NUM_SCL=
+CONFIG_RTC_PIN_NUM_SDA=
+CONFIG_RTC_I2C_PORT=0
+CONFIG_RTC_I2C_FREQ_HZ=400000
+# end of RTC configuration
+
+#
 # Manager Wifi Project
 #
 CONFIG_WIFI_SSID="MrKoi"
@@ -1875,6 +1893,13 @@ CONFIG_WIFI_PROV_AUTOSTOP_TIMEOUT=30
 CONFIG_WIFI_PROV_STA_ALL_CHANNEL_SCAN=y
 # CONFIG_WIFI_PROV_STA_FAST_SCAN is not set
 # end of Wi-Fi Provisioning Manager
+
+#
+# I2C
+#
+CONFIG_I2CDEV_TIMEOUT=1000
+# CONFIG_I2CDEV_NOLOCK is not set
+# end of I2C
 # end of Component config
 
 # CONFIG_IDF_EXPERIMENTAL_FEATURES is not set

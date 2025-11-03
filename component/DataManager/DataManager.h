@@ -132,6 +132,8 @@ typedef struct {
 /* Cấu trúc cho 1 sensor driver */
 typedef struct {
   const char *name;
+  const char *unit[20];
+  uint8_t unit_count; // số lượng đơn vị
   void (*init)(void);           // khởi tạo sensor
   void (*read)(SensorData_t *); // đọc dữ liệu vào struct
   void (*deinit)(void);              // optional, nếu cần

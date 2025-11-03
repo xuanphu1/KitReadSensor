@@ -1,6 +1,7 @@
 #include "MenuSystem.h"
 #include "DataManager.h"
 #include <sys/_types.h>
+#include <time.h>
 
 
 
@@ -11,16 +12,51 @@ DataManager_t Data = {.MenuReturn[0] = &WiFi_Config_Menu};
 
 /* -------------------- Menu Tree -------------------- */
 // Submenu "Read Sensor"
-menu_item_t Read_Sensor_Items[] = {
+menu_item_t Sensor_Port_1_Items[] = {
+    {"BME280", MENU_ACTION, read_temperature_cb, NULL, NULL},
+    {"MH-Z14A", MENU_ACTION, read_humidity_cb, NULL, NULL},
+    {"PMS7003", MENU_ACTION, read_pressure_cb, NULL, NULL},
+    {"DHT22", MENU_ACTION, read_dht22_cb, NULL, NULL},
+};
+menu_item_t Sensor_Port_2_Items[] = {
+    {"BME280", MENU_ACTION, read_temperature_cb, NULL, NULL},
+    {"MH-Z14A", MENU_ACTION, read_humidity_cb, NULL, NULL},
+    {"PMS7003", MENU_ACTION, read_pressure_cb, NULL, NULL},
+    {"DHT22", MENU_ACTION, read_dht22_cb, NULL, NULL},
+};
+menu_item_t Sensor_Port_3_Items[] = {
     {"BME280", MENU_ACTION, read_temperature_cb, NULL, NULL},
     {"MH-Z14A", MENU_ACTION, read_humidity_cb, NULL, NULL},
     {"PMS7003", MENU_ACTION, read_pressure_cb, NULL, NULL},
     {"DHT22", MENU_ACTION, read_dht22_cb, NULL, NULL},
 };
 
-menu_list_t Read_Sensor_Menu = {
-    .items = Read_Sensor_Items,
-    .count = ARRAY_SIZE(Read_Sensor_Items),
+menu_list_t Sensor_Port_1 = {
+    .items = Sensor_Port_1_Items,
+    .count = ARRAY_SIZE(Sensor_Port_1_Items),
+    .parent = NULL,
+};
+menu_list_t Sensor_Port_2 = {
+    .items = Sensor_Port_2_Items,
+    .count = ARRAY_SIZE(Sensor_Port_2_Items),
+    .parent = NULL,
+};
+menu_list_t Sensor_Port_3 = {
+    .items = Sensor_Port_3_Items,
+    .count = ARRAY_SIZE(Sensor_Port_3_Items),
+    .parent = NULL,
+};
+menu_item_t SensorPort[] = {
+  {"Port 1", MENU_SUBMENU, NULL, NULL, &Sensor_Port_1},
+  {"Port 2", MENU_SUBMENU, NULL, NULL, &Sensor_Port_2},
+  {"Port 3", MENU_SUBMENU, NULL, NULL, &Sensor_Port_3},
+  // {"Start Read Sensor", MENU_ACTION, NULL, NULL, NULL}
+  
+};
+
+menu_list_t Sensor_Menu = {
+    .items = SensorPort,
+    .count = ARRAY_SIZE(SensorPort),
     .parent = NULL, // gán sau
 };
 
@@ -55,7 +91,7 @@ menu_list_t WiFi_Config_Menu = {
 // Root Menu
 menu_item_t Root_Items[] = {
     {"WiFi Config", MENU_SUBMENU, NULL, NULL, &WiFi_Config_Menu},
-    {"Read Sensor", MENU_SUBMENU, NULL, NULL, &Read_Sensor_Menu},
+    {"Sensors", MENU_SUBMENU, NULL, NULL, &Sensor_Menu},
     {"Battery Status", MENU_ACTION, battery_status_callback, NULL, NULL},
     {"Information", MENU_ACTION, information_callback, NULL, NULL},
 };
@@ -71,8 +107,11 @@ menu_list_t Root_Menu = {
 
 // Liên kết parent cho submenu
 __attribute__((constructor)) static void link_menus(void) {
-  Read_Sensor_Menu.parent = &Root_Menu;
+  Sensor_Menu.parent = &Root_Menu;
   WiFi_Config_Menu.parent = &Root_Menu;
+  Sensor_Port_1.parent = &Sensor_Menu;
+  Sensor_Port_2.parent = &Sensor_Menu;
+  Sensor_Port_3.parent = &Sensor_Menu;
 }
 
 /* -------------------- Menu Functions -------------------- */
