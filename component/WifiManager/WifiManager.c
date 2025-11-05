@@ -133,6 +133,8 @@ void wifi_init_sta(void *pvParameters) {
                               pdFALSE, pdMS_TO_TICKS(10000)) &
           WIFI_CONNECTED_BIT) {
         ESP_LOGI(TAG, "Connected to SSID:%s", CONFIG_WIFI_SSID);
+        strncpy(pending_ssid, CONFIG_WIFI_SSID, sizeof(pending_ssid) - 1);
+        pending_ssid[sizeof(pending_ssid) - 1] = '\0';
         vTaskDelete(NULL);
 
       } else {
@@ -334,10 +336,12 @@ void update_wifi_status(wifiInfo_t *WifiInfo) {
     WifiInfo->wifiStatus = CONNECTED;
     WifiInfo->wifiName = (char *)pending_ssid;
   }
-  if (bits & WIFI_FAIL_BIT) {
+  if (bits & WIFI_FAIL_BIT || bits & WIFI_AP_MODE_BIT) {
     WifiInfo->wifiStatus = DISCONNECTED;
     WifiInfo->wifiName = NULL;
   }
+  // ESP_LOGI(TAG, "Update Wifi Status successfully: %d", WifiInfo->wifiStatus);
+  // ESP_LOGI(TAG, "Wifi Name: %s", (char *)WifiInfo->wifiName);
 }
 
 esp_err_t init_spiffs(void) {

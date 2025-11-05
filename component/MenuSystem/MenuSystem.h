@@ -18,7 +18,7 @@
 #define TAG_MENU_SYSTEM "MENU_SYSTEM"
 
 
-void MenuSystemInit();
+void MenuSystemInit(DataManager_t *data);
 void NavigationScreen_Task(void *pvParameter);
 void ReadSensor_Task(void *pvParameter);
 #endif

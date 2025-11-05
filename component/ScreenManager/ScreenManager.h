@@ -13,5 +13,6 @@
 
 void ScreenManagerInit(ssd1306_handle_t *_oled);
 void MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t *objectInfo);
+void SensorRender(PortId_t port, SensorData_t *data);
 void ScreenWifiCallback(DataManager_t *data);
 #endif  

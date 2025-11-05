@@ -7,7 +7,11 @@
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #define MAX_TEXT_LENGTH 21
 #define NUM_OBJECT_MAX 5
-
+// Số lượng cổng sensor
+#define NUM_PORTS 3
+// Số lượng loại cảm biến thực tế (không bao gồm SENSOR_NONE)
+#define NUM_ACTIVE_SENSORS 4
+#define NUM_SENSORS 20
 #define BTN_UP_GPIO 18
 #define BTN_DOWN_GPIO 19
 #define BTN_SEL_GPIO 20
@@ -59,7 +63,12 @@ typedef struct {
 } ButtonManager_t;
 
 /* -------------------- Menu -------------------- */
-typedef enum { MENU_ACTION, MENU_SUBMENU, MENU_NONE } menu_item_type_t;
+typedef enum {
+  MENU_ACTION,
+  MENU_SUBMENU,
+  MENU_READ_SENSOR,
+  MENU_NONE
+} menu_item_type_t;
 
 struct menu_list; // forward declare
 
@@ -100,16 +109,11 @@ typedef struct {
 
 /* -------------------- Sensor -------------------- */
 typedef struct {
-  float temperature;
-  float humidity;
-  int pressure;
-  int co2;
-  uint16_t pm10;
-  uint16_t pm25;
-  uint16_t pm100;
+  float data_fl[5];
+  uint32_t data_uint32[5];
+  uint16_t data_uint16[5];
+  uint8_t data_uint8[5];
 } SensorData_t;
-
-
 
 typedef struct {
   uint8_t batteryLevel;
@@ -121,35 +125,53 @@ typedef struct {
   char *wifiName;
 } wifiInfo_t;
 
-
 typedef struct {
   BatteryInfo_t batteryInfo;
   wifiInfo_t wifiInfo;
-}objectInfoManager_t;
-
-
+} objectInfoManager_t;
 
 /* Cấu trúc cho 1 sensor driver */
 typedef struct {
   const char *name;
   const char *unit[20];
-  uint8_t unit_count; // số lượng đơn vị
+  uint8_t unit_count;           // số lượng đơn vị
   void (*init)(void);           // khởi tạo sensor
   void (*read)(SensorData_t *); // đọc dữ liệu vào struct
-  void (*deinit)(void);              // optional, nếu cần
+  void (*deinit)(void);         // optional, nếu cần
 } sensor_driver_t;
 
-
-
 /* -------------------- Data Manager (App Context) -------------------- */
+// Định danh Port và loại cảm biến để tracking lựa chọn
+typedef enum {
+  PORT_1 = 0,
+  PORT_2 = 1,
+  PORT_3 = 2,
+} PortId_t;
+
+typedef enum {
+  SENSOR_NONE = -1,
+  SENSOR_BME280 = 0,
+  SENSOR_MHZ14A = 1,
+  SENSOR_PMS7003 = 2,
+  SENSOR_DHT22 = 3,
+} SensorType_t;
+
 typedef struct {
   SensorData_t sensor;
   ButtonManager_t button;
   ScreenManager_t screen;
   objectInfoManager_t objectInfo;
   menu_list_t *MenuReturn[10];
-  
+  // Mapping lựa chọn: mỗi port -> loại cảm biến đang chọn
+  int8_t selectedSensor[NUM_PORTS]; // dùng SENSOR_*; -1 nếu chưa chọn
+
 } DataManager_t;
 
+// Tham số truyền qua callback chọn cảm biến
+typedef struct {
+  DataManager_t *data;
+  PortId_t port;
+  SensorType_t sensor;
+} SelectionParam_t;
 
 #endif /* __SYMBOL_H__ */

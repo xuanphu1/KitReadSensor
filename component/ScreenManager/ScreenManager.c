@@ -32,11 +32,16 @@ static void initUIState(void) {
 void MenuRender(menu_list_t *menu, int8_t *selected,
                 objectInfoManager_t *objectInfo) {
   ssd1306_clear_screen(oled, 0);
-  update_wifi_status(&(objectInfo->wifiInfo));
+
   uint32_t offset = 0;
+  if (menu == NULL) {
+    ESP_LOGW(TAG_SCREEN_MANAGER, "MenuRender: menu is NULL");
+  }
   if (menu->image.image != NULL) {
     switch (menu->object) {
     case OBJECT_WIFI:
+      update_wifi_status(&(objectInfo->wifiInfo));
+      
       ssd1306_draw_bitmap(
           oled, 55, 0,
           (uint8_t *)
@@ -123,18 +128,21 @@ void MenuRender(menu_list_t *menu, int8_t *selected,
 }
 
 void ScreenWifiCallback(DataManager_t *data) {
-  static uint8_t dot_count = 0; 
+  static uint8_t dot_count = 0;
   const char *base_message = "Connecting to WiFi";
   char display_buffer[30];
   if (data->objectInfo.wifiInfo.wifiStatus == DISCONNECTED ||
       data->objectInfo.wifiInfo.wifiStatus == ERROR) {
-      strcpy(display_buffer, base_message); 
-      for (int i = 0; i < (dot_count % 4); i++) {
-          strcat(display_buffer, ".");
-      }
-      dot_count++;
-      ssd1306_clear_screen(oled, 0);
-      ssd1306_draw_string(oled, 0, 0, (uint8_t *)display_buffer, 12, 1);
-      ssd1306_refresh_gram(oled);
+    strcpy(display_buffer, base_message);
+    for (int i = 0; i < (dot_count % 4); i++) {
+      strcat(display_buffer, ".");
+    }
+    dot_count++;
+    ssd1306_clear_screen(oled, 0);
+    ssd1306_draw_string(oled, 0, 0, (uint8_t *)display_buffer, 12, 1);
+    ssd1306_refresh_gram(oled);
+  } else {
+    ESP_LOGW(TAG_SCREEN_MANAGER,
+             "ScreenWifiCallback: wifi status is not DISCONNECTED or ERROR");
   }
 }
