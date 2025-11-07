@@ -215,6 +215,21 @@ esp_err_t i2c_dev_read_reg(const i2c_dev_t *dev, uint8_t reg,
 esp_err_t i2c_dev_write_reg(const i2c_dev_t *dev, uint8_t reg,
         const void *out_data, size_t out_size);
 
+
+
+
+
+
+
+
+/**
+ * @brief Initialize I2C common port for all devices
+ * @author Mrkoi
+ * Initialize I2C common port for all devices
+ * 
+ * @return ESP_OK on success
+ */
+esp_err_t i2cInitDevCommon(void);
 #define I2C_DEV_TAKE_MUTEX(dev) do { \
         esp_err_t __ = i2c_dev_take_mutex(dev); \
         if (__ != ESP_OK) return __;\

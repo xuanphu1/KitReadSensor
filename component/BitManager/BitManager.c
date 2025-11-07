@@ -144,9 +144,15 @@ const char *imageManagerTextBattery[] = {
     "100%",
 };
 
+const char *MessageText[] = {
+    "The sensor is used for other Port",
+    "The sensor is not initialized",
+};
+
 const char **ManagerText[] = {
     imageManagerTextWifi,
     imageManagerTextBattery
+
 };
 
 

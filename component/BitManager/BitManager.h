@@ -7,5 +7,6 @@
 
 extern const uint8_t **imageManager[];
 extern const char **ManagerText[];
+extern const char *MessageText[];
 
 #endif

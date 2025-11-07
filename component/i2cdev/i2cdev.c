@@ -111,6 +111,49 @@ esp_err_t i2cdev_done()
     return ESP_OK;
 }
 
+esp_err_t i2cInitDevCommon(void)
+{
+    // Khởi tạo trạng thái thư viện nếu chưa
+    static bool lib_inited = false;
+    if (!lib_inited)
+    {
+        ESP_ERROR_CHECK(i2cdev_init());
+        lib_inited = true;
+    }
+
+    const i2c_port_t port = CONFIG_I2CDEV_COMMON_PORT;
+
+    // Nếu driver đã cài trên port này, coi như OK
+    if (states[port].installed)
+        return ESP_OK;
+
+    i2c_config_t conf = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = CONFIG_I2CDEV_COMMON_SDA,
+        .scl_io_num = CONFIG_I2CDEV_COMMON_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = CONFIG_I2CDEV_COMMON_CLK_HZ,
+        .clk_flags = 0,
+    };
+
+    // Lưu config và cài driver
+    states[port].config = conf;
+
+    esp_err_t err = i2c_param_config(port, &conf);
+    if (err != ESP_OK)
+        return err;
+
+    err = i2c_driver_install(port, conf.mode, 0, 0, 0);
+    if (err == ESP_ERR_INVALID_STATE)
+        err = ESP_OK; // đã cài từ trước
+    if (err != ESP_OK)
+        return err;
+
+    states[port].installed = true;
+    return ESP_OK;
+}
+
 esp_err_t i2c_dev_create_mutex(i2c_dev_t *dev)
 {
 #if !CONFIG_I2CDEV_NOLOCK

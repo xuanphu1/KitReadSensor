@@ -1,0 +1,38 @@
+menu "I2C common config"
+
+    config I2CDEV_COMMON_SDA
+        int "I2C SDA GPIO"
+        default 6
+        help
+            SDA GPIO for the I2C interface.
+    config I2CDEV_COMMON_SCL
+        int "I2C SCL GPIO"
+        default 7
+        help
+            SCL GPIO for the I2C interface.
+
+    config I2CDEV_COMMON_PORT
+        int "I2C PORT"
+        default 0
+        help    
+            Select Port I2C 
+
+    config I2CDEV_COMMON_CLK_HZ
+        int "I2C CLK SPEED (Hz)"
+        default 400000
+        help 
+            Select speed for i2c bus
+
+    config I2CDEV_TIMEOUT
+        int "I2C dev mutex timeout (ms)"
+        default 1000
+        help
+            Timeout chờ mutex của I2CDev (đơn vị mili-giây).
+
+    config I2CDEV_NOLOCK
+        bool "Disable I2Cdev locking (no mutex)"
+        default n
+        help
+            Nếu bật, thư viện I2CDev sẽ bỏ qua mutex (không khóa).
+
+endmenu

@@ -146,3 +146,9 @@ void ScreenWifiCallback(DataManager_t *data) {
              "ScreenWifiCallback: wifi status is not DISCONNECTED or ERROR");
   }
 }
+
+void ScreenShowMessage(int index) {
+  ssd1306_clear_screen(oled, 0);
+  ssd1306_draw_string(oled, 0, 0, (uint8_t *)MessageText[index], 12, 1);
+  ssd1306_refresh_gram(oled);
+}

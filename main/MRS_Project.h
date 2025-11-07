@@ -8,6 +8,7 @@
 #include "ssd1306.h"
 #include "nvs_flash.h"
 #include "bme280.h"
+#include "i2cdev.h"
 
 static const char *TAG_MAIN = "MAIN_PROJECT";
 ssd1306_handle_t MainScreen = NULL;

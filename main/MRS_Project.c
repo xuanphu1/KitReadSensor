@@ -2,17 +2,20 @@
 #include "DataManager.h"
 #include "nvs_flash.h"
 
+// bmp280_t bme280_device;
+// bmp280_params_t bme280_params;
+
 // void ReadBME280Data(void *pvParameter) {
 //   while (1) {
 //     float temp, press, humidity;
 //     ESP_ERROR_CHECK(
 //         bme280_readSensorData(&bme280_device, &temp, &press, &humidity));
-//       // ESP_LOGI(TAG_MAIN, "Temperature: %f, Pressure: %f, Humidity: %f",
-//       temp,
-//       //          press, humidity);
-//       vTaskDelay(1000 / portTICK_PERIOD_MS);
+//     ESP_LOGI(TAG_MAIN, "Temperature: %f, Pressure: %f, Humidity: %f", temp,
+//              press, humidity);
+//     vTaskDelay(1000 / portTICK_PERIOD_MS);
 //   }
 // }
+
 void app_main(void) {
 
   // Initialize NVS
@@ -24,7 +27,7 @@ void app_main(void) {
   }
   ESP_ERROR_CHECK(ret);
   MenuButtonInit();
-
+  ESP_ERROR_CHECK(i2cInitDevCommon());
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   MainScreen = ssd1306_create(I2C_NUM_0, SSD1306_I2C_ADDRESS);
@@ -33,6 +36,7 @@ void app_main(void) {
     ESP_LOGE(TAG_MAIN, "Failed to create SSD1306 handle");
     vTaskDelay(portMAX_DELAY);
   }
+  // ESP_ERROR_CHECK(bme280_init(&bme280_device, &bme280_params, BME280_ADDRESS, CONFIG_I2CDEV_COMMON_PORT, CONFIG_I2CDEV_COMMON_SDA, CONFIG_I2CDEV_COMMON_SCL));
   ScreenManagerInit(&MainScreen);
   MenuSystemInit(&DataManager);
   xTaskCreate(wifi_init_sta, "wifi_init_sta", 4096, &DataManager, 5, NULL);

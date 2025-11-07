@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #define MAX_TEXT_LENGTH 21
@@ -134,6 +135,7 @@ typedef struct {
 typedef struct {
   const char *name;
   const char *unit[20];
+  bool is_init;
   uint8_t unit_count;           // số lượng đơn vị
   void (*init)(void);           // khởi tạo sensor
   void (*read)(SensorData_t *); // đọc dữ liệu vào struct
