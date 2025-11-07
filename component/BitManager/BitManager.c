@@ -147,6 +147,7 @@ const char *imageManagerTextBattery[] = {
 const char *MessageText[] = {
     "The sensor is used for other Port",
     "The sensor is not initialized",
+    "The port was selected",
 };
 
 const char **ManagerText[] = {

@@ -134,6 +134,7 @@ typedef struct {
 /* Cấu trúc cho 1 sensor driver */
 typedef struct {
   const char *name;
+  const char *description[20];
   const char *unit[20];
   bool is_init;
   uint8_t unit_count;           // số lượng đơn vị
@@ -145,6 +146,7 @@ typedef struct {
 /* -------------------- Data Manager (App Context) -------------------- */
 // Định danh Port và loại cảm biến để tracking lựa chọn
 typedef enum {
+  PORT_NONE = -1,
   PORT_1 = 0,
   PORT_2 = 1,
   PORT_3 = 2,
@@ -175,5 +177,11 @@ typedef struct {
   PortId_t port;
   SensorType_t sensor;
 } SelectionParam_t;
+
+
+typedef struct {
+  DataManager_t *data;
+  PortId_t port;
+} ShowDataSensorParam_t;
 
 #endif /* __SYMBOL_H__ */

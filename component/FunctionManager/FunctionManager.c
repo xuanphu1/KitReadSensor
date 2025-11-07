@@ -1,11 +1,14 @@
 #include "FunctionManager.h"
+#include "DataManager.h"
 #include "ScreenManager.h"
 #include "SensorSystem.h"
+#include "freertos/idf_additions.h"
 #include <stdbool.h>
+#include <stdint.h>
 
-
-
-static uint8_t oldSelectedSensor[NUM_PORTS];
+static PortId_t PortSelected[NUM_PORTS] = {PORT_NONE, PORT_NONE, PORT_NONE};
+void TestInit(void) { ESP_LOGI(TAG_FUNCTION_MANAGER, "TestInit"); }
+static const char *port_name[3] = {"Port 1", "Port 2", "Port 3"};
 
 sensor_driver_t sensor_drivers[] = {
     {
@@ -13,17 +16,19 @@ sensor_driver_t sensor_drivers[] = {
         .init = bme280Init,
         .read = bme280Read,
         .deinit = bme280Deinit,
+        .description = {"Temperature", "Pressure", "Humidity"},
         .unit = {"°C", "hPa", "%"},
         .unit_count = 3,
         .is_init = false,
     },
     {
         .name = "MH-Z14A",
-        .init = NULL,
+        .init = TestInit,
         .read = NULL,
         .deinit = NULL,
-        .unit = {"ppm", "ppm", "ppm"},
-        .unit_count = 3,
+        .description = {"CO2"},
+        .unit = {"ppm"},
+        .unit_count = 1,
         .is_init = false,
     },
     {
@@ -31,6 +36,7 @@ sensor_driver_t sensor_drivers[] = {
         .init = NULL,
         .read = NULL,
         .deinit = NULL,
+        .description = {"PM1.0", "PM2.5", "PM10"},
         .unit = {"ug/m3", "ug/m3", "ug/m3"},
         .unit_count = 3,
         .is_init = false,
@@ -40,12 +46,12 @@ sensor_driver_t sensor_drivers[] = {
         .init = NULL,
         .read = NULL,
         .deinit = NULL,
-        .unit = {"°C", "%", "hPa"},
-        .unit_count = 3,
+        .description = {"Temperature", "Humidity"},
+        .unit = {"°C", "%"},
+        .unit_count = 2,
         .is_init = false,
     },
 };
-
 
 void wifi_config_task(void *pvParameters) {
   DataManager_t *data = (DataManager_t *)pvParameters;
@@ -101,20 +107,33 @@ static const char *sensor_type_to_name(SensorType_t t) {
   }
 }
 
-
-static bool trackingInitSensor(DataManager_t *data, PortId_t port) {
-  if (oldSelectedSensor[port] != data->selectedSensor[port] && data->selectedSensor[port] != SENSOR_NONE) {
-    return true;
+void reset_all_ports_callback(void *ctx) {
+  DataManager_t *data = (DataManager_t *)ctx;
+  static char g_port_label_buf[NUM_PORTS][24];
+  for (PortId_t i = 0; i < NUM_PORTS; i++) {
+    data->selectedSensor[i] = SENSOR_NONE;
+    sensor_drivers[i].is_init = false;
+    PortSelected[i] = PORT_NONE;
+    snprintf(g_port_label_buf[i], sizeof(g_port_label_buf[i]), "%s",
+             (const char *)port_name[i]);
   }
-  return false;
+
+  data->screen.current->items[0].name = g_port_label_buf[0];
+  data->screen.current->items[1].name = g_port_label_buf[1];
+  data->screen.current->items[2].name = g_port_label_buf[2];
+
+  ESP_LOGI(TAG_FUNCTION_MANAGER, "Reset all ports");
+  MenuRender(data->screen.current, &data->screen.selected, &data->objectInfo);
 }
 
 // bộ đệm nhãn cho 3 port (được trỏ từ MenuSystem qua
 // SelectionParam_t.sensorName)
-static char g_port_label_buf[NUM_PORTS][24];
 
 void select_sensor_cb(void *ctx) {
+  static char g_port_label_buf[NUM_PORTS][24];
   SelectionParam_t *param = (SelectionParam_t *)ctx;
+
+  // 1. Validation
   if (param == NULL || param->data == NULL) {
     ESP_LOGW(TAG_FUNCTION_MANAGER, "select_sensor_cb: invalid ctx");
     return;
@@ -124,45 +143,61 @@ void select_sensor_cb(void *ctx) {
              param->port);
     return;
   }
-  ESP_LOGI(TAG_FUNCTION_MANAGER,"Check Init Sensor: %d", sensor_drivers[param->sensor].is_init);
+
+  // 2. Lưu lựa chọn
   param->data->selectedSensor[param->port] = (int8_t)param->sensor;
+
   ESP_LOGI(TAG_FUNCTION_MANAGER, "Selected sensor %d for port %d",
            param->sensor, param->port);
 
-  if (sensor_drivers[param->sensor].init != NULL) {
-    if (!sensor_drivers[param->sensor].is_init) {
-      sensor_drivers[param->sensor].init();
-      sensor_drivers[param->sensor].is_init = true;
-      // Cập nhật nhãn hiển thị cho mục Port X
+  // 3. Xử lý khởi tạo sensor và cập nhật label
+  sensor_driver_t *driver = &sensor_drivers[param->sensor];
+  int message_type = -1;
+
+  if (driver->init != NULL) {
+    if (PortSelected[param->port] == param->port) {
+      // Port đã được chọn trước đó
+      message_type = 2;
+      ESP_LOGI(TAG_FUNCTION_MANAGER, "Port %d was selected", param->port);
+    } else if (!driver->is_init) {
+      PortSelected[param->port] = param->port; // Cập nhật PortSelected
+      // Sensor chưa được khởi tạo
+      driver->init();
+      driver->is_init = true;
       const char *sensor_name = sensor_type_to_name(param->sensor);
       snprintf(g_port_label_buf[param->port],
                sizeof(g_port_label_buf[param->port]), "Port %d - %s",
                (int)param->port + 1, sensor_name);
-
     } else {
+      // Sensor đã được khởi tạo
       ESP_LOGI(TAG_FUNCTION_MANAGER,
                "select_sensor_cb: sensor %d is already initialized",
                param->sensor);
+      message_type = 0;
       snprintf(g_port_label_buf[param->port],
                sizeof(g_port_label_buf[param->port]), "Port %d",
                (int)param->port + 1);
-      ScreenShowMessage(0);
-      vTaskDelay(pdMS_TO_TICKS(1000));
     }
   } else {
+    // Sensor không có hàm init
     ESP_LOGW(TAG_FUNCTION_MANAGER,
              "select_sensor_cb: init is NULL for sensor %d", param->sensor);
-      snprintf(g_port_label_buf[param->port],
-               sizeof(g_port_label_buf[param->port]), "Port %d",
-               (int)param->port + 1);
-      ScreenShowMessage(1);
-      vTaskDelay(pdMS_TO_TICKS(1000));
+    message_type = 1;
+    snprintf(g_port_label_buf[param->port],
+             sizeof(g_port_label_buf[param->port]), "Port %d",
+             (int)param->port + 1);
   }
-  // Quay lại menu SensorPort và render lại, chọn đúng dòng theo port
+
+  // 4. Hiển thị message nếu cần
+  if (message_type >= 0) {
+    ScreenShowMessage(message_type);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+
+  // 5. Quay lại menu parent và render
   if (param->data->screen.current && param->data->screen.current->parent) {
     param->data->screen.current = param->data->screen.current->parent;
-    param->data->screen.selected =
-        (int8_t)param->port; // highlight port vừa chọn
+    param->data->screen.selected = (int8_t)param->port;
     param->data->screen.current->items[param->port].name =
         g_port_label_buf[param->port];
     ESP_LOGI(TAG_FUNCTION_MANAGER, "Name of menu item: %s",
@@ -171,86 +206,45 @@ void select_sensor_cb(void *ctx) {
     ESP_LOGW(TAG_FUNCTION_MANAGER,
              "select_sensor_cb: current or parent is NULL");
   }
-  oldSelectedSensor[param->port] = param->sensor;
+
   MenuRender(param->data->screen.current, &param->data->screen.selected,
              &param->data->objectInfo);
 }
 
-// Hiển thị live dữ liệu cảm biến cho từng port (BME280 trước)
-static void sensor_live_cb(void *ctx);
+TaskHandle_t readDataSensorTaskHandle[NUM_PORTS];
 
-void start_read_sensor_cb(void *ctx) {
-  DataManager_t *data = (DataManager_t *)ctx;
-  if (data == NULL) {
-    ESP_LOGW(TAG_FUNCTION_MANAGER, "start_read_sensor_cb: data is NULL");
+
+void readDataSensorTask(void *pvParameters) {
+  ShowDataSensorParam_t *param = (ShowDataSensorParam_t *)pvParameters;
+  if (param == NULL || param->data == NULL) {
+    ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: data is NULL");
     return;
   }
-
-  // Khởi tạo các cảm biến đã chọn (hiện hỗ trợ BME280)
-  // bool need_bme = false;
-  // for (int p = 0; p < NUM_PORTS; ++p) {
-  //   if (data->selectedSensor[p] == SENSOR_BME280) need_bme = true;
-  // }
-  // static bool bme_inited = false;
-  // if (need_bme && !bme_inited) {
-  //   bme280Init();
-  //   bme_inited = true;
-  //   ESP_LOGI(TAG_FUNCTION_MANAGER, "BME280 initialized");
-  // }
-
-  // // Tạo menu hiển thị live cho 3 port
-  // typedef struct { DataManager_t *data; PortId_t port; } LiveParam_t;
-  // static LiveParam_t live_params[NUM_PORTS];
-  // static char live_label_buf[NUM_PORTS][32];
-  // static menu_item_t live_items[NUM_PORTS];
-  // static menu_list_t live_menu;
-
-  // for (int p = 0; p < NUM_PORTS; ++p) {
-  //   const char *sname =
-  //   sensor_type_to_name((SensorType_t)data->selectedSensor[p]);
-  //   snprintf(live_label_buf[p], sizeof(live_label_buf[p]), "Port %d - %s",
-  //   p+1, sname); live_params[p].data = data; live_params[p].port =
-  //   (PortId_t)p; live_items[p].name = live_label_buf[p]; live_items[p].type =
-  //   MENU_ACTION; live_items[p].callback = sensor_live_cb; live_items[p].ctx =
-  //   &live_params[p]; live_items[p].children = NULL;
-  // }
-  // live_menu.items = live_items;
-  // live_menu.count = NUM_PORTS;
-  // live_menu.parent = data->screen.current; // quay lại menu trước đó
-  // live_menu.object = OBJECT_SENSOR;
-
-  // data->screen.current = &live_menu;
-  // data->screen.selected = 0;
-  // MenuRender(data->screen.current, &data->screen.selected,
-  // &data->objectInfo);
+  while (1) {
+    SensorData_t data;
+    sensor_driver_t *driver =
+        &sensor_drivers[param->data->selectedSensor[param->port]];
+    driver->read(&data);
+    const char **field_names = driver->description;
+    const char **units = driver->unit;
+    size_t count = driver->unit_count;
+    ScreenShowDataSensor(field_names, data.data_fl, units, count);
+    // ESP_LOGI(TAG_FUNCTION_MANAGER, "Read data sensor %s", driver->name);
+    // for (size_t i = 0; i < count; i++) {
+    //   ESP_LOGI(TAG_FUNCTION_MANAGER, "Data %s: %f", field_names[i], data.data_fl[i]);
+    // }
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
 }
 
-static void sensor_live_cb(void *ctx) {
-  typedef struct {
-    DataManager_t *data;
-    PortId_t port;
-  } LiveParam_t;
-  LiveParam_t *param = (LiveParam_t *)ctx;
-  if (!param || !param->data)
+void show_data_sensor_cb(void *ctx) {
+  ShowDataSensorParam_t *param = (ShowDataSensorParam_t *)ctx;
+  if (param == NULL || param->data == NULL) {
+    ESP_LOGW(TAG_FUNCTION_MANAGER, "show_data_sensor_cb: data is NULL");
     return;
-  DataManager_t *data = param->data;
-  int8_t sel = data->selectedSensor[param->port];
-  if (sel == SENSOR_BME280) {
-    bme280Read(&data->sensor);
-    float t = data->sensor.data_fl[0];
-    float h = data->sensor.data_fl[1];
-    float p = data->sensor.data_fl[2];
-    // Cập nhật label của item để hiển thị nhanh giá trị
-    menu_list_t *menu = data->screen.current;
-    if (!menu)
-      return;
-    static char value_buf[NUM_PORTS][32];
-    snprintf(value_buf[param->port], sizeof(value_buf[param->port]),
-             "Port %d - T%.1f H%.1f P%.0f", (int)param->port + 1, t, h, p);
-    menu->items[param->port].name = value_buf[param->port];
-    MenuRender(menu, &data->screen.selected, &data->objectInfo);
-  } else {
-    ESP_LOGW(TAG_FUNCTION_MANAGER, "sensor_live_cb: unsupported sensor type %d",
-             sel);
   }
+  ESP_LOGI(TAG_FUNCTION_MANAGER, "Port %d read sensor %s", param->port,
+           sensor_type_to_name(param->data->selectedSensor[param->port]));
+  xTaskCreate(readDataSensorTask, "readDataSensorTask", 4096, param, 5,
+              &readDataSensorTaskHandle[param->port]);
 }

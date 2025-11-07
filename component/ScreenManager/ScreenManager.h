@@ -16,4 +16,8 @@ void MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t *objectI
 void SensorRender(PortId_t port, SensorData_t *data);
 void ScreenWifiCallback(DataManager_t *data);
 void ScreenShowMessage(int index);
+void ScreenShowDataSensor(const char **field_names,
+                          const float *values,
+                          const char **units,
+                          size_t count);
 #endif  

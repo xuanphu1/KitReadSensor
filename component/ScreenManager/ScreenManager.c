@@ -152,3 +152,38 @@ void ScreenShowMessage(int index) {
   ssd1306_draw_string(oled, 0, 0, (uint8_t *)MessageText[index], 12, 1);
   ssd1306_refresh_gram(oled);
 }
+
+
+
+
+void ScreenShowDataSensor(const char **field_names,
+                          const float *values,
+                          const char **units,
+                          size_t count) {
+  if (field_names == NULL || values == NULL || units == NULL) {
+    ESP_LOGW(TAG_SCREEN_MANAGER,
+             "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, units=%p)",
+             field_names, values, units);
+    return;
+  }
+
+  ssd1306_clear_screen(oled, 0);
+
+  size_t lines = count < 3 ? count : 3;
+  for (size_t i = 0; i < lines; ++i) {
+    const char *name = field_names[i] ? field_names[i] : "Field";
+    const char *unit = units[i] ? units[i] : "";
+    float value = values[i];
+
+    char line[40];
+    snprintf(line, sizeof(line), "%s: %.2f %s", name, value, unit);
+    // ESP_LOGI(TAG_SCREEN_MANAGER, "Value %s: %ld %s", name, (long)value, unit);
+    int y = (int)i * 16;
+    if (y >= SSD1306_HEIGHT)
+      break;
+
+    ssd1306_draw_string(oled, 0, y, (uint8_t *)line, 12, 1);
+  }
+
+  ssd1306_refresh_gram(oled);
+}

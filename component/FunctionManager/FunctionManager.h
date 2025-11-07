@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include "DataManager.h"
 #include "SensorSystem.h"
-
 #define TAG_FUNCTION_MANAGER "FUNCTION_MANAGER"
 
 void wifi_config_callback(void *ctx);
@@ -17,9 +16,10 @@ void read_humidity_cb(void *ctx);
 void read_pressure_cb(void *ctx);
 void read_dht22_cb(void *ctx);
 void battery_status_callback(void *ctx);
+void reset_all_ports_callback(void *ctx);
 
 // Tracking lựa chọn cảm biến/port và bắt đầu đọc
 void select_sensor_cb(void *ctx);
-void start_read_sensor_cb(void *ctx);
+void show_data_sensor_cb(void *ctx);
 
 #endif //
