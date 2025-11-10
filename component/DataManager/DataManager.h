@@ -167,7 +167,7 @@ typedef struct {
   objectInfoManager_t objectInfo;
   menu_list_t *MenuReturn[10];
   // Mapping lựa chọn: mỗi port -> loại cảm biến đang chọn
-  int8_t selectedSensor[NUM_PORTS]; // dùng SENSOR_*; -1 nếu chưa chọn
+  SensorType_t selectedSensor[NUM_PORTS]; // dùng SENSOR_*; -1 nếu chưa chọn
 
 } DataManager_t;
 
@@ -182,6 +182,7 @@ typedef struct {
 typedef struct {
   DataManager_t *data;
   PortId_t port;
+  bool ShowDataScreen;
 } ShowDataSensorParam_t;
 
 #endif /* __SYMBOL_H__ */

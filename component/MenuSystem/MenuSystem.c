@@ -1,5 +1,6 @@
 #include "MenuSystem.h"
 #include "DataManager.h"
+#include <stdbool.h>
 #include <sys/_types.h>
 
 menu_list_t WiFi_Config_Menu;
@@ -12,35 +13,40 @@ menu_list_t Sensor_Port_3;
 
 SelectionParam_t SensorSelection[NUM_PORTS][NUM_ACTIVE_SENSORS];
 ShowDataSensorParam_t ShowDataSensorSelection[NUM_PORTS];
-// Danh sách các sensor type hợp lệ (không bao gồm SENSOR_NONE)
-static const SensorType_t valid_sensor_types[NUM_ACTIVE_SENSORS] = {
-    SENSOR_BME280,
-    SENSOR_MHZ14A,
-    SENSOR_PMS7003,
-    SENSOR_DHT22
-};
 
 /* -------------------- Menu Tree -------------------- */
 // Submenu "Read Sensor"
 menu_item_t Sensor_Port_1_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_1][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_1][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_1][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_1][SENSOR_DHT22], NULL},
+    {"BME280", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_1][SENSOR_BME280], NULL},
+    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_1][SENSOR_MHZ14A], NULL},
+    {"PMS7003", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_1][SENSOR_PMS7003], NULL},
+    {"DHT22", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_1][SENSOR_DHT22], NULL},
 };
 
 menu_item_t Sensor_Port_2_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_2][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_2][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_2][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_2][SENSOR_DHT22], NULL},
+    {"BME280", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_2][SENSOR_BME280], NULL},
+    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_2][SENSOR_MHZ14A], NULL},
+    {"PMS7003", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_2][SENSOR_PMS7003], NULL},
+    {"DHT22", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_2][SENSOR_DHT22], NULL},
 };
 
 menu_item_t Sensor_Port_3_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_3][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_3][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_3][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb, &SensorSelection[PORT_3][SENSOR_DHT22], NULL},
+    {"BME280", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_3][SENSOR_BME280], NULL},
+    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_3][SENSOR_MHZ14A], NULL},
+    {"PMS7003", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_3][SENSOR_PMS7003], NULL},
+    {"DHT22", MENU_ACTION, select_sensor_cb,
+     &SensorSelection[PORT_3][SENSOR_DHT22], NULL},
 };
 
 menu_list_t Sensor_Port_1 = {
@@ -65,31 +71,28 @@ menu_item_t PortConfig[] = {
     {"Reset All Ports", MENU_ACTION, reset_all_ports_callback, NULL, NULL},
 };
 
-
 menu_list_t Sensor_Handler = {
-  .items = PortConfig,
-  .count = ARRAY_SIZE(PortConfig),
-  .parent = NULL,
+    .items = PortConfig,
+    .count = ARRAY_SIZE(PortConfig),
+    .parent = NULL,
 };
 
-
-menu_item_t Show_Data_Sensor[] = {
-  {NULL, MENU_ACTION, show_data_sensor_cb, &ShowDataSensorSelection[PORT_1], NULL},
-  {NULL, MENU_ACTION, show_data_sensor_cb, &ShowDataSensorSelection[PORT_2], NULL},
-  {NULL, MENU_ACTION, show_data_sensor_cb, &ShowDataSensorSelection[PORT_3], NULL}
-};
+menu_item_t Show_Data_Sensor[] = {{NULL, MENU_ACTION, show_data_sensor_cb,
+                                   &ShowDataSensorSelection[PORT_1], NULL},
+                                  {NULL, MENU_ACTION, show_data_sensor_cb,
+                                   &ShowDataSensorSelection[PORT_2], NULL},
+                                  {NULL, MENU_ACTION, show_data_sensor_cb,
+                                   &ShowDataSensorSelection[PORT_3], NULL}};
 
 menu_list_t Show_Data_Sensor_Menu = {
-  .items = Show_Data_Sensor,
-  .count = ARRAY_SIZE(Show_Data_Sensor),
-  .parent = NULL,
+    .items = Show_Data_Sensor,
+    .count = ARRAY_SIZE(Show_Data_Sensor),
+    .parent = NULL,
 };
-
 
 menu_item_t Sensor_Menu_Items[] = {
-  {"Port Config", MENU_SUBMENU, NULL, NULL, &Sensor_Handler},
-  {"Show data sensor", MENU_SUBMENU, NULL, NULL, &Show_Data_Sensor_Menu}
-};
+    {"Port Config", MENU_SUBMENU, NULL, NULL, &Sensor_Handler},
+    {"Show data sensor", MENU_SUBMENU, NULL, NULL, &Show_Data_Sensor_Menu}};
 
 menu_list_t Sensor_Menu = {
     .items = Sensor_Menu_Items,
@@ -148,20 +151,17 @@ __attribute__((constructor)) static void link_menus(void) {
   Sensor_Port_1.parent = &Sensor_Handler;
   Sensor_Port_2.parent = &Sensor_Handler;
   Sensor_Port_3.parent = &Sensor_Handler;
-
 }
 
 /* -------------------- Menu Functions -------------------- */
 
 static void init_sensor_selection(DataManager_t *data) {
+
   for (PortId_t port = PORT_1; port < NUM_PORTS; port++) {
     for (int sensor_idx = 0; sensor_idx < NUM_ACTIVE_SENSORS; sensor_idx++) {
-      SensorType_t sensor_type = valid_sensor_types[sensor_idx];
-      SensorSelection[port][sensor_idx] = (SelectionParam_t){
-          .data = data,
-          .port = port,
-          .sensor = sensor_type
-      };
+      SensorType_t sensor_type = (SensorType_t)sensor_idx;
+      SensorSelection[port][sensor_type] =
+          (SelectionParam_t){.data = data, .port = port, .sensor = sensor_type};
     }
   }
 }
@@ -169,9 +169,7 @@ static void init_sensor_selection(DataManager_t *data) {
 static void init_show_data_sensor_selection(DataManager_t *data) {
   for (PortId_t port = PORT_1; port < NUM_PORTS; port++) {
     ShowDataSensorSelection[port] = (ShowDataSensorParam_t){
-      .data = data,
-      .port = port
-    };
+        .data = data, .port = port, .ShowDataScreen = false};
   }
 }
 
@@ -188,7 +186,6 @@ void MenuSystemInit(DataManager_t *data) {
   init_sensor_selection(Data);
   init_show_data_sensor_selection(Data);
 
-
   PortConfig[0].name = port[0];
   PortConfig[1].name = port[1];
   PortConfig[2].name = port[2];
@@ -198,8 +195,7 @@ void MenuSystemInit(DataManager_t *data) {
   Show_Data_Sensor[1].name = port[1];
   Show_Data_Sensor[2].name = port[2];
 
-
-  WiFi_Config_Items[0].ctx = Data;    
+  WiFi_Config_Items[0].ctx = Data;
   Sensor_Menu_Items[1].ctx = Data;
 }
 
@@ -218,6 +214,7 @@ void NavigationScreen_Task(void *pvParameter) {
     case BTN_UP:
       data->screen.prev_selected = data->screen.selected;
       data->screen.selected--;
+
       if (data->screen.selected < 0)
         data->screen.selected = data->screen.current->count - 1;
       MenuRender(data->screen.current, &data->screen.selected,
@@ -227,6 +224,7 @@ void NavigationScreen_Task(void *pvParameter) {
     case BTN_DOWN:
       data->screen.prev_selected = data->screen.selected;
       data->screen.selected++;
+
       if (data->screen.selected >= data->screen.current->count)
         data->screen.selected = 0;
       MenuRender(data->screen.current, &data->screen.selected,
@@ -237,6 +235,10 @@ void NavigationScreen_Task(void *pvParameter) {
       menu_item_t *item = &data->screen.current->items[data->screen.selected];
 
       if (item->type == MENU_ACTION && item->callback) {
+        if (data->screen.selected < NUM_PORTS) {
+          ShowDataSensorSelection[data->screen.selected].ShowDataScreen = true;
+        }
+
         item->callback(item->ctx);
       } else if (item->type == MENU_SUBMENU && item->children) {
         data->screen.current = item->children;
@@ -252,7 +254,9 @@ void NavigationScreen_Task(void *pvParameter) {
       if (data->screen.current->parent) {
         data->screen.current = data->screen.current->parent;
         data->screen.selected = 0;
-
+        if (data->screen.selected < NUM_PORTS) {
+          ShowDataSensorSelection[data->screen.selected].ShowDataScreen = false;
+        }
         MenuRender(data->screen.current, &data->screen.selected,
                    &data->objectInfo);
       }

@@ -157,33 +157,73 @@ void ScreenShowMessage(int index) {
 
 
 void ScreenShowDataSensor(const char **field_names,
-                          const float *values,
-                          const char **units,
-                          size_t count) {
-  if (field_names == NULL || values == NULL || units == NULL) {
+                         const float *values,
+                         const char **units,
+                         size_t count) {
+  if (field_names == NULL || values == NULL || units == NULL || count == 0) {
     ESP_LOGW(TAG_SCREEN_MANAGER,
-             "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, units=%p)",
-             field_names, values, units);
+             "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, units=%p, count=%u)",
+             field_names, values, units, (unsigned)count);
     return;
   }
 
-  ssd1306_clear_screen(oled, 0);
+  static size_t current_index = 0;
 
-  size_t lines = count < 3 ? count : 3;
-  for (size_t i = 0; i < lines; ++i) {
-    const char *name = field_names[i] ? field_names[i] : "Field";
-    const char *unit = units[i] ? units[i] : "";
-    float value = values[i];
+  // Hiển thị lần lượt từng trường, mỗi trường 300ms
+  size_t iterations = count < 3 ? count : 3; // chỉ hiển thị tối đa 3 trường
+  for (size_t step = 0; step < iterations; ++step) {
+    size_t idx = current_index % count;
 
-    char line[40];
-    snprintf(line, sizeof(line), "%s: %.2f %s", name, value, unit);
-    // ESP_LOGI(TAG_SCREEN_MANAGER, "Value %s: %ld %s", name, (long)value, unit);
-    int y = (int)i * 16;
-    if (y >= SSD1306_HEIGHT)
-      break;
+    const char *name = field_names[idx] ? field_names[idx] : "Field";
+    const char *unit = units[idx] ? units[idx] : "";
+    float value = values[idx];
 
-    ssd1306_draw_string(oled, 0, y, (uint8_t *)line, 12, 1);
+    ssd1306_clear_screen(oled, 0);
+
+    // Tên trường (12px) - căn giữa
+    {
+      unsigned int name_px = strlen(name) * (12 / 2);
+      int name_x = (int)((SSD1306_WIDTH - name_px) / 2);
+      if (name_x < 0) name_x = 0;
+      ssd1306_draw_string(oled, name_x, 0, (uint8_t *)name, 12, 1);
+    }
+
+    // Giá trị: vẽ lớn hơn bằng font 32x16 cho các ký tự số, dấu '.' và '-' vẽ font 12
+    char value_buf[24];
+    snprintf(value_buf, sizeof(value_buf), "%.2f", value);
+    // Tính chiều rộng để căn giữa (ước lượng: số -> 16px, '.'/'-' -> 6px)
+    int total_px = 0;
+    for (const char *p = value_buf; *p; ++p) {
+      if (*p >= '0' && *p <= '9') total_px += 16; else total_px += 6;
+    }
+    int base_x = (SSD1306_WIDTH - total_px) / 2;
+    if (base_x < 0) base_x = 0;
+
+    int cursor_x = base_x;
+    int cursor_y = 12; // bắt đầu dưới dòng tên trường
+    for (const char *p = value_buf; *p; ++p) {
+      if (*p >= '0' && *p <= '9') {
+        ssd1306_draw_3216char(oled, (uint8_t)cursor_x, (uint8_t)cursor_y, (uint8_t)*p);
+        cursor_x += 16;
+      } else {
+        // vẽ nhỏ cho '.' hoặc '-'
+        char tmp[2] = {*p, '\0'};
+        ssd1306_draw_string(oled, (uint8_t)cursor_x, (uint8_t)(cursor_y + 8), (uint8_t *)tmp, 12, 1);
+        cursor_x += 6;
+      }
+    }
+
+    // Đơn vị (12px) - căn giữa
+    if (unit[0] != '\0') {
+      unsigned int unit_px = (unsigned int)(strlen(unit) * (12 / 2));
+      int unit_x = (int)((SSD1306_WIDTH - unit_px) / 2);
+      if (unit_x < 0) unit_x = 0;
+      // đặt đơn vị dưới phần giá trị lớn
+      ssd1306_draw_string(oled, unit_x, cursor_y + 32, (uint8_t *)unit, 12, 1);
+    }
+
+    ssd1306_refresh_gram(oled);
+    vTaskDelay(pdMS_TO_TICKS(300));
+    current_index = (current_index + 1) % count;
   }
-
-  ssd1306_refresh_gram(oled);
 }

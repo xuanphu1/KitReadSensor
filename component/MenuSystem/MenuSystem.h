@@ -21,4 +21,6 @@
 void MenuSystemInit(DataManager_t *data);
 void NavigationScreen_Task(void *pvParameter);
 void ReadSensor_Task(void *pvParameter);
+
+extern SelectionParam_t SensorSelection[NUM_PORTS][NUM_ACTIVE_SENSORS];
 #endif
