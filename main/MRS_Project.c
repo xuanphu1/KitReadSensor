@@ -2,20 +2,6 @@
 #include "DataManager.h"
 #include "nvs_flash.h"
 
-// bmp280_t bme280_device;
-// bmp280_params_t bme280_params;
-
-// void ReadBME280Data(void *pvParameter) {
-//   while (1) {
-//     float temp, press, humidity;
-//     ESP_ERROR_CHECK(
-//         bme280_readSensorData(&bme280_device, &temp, &press, &humidity));
-//     ESP_LOGI(TAG_MAIN, "Temperature: %f, Pressure: %f, Humidity: %f", temp,
-//              press, humidity);
-//     vTaskDelay(1000 / portTICK_PERIOD_MS);
-//   }
-// }
-
 void app_main(void) {
 
   // Initialize NVS
@@ -42,7 +28,6 @@ void app_main(void) {
   xTaskCreate(wifi_init_sta, "wifi_init_sta", 4096, &DataManager, 5, NULL);
   xTaskCreate(NavigationScreen_Task, "NavigationScreen_Task", 4096,
               &DataManager, 5, NULL);
-  // xTaskCreate(ReadBME280Data, "ReadBME280Data", 4096, NULL, 5, NULL);
   while (1) {
     vTaskDelay(50 / portTICK_PERIOD_MS);
   }

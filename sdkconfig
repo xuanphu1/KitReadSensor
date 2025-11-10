@@ -531,17 +531,6 @@ CONFIG_RTC_I2C_FREQ_HZ=400000
 # end of RTC configuration
 
 #
-# Manager Wifi Project
-#
-CONFIG_WIFI_SSID="Unknown"
-CONFIG_WIFI_PASS="12345789"
-CONFIG_MAX_RETRY=5
-CONFIG_AP_SSID="MRS_Config_Wifi"
-CONFIG_AP_PASSWORD=""
-CONFIG_AP_CHANNEL=1
-# end of Manager Wifi Project
-
-#
 # I2C common config
 #
 CONFIG_I2CDEV_COMMON_SDA=6
@@ -551,6 +540,17 @@ CONFIG_I2CDEV_COMMON_CLK_HZ=400000
 CONFIG_I2CDEV_TIMEOUT=1000
 # CONFIG_I2CDEV_NOLOCK is not set
 # end of I2C common config
+
+#
+# Manager Wifi Project
+#
+CONFIG_WIFI_SSID="Unknown"
+CONFIG_WIFI_PASS="12345789"
+CONFIG_MAX_RETRY=5
+CONFIG_AP_SSID="MRS_Config_Wifi"
+CONFIG_AP_PASSWORD=""
+CONFIG_AP_CHANNEL=1
+# end of Manager Wifi Project
 
 #
 # Compiler options

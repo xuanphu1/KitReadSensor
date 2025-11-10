@@ -4,8 +4,15 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
-set(EXTRA_COMPONENT_DIRS ${CMAKE_CURRENT_LIST_DIR}/component)
+set(EXTRA_COMPONENT_DIRS
+    ${CMAKE_CURRENT_LIST_DIR}/component/core
+    ${CMAKE_CURRENT_LIST_DIR}/component/ui
+    ${CMAKE_CURRENT_LIST_DIR}/component/drivers
+    ${CMAKE_CURRENT_LIST_DIR}/component/network
+    ${CMAKE_CURRENT_LIST_DIR}/component/sensors
+    ${CMAKE_CURRENT_LIST_DIR}/component/utils
+)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(MRS_Project)
 # Add SPIFFS configuration
-spiffs_create_partition_image(spiffs component/WebConfigWifi FLASH_IN_PROJECT)
+spiffs_create_partition_image(spiffs component/network/WebConfigWifi FLASH_IN_PROJECT)
