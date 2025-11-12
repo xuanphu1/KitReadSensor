@@ -1,59 +1,15 @@
 #include "FunctionManager.h"
 #include "DataManager.h"
 #include "ScreenManager.h"
-#include "SensorSystem.h"
+#include "SensorConfig.h"
+#include "SensorRegistry.h"
 #include "freertos/idf_additions.h"
 #include <stdbool.h>
 #include <stdint.h>
 
 static PortId_t PortSelected[NUM_PORTS] = {PORT_NONE, PORT_NONE, PORT_NONE};
-void TestInit(void) { ESP_LOGI(TAG_FUNCTION_MANAGER, "TestInit"); }
-void TestRead(SensorData_t *data) { ESP_LOGI(TAG_FUNCTION_MANAGER, "TestRead"); }
 static const char *port_name[3] = {"Port 1", "Port 2", "Port 3"};
 static TaskHandle_t readDataSensorTaskHandle[NUM_PORTS];
-
-sensor_driver_t sensor_drivers[] = {
-    {
-        .name = "BME280",
-        .init = bme280Init,
-        .read = bme280Read,
-        .deinit = bme280Deinit,
-        .description = {"Temperature", "Pressure", "Humidity"},
-        .unit = {"°C", "hPa", "%"},
-        .unit_count = 3,
-        .is_init = false,
-    },
-    {
-        .name = "MH-Z14A",
-        .init = TestInit,
-        .read = TestRead,
-        .deinit = NULL,
-        .description = {"CO2"},
-        .unit = {"ppm"},
-        .unit_count = 1,
-        .is_init = false,
-    },
-    {
-        .name = "PMS7003",
-        .init = NULL,
-        .read = NULL,
-        .deinit = NULL,
-        .description = {"PM1.0", "PM2.5", "PM10"},
-        .unit = {"ug/m3", "ug/m3", "ug/m3"},
-        .unit_count = 3,
-        .is_init = false,
-    },
-    {
-        .name = "DHT22",
-        .init = NULL,
-        .read = NULL,
-        .deinit = NULL,
-        .description = {"Temperature", "Humidity"},
-        .unit = {"°C", "%"},
-        .unit_count = 2,
-        .is_init = false,
-    },
-};
 
 void wifi_config_task(void *pvParameters) {
   DataManager_t *data = (DataManager_t *)pvParameters;
@@ -64,7 +20,7 @@ void wifi_config_task(void *pvParameters) {
     ESP_LOGI(TAG_FUNCTION_MANAGER, "WiFi Config callback triggered");
   }
   while (1) {
-    ScreenWifiCallback(data);
+    ScreenWifiConnecting(data);
     update_wifi_status(&(data->objectInfo.wifiInfo));
     wifi_connect_handler(data);
     if (data->objectInfo.wifiInfo.wifiStatus == CONNECTED) {
@@ -94,20 +50,6 @@ void read_dht22_cb(void *ctx) {}
 
 void battery_status_callback(void *ctx) {}
 
-static const char *sensor_type_to_name(SensorType_t t) {
-  switch (t) {
-  case SENSOR_BME280:
-    return "BME280";
-  case SENSOR_MHZ14A:
-    return "MH-Z14A";
-  case SENSOR_PMS7003:
-    return "PMS7003";
-  case SENSOR_DHT22:
-    return "DHT22";
-  default:
-    return "Unknown";
-  }
-}
 // Biến global static để chia sẻ giữa các hàm
 static char g_port_label_buf[NUM_PORTS][24];
 
@@ -119,9 +61,10 @@ void reset_all_ports_callback(void *ctx) {
     snprintf(g_port_label_buf[i], sizeof(g_port_label_buf[i]), "%s",
              (const char *)port_name[i]);
   }
-  for (int i = 0; i < NUM_ACTIVE_SENSORS; i++) {
-    
-    sensor_drivers[i].is_init = false;
+  sensor_driver_t *drivers = sensor_registry_get_drivers();
+  size_t driver_count = sensor_registry_get_count();
+  for (size_t i = 0; i < driver_count; i++) {
+    drivers[i].is_init = false;
   }
 
   data->screen.current->items[0].name = g_port_label_buf[0];
@@ -172,7 +115,12 @@ void select_sensor_cb(void *ctx) {
            param->sensor, sensor_type_to_name(param->sensor), param->port);
 
   // 3. Xử lý khởi tạo sensor và cập nhật label
-  sensor_driver_t *driver = &sensor_drivers[param->sensor];
+  sensor_driver_t *driver = sensor_registry_get_driver(param->sensor);
+  if (driver == NULL) {
+    ESP_LOGW(TAG_FUNCTION_MANAGER, "select_sensor_cb: invalid sensor type %d",
+             param->sensor);
+    return;
+  }
   int message_type = -1;
 
   if (driver->init != NULL) {
@@ -180,6 +128,10 @@ void select_sensor_cb(void *ctx) {
       // Port đã được chọn trước đó
       message_type = 2;
       ESP_LOGI(TAG_FUNCTION_MANAGER, "Port %d was selected", param->port);
+      const char *sensor_name = sensor_type_to_name(param->sensor);
+      snprintf(g_port_label_buf[param->port],
+               sizeof(g_port_label_buf[param->port]), "Port %d - %s",
+               (int)param->port + 1, sensor_name);
     } else if (!driver->is_init) {
       PortSelected[param->port] = param->port; // Cập nhật PortSelected
       // Sensor chưa được khởi tạo
@@ -191,13 +143,15 @@ void select_sensor_cb(void *ctx) {
                (int)param->port + 1, sensor_name);
     } else {
       // Sensor đã được khởi tạo
+      PortSelected[param->port] = param->port;
       ESP_LOGI(TAG_FUNCTION_MANAGER,
                "select_sensor_cb: sensor %d is already initialized",
                param->sensor);
       message_type = 0;
+      const char *sensor_name = sensor_type_to_name(param->sensor);
       snprintf(g_port_label_buf[param->port],
-               sizeof(g_port_label_buf[param->port]), "Port %d",
-               (int)param->port + 1);
+               sizeof(g_port_label_buf[param->port]), "Port %d - %s",
+               (int)param->port + 1, sensor_name);
     }
   } else {
     // Sensor không có hàm init
@@ -240,8 +194,13 @@ void readDataSensorTask(void *pvParameters) {
   }
   while (1) {
     SensorData_t data;
-    sensor_driver_t *driver =
-        &sensor_drivers[param->data->selectedSensor[param->port]];
+    sensor_driver_t *driver = sensor_registry_get_driver(
+        param->data->selectedSensor[param->port]);
+    if (driver == NULL || driver->read == NULL) {
+      ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: invalid driver");
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      continue;
+    }
     driver->read(&data);
     const char **field_names = driver->description;
     const char **units = driver->unit;

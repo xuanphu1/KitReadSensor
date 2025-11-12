@@ -6,7 +6,7 @@
 #include "ScreenManager.h"
 #include <stdbool.h>
 #include "DataManager.h"
-#include "SensorSystem.h"
+#include "SensorConfig.h"
 #define TAG_FUNCTION_MANAGER "FUNCTION_MANAGER"
 
 void wifi_config_callback(void *ctx);

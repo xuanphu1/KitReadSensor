@@ -4,20 +4,17 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "SensorTypes.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #define MAX_TEXT_LENGTH 21
 #define NUM_OBJECT_MAX 5
-// Số lượng cổng sensor
-#define NUM_PORTS 3
-// Số lượng loại cảm biến thực tế (không bao gồm SENSOR_NONE)
-#define NUM_ACTIVE_SENSORS 4
 #define NUM_SENSORS 20
 #define BTN_UP_GPIO 18
 #define BTN_DOWN_GPIO 19
 #define BTN_SEL_GPIO 20
 #define BTN_BACK_GPIO 21
-
+#define MAX_VISIBLE_ITEMS 4
 /* -------------------- Button -------------------- */
 typedef enum { BTN_UP, BTN_DOWN, BTN_SEL, BTN_BACK, BTN_NONE } button_type_t;
 
@@ -108,14 +105,7 @@ typedef struct {
   int8_t prev_selected;
 } ScreenManager_t;
 
-/* -------------------- Sensor -------------------- */
-typedef struct {
-  float data_fl[5];
-  uint32_t data_uint32[5];
-  uint16_t data_uint16[5];
-  uint8_t data_uint8[5];
-} SensorData_t;
-
+/* -------------------- Battery & WiFi Info -------------------- */
 typedef struct {
   uint8_t batteryLevel;
   char *batteryName;
@@ -131,34 +121,8 @@ typedef struct {
   wifiInfo_t wifiInfo;
 } objectInfoManager_t;
 
-/* Cấu trúc cho 1 sensor driver */
-typedef struct {
-  const char *name;
-  const char *description[20];
-  const char *unit[20];
-  bool is_init;
-  uint8_t unit_count;           // số lượng đơn vị
-  void (*init)(void);           // khởi tạo sensor
-  void (*read)(SensorData_t *); // đọc dữ liệu vào struct
-  void (*deinit)(void);         // optional, nếu cần
-} sensor_driver_t;
-
 /* -------------------- Data Manager (App Context) -------------------- */
-// Định danh Port và loại cảm biến để tracking lựa chọn
-typedef enum {
-  PORT_NONE = -1,
-  PORT_1 = 0,
-  PORT_2 = 1,
-  PORT_3 = 2,
-} PortId_t;
-
-typedef enum {
-  SENSOR_NONE = -1,
-  SENSOR_BME280 = 0,
-  SENSOR_MHZ14A = 1,
-  SENSOR_PMS7003 = 2,
-  SENSOR_DHT22 = 3,
-} SensorType_t;
+// Note: PortId_t và SensorType_t đã được định nghĩa trong SensorTypes.h
 
 typedef struct {
   SensorData_t sensor;

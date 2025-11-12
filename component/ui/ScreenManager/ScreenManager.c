@@ -41,7 +41,7 @@ void MenuRender(menu_list_t *menu, int8_t *selected,
     switch (menu->object) {
     case OBJECT_WIFI:
       update_wifi_status(&(objectInfo->wifiInfo));
-      
+
       ssd1306_draw_bitmap(
           oled, 55, 0,
           (uint8_t *)
@@ -69,7 +69,7 @@ void MenuRender(menu_list_t *menu, int8_t *selected,
   if (menu->text.text != NULL) {
     bool extraText = false;
     switch (menu->object) {
-    case OBJECT_WIFI:
+    case OBJECT_WIFI: {
       unsigned int textLength = strlen(
           menu->text.text[menu->object][objectInfo->wifiInfo.wifiStatus]);
       ssd1306_draw_string(
@@ -93,8 +93,7 @@ void MenuRender(menu_list_t *menu, int8_t *selected,
       }
       if (textLength > MAX_TEXT_LENGTH)
         extraText = true;
-
-      break;
+    } break;
     case OBJECT_BATTERY:
       ssd1306_draw_string(
           oled, 55, offset,
@@ -121,13 +120,39 @@ void MenuRender(menu_list_t *menu, int8_t *selected,
       offset += menu->text.size;
     }
   }
-  for (int i = 0; i < menu->count; i++) {
-    ssd1306_draw_menu_item(&menu->items[i], i, (i == *selected), offset);
+  int start_index = 0;
+  int end_index = menu->count;
+
+  if (menu->count > MAX_VISIBLE_ITEMS) {
+    // Nếu có nhiều hơn 4 items, áp dụng pagination
+    if (*selected >= MAX_VISIBLE_ITEMS) {
+      // Khi selected >= 4, hiển thị từ selected trở đi (selected, selected+1,
+      // selected+2, selected+3)
+      start_index = *selected;
+      end_index = *selected + MAX_VISIBLE_ITEMS;
+
+      // Đảm bảo không vượt quá count
+      if (end_index > menu->count) {
+        end_index = menu->count;
+      }
+    } else {
+      // Khi selected < 4, hiển thị từ 0 đến 3
+      start_index = 0;
+      end_index = MAX_VISIBLE_ITEMS;
+    }
+  }
+
+  // Hiển thị items trong phạm vi đã tính toán
+  int display_index = 0;
+  for (int i = start_index; i < end_index; i++) {
+    ssd1306_draw_menu_item(&menu->items[i], display_index, (i == *selected),
+                           offset);
+    display_index++;
   }
   ssd1306_refresh_gram(oled);
 }
 
-void ScreenWifiCallback(DataManager_t *data) {
+void ScreenWifiConnecting(DataManager_t *data) {
   static uint8_t dot_count = 0;
   const char *base_message = "Connecting to WiFi";
   char display_buffer[30];
@@ -153,16 +178,12 @@ void ScreenShowMessage(int index) {
   ssd1306_refresh_gram(oled);
 }
 
-
-
-
-void ScreenShowDataSensor(const char **field_names,
-                         const float *values,
-                         const char **units,
-                         size_t count) {
+void ScreenShowDataSensor(const char **field_names, const float *values,
+                          const char **units, size_t count) {
   if (field_names == NULL || values == NULL || units == NULL || count == 0) {
     ESP_LOGW(TAG_SCREEN_MANAGER,
-             "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, units=%p, count=%u)",
+             "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, "
+             "units=%p, count=%u)",
              field_names, values, units, (unsigned)count);
     return;
   }
@@ -184,31 +205,39 @@ void ScreenShowDataSensor(const char **field_names,
     {
       unsigned int name_px = strlen(name) * (12 / 2);
       int name_x = (int)((SSD1306_WIDTH - name_px) / 2);
-      if (name_x < 0) name_x = 0;
+      if (name_x < 0)
+        name_x = 0;
       ssd1306_draw_string(oled, name_x, 0, (uint8_t *)name, 12, 1);
     }
 
-    // Giá trị: vẽ lớn hơn bằng font 32x16 cho các ký tự số, dấu '.' và '-' vẽ font 12
+    // Giá trị: vẽ lớn hơn bằng font 32x16 cho các ký tự số, dấu '.' và '-' vẽ
+    // font 12
     char value_buf[24];
     snprintf(value_buf, sizeof(value_buf), "%.2f", value);
     // Tính chiều rộng để căn giữa (ước lượng: số -> 16px, '.'/'-' -> 6px)
     int total_px = 0;
     for (const char *p = value_buf; *p; ++p) {
-      if (*p >= '0' && *p <= '9') total_px += 16; else total_px += 6;
+      if (*p >= '0' && *p <= '9')
+        total_px += 16;
+      else
+        total_px += 6;
     }
     int base_x = (SSD1306_WIDTH - total_px) / 2;
-    if (base_x < 0) base_x = 0;
+    if (base_x < 0)
+      base_x = 0;
 
     int cursor_x = base_x;
     int cursor_y = 12; // bắt đầu dưới dòng tên trường
     for (const char *p = value_buf; *p; ++p) {
       if (*p >= '0' && *p <= '9') {
-        ssd1306_draw_3216char(oled, (uint8_t)cursor_x, (uint8_t)cursor_y, (uint8_t)*p);
+        ssd1306_draw_3216char(oled, (uint8_t)cursor_x, (uint8_t)cursor_y,
+                              (uint8_t)*p);
         cursor_x += 16;
       } else {
         // vẽ nhỏ cho '.' hoặc '-'
         char tmp[2] = {*p, '\0'};
-        ssd1306_draw_string(oled, (uint8_t)cursor_x, (uint8_t)(cursor_y + 8), (uint8_t *)tmp, 12, 1);
+        ssd1306_draw_string(oled, (uint8_t)cursor_x, (uint8_t)(cursor_y + 8),
+                            (uint8_t *)tmp, 12, 1);
         cursor_x += 6;
       }
     }
@@ -217,7 +246,8 @@ void ScreenShowDataSensor(const char **field_names,
     if (unit[0] != '\0') {
       unsigned int unit_px = (unsigned int)(strlen(unit) * (12 / 2));
       int unit_x = (int)((SSD1306_WIDTH - unit_px) / 2);
-      if (unit_x < 0) unit_x = 0;
+      if (unit_x < 0)
+        unit_x = 0;
       // đặt đơn vị dưới phần giá trị lớn
       ssd1306_draw_string(oled, unit_x, cursor_y + 32, (uint8_t *)unit, 12, 1);
     }

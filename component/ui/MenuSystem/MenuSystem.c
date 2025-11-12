@@ -1,7 +1,10 @@
 #include "MenuSystem.h"
 #include "DataManager.h"
+#include "SensorRegistry.h"
 #include <stdbool.h>
 #include <sys/_types.h>
+#include <string.h>
+#include <stdlib.h>
 
 menu_list_t WiFi_Config_Menu;
 DataManager_t *Data;
@@ -11,57 +14,31 @@ menu_list_t Sensor_Port_1;
 menu_list_t Sensor_Port_2;
 menu_list_t Sensor_Port_3;
 
-SelectionParam_t SensorSelection[NUM_PORTS][NUM_ACTIVE_SENSORS];
+/* -------------------- Dynamic Arrays -------------------- */
+// Mảng động được cấp phát dựa trên số lượng sensor thực tế từ registry
+// Cấu trúc: [NUM_PORTS][sensor_count] - mỗi port có mảng riêng
+static SelectionParam_t *SensorSelection[NUM_PORTS] = {NULL, NULL, NULL};
+static menu_item_t *Sensor_Port_Items[NUM_PORTS] = {NULL, NULL, NULL};
+static size_t g_sensor_count = 0;  // Số lượng sensor thực tế
+
 ShowDataSensorParam_t ShowDataSensorSelection[NUM_PORTS];
 
 /* -------------------- Menu Tree -------------------- */
-// Submenu "Read Sensor"
-menu_item_t Sensor_Port_1_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_1][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_1][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_1][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_1][SENSOR_DHT22], NULL},
-};
-
-menu_item_t Sensor_Port_2_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_2][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_2][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_2][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_2][SENSOR_DHT22], NULL},
-};
-
-menu_item_t Sensor_Port_3_Items[] = {
-    {"BME280", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_3][SENSOR_BME280], NULL},
-    {"MH-Z14A", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_3][SENSOR_MHZ14A], NULL},
-    {"PMS7003", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_3][SENSOR_PMS7003], NULL},
-    {"DHT22", MENU_ACTION, select_sensor_cb,
-     &SensorSelection[PORT_3][SENSOR_DHT22], NULL},
-};
-
+// Menu lists cho các port (sẽ được khởi tạo động với count thực tế)
+// Lưu ý: items sẽ được cập nhật trong init_sensor_port_menu_items()
 menu_list_t Sensor_Port_1 = {
-    .items = Sensor_Port_1_Items,
-    .count = ARRAY_SIZE(Sensor_Port_1_Items),
+    .items = NULL,  // Sẽ được cập nhật trong init_sensor_port_menu_items()
+    .count = 0,
     .parent = NULL,
 };
 menu_list_t Sensor_Port_2 = {
-    .items = Sensor_Port_2_Items,
-    .count = ARRAY_SIZE(Sensor_Port_2_Items),
+    .items = NULL,  // Sẽ được cập nhật trong init_sensor_port_menu_items()
+    .count = 0,
     .parent = NULL,
 };
 menu_list_t Sensor_Port_3 = {
-    .items = Sensor_Port_3_Items,
-    .count = ARRAY_SIZE(Sensor_Port_3_Items),
+    .items = NULL,  // Sẽ được cập nhật trong init_sensor_port_menu_items()
+    .count = 0,
     .parent = NULL,
 };
 menu_item_t PortConfig[] = {
@@ -155,15 +132,77 @@ __attribute__((constructor)) static void link_menus(void) {
 
 /* -------------------- Menu Functions -------------------- */
 
-static void init_sensor_selection(DataManager_t *data) {
+/**
+ * @brief Khởi tạo menu items cho sensor selection từ SensorRegistry
+ * 
+ * Hàm này tự động tạo menu items cho mỗi port dựa trên danh sách sensor
+ * đã đăng ký trong SensorRegistry. Khi thêm sensor mới, chỉ cần thêm vào
+ * SensorRegistry, menu sẽ tự động cập nhật.
+ * 
+ * Sử dụng cấp phát động dựa trên số lượng sensor thực tế từ registry.
+ */
+static void init_sensor_port_menu_items(DataManager_t *data) {
+  sensor_driver_t *drivers = sensor_registry_get_drivers();
+  size_t driver_count = sensor_registry_get_count();
 
+  if (driver_count == 0) {
+    ESP_LOGE(TAG_MENU_SYSTEM, "No sensors registered in registry!");
+    return;
+  }
+
+  g_sensor_count = driver_count;
+
+  // Cấp phát động cho mỗi port
   for (PortId_t port = PORT_1; port < NUM_PORTS; port++) {
-    for (int sensor_idx = 0; sensor_idx < NUM_ACTIVE_SENSORS; sensor_idx++) {
+    // Giải phóng bộ nhớ cũ nếu có
+    if (SensorSelection[port] != NULL) {
+      free(SensorSelection[port]);
+      SensorSelection[port] = NULL;
+    }
+    if (Sensor_Port_Items[port] != NULL) {
+      free(Sensor_Port_Items[port]);
+      Sensor_Port_Items[port] = NULL;
+    }
+
+    // Cấp phát động dựa trên số lượng sensor thực tế
+    SensorSelection[port] = (SelectionParam_t *)malloc(driver_count * sizeof(SelectionParam_t));
+    Sensor_Port_Items[port] = (menu_item_t *)malloc(driver_count * sizeof(menu_item_t));
+
+    if (SensorSelection[port] == NULL || Sensor_Port_Items[port] == NULL) {
+      ESP_LOGE(TAG_MENU_SYSTEM, "Failed to allocate memory for port %d!", port);
+      continue;
+    }
+
+    // Khởi tạo menu items cho port này
+    for (size_t sensor_idx = 0; sensor_idx < driver_count; sensor_idx++) {
       SensorType_t sensor_type = (SensorType_t)sensor_idx;
-      SensorSelection[port][sensor_type] =
-          (SelectionParam_t){.data = data, .port = port, .sensor = sensor_type};
+      sensor_driver_t *driver = &drivers[sensor_idx];
+
+      // Khởi tạo SelectionParam
+      SensorSelection[port][sensor_idx] = (SelectionParam_t){
+          .data = data,
+          .port = port,
+          .sensor = sensor_type
+      };
+
+      // Khởi tạo menu item
+      Sensor_Port_Items[port][sensor_idx] = (menu_item_t){
+          .name = driver->name,                    // Tên sensor từ registry
+          .type = MENU_ACTION,
+          .callback = select_sensor_cb,
+          .ctx = &SensorSelection[port][sensor_idx],
+          .children = NULL
+      };
     }
   }
+
+  // Cập nhật menu lists với con trỏ và count
+  Sensor_Port_1.items = Sensor_Port_Items[PORT_1];
+  Sensor_Port_1.count = driver_count;
+  Sensor_Port_2.items = Sensor_Port_Items[PORT_2];
+  Sensor_Port_2.count = driver_count;
+  Sensor_Port_3.items = Sensor_Port_Items[PORT_3];
+  Sensor_Port_3.count = driver_count;
 }
 
 static void init_show_data_sensor_selection(DataManager_t *data) {
@@ -183,7 +222,9 @@ void MenuSystemInit(DataManager_t *data) {
   for (int i = 0; i < NUM_PORTS; ++i) {
     Data->selectedSensor[i] = SENSOR_NONE;
   }
-  init_sensor_selection(Data);
+  
+  // Khởi tạo menu items động từ SensorRegistry
+  init_sensor_port_menu_items(Data);
   init_show_data_sensor_selection(Data);
 
   PortConfig[0].name = port[0];
