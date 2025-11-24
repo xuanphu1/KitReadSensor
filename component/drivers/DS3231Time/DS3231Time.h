@@ -102,3 +102,4 @@ bool ds3231_isNewDay(i2c_dev_t *dev);
 
 
 #endif
+

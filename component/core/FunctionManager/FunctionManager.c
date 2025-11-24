@@ -1,5 +1,5 @@
 #include "FunctionManager.h"
-#include "DataManager.h"
+#include "Common.h"
 #include "ScreenManager.h"
 #include "SensorConfig.h"
 #include "SensorRegistry.h"
@@ -121,12 +121,12 @@ void select_sensor_cb(void *ctx) {
              param->sensor);
     return;
   }
-  int message_type = -1;
+  Message_t message_type = MESSAGE_NONE;
 
   if (driver->init != NULL) {
     if (PortSelected[param->port] == param->port) {
       // Port đã được chọn trước đó
-      message_type = 2;
+      message_type = MESSAGE_PORT_SELECTED;
       ESP_LOGI(TAG_FUNCTION_MANAGER, "Port %d was selected", param->port);
       const char *sensor_name = sensor_type_to_name(param->sensor);
       snprintf(g_port_label_buf[param->port],
@@ -147,7 +147,7 @@ void select_sensor_cb(void *ctx) {
       ESP_LOGI(TAG_FUNCTION_MANAGER,
                "select_sensor_cb: sensor %d is already initialized",
                param->sensor);
-      message_type = 0;
+      message_type = MESSAGE_SENSOR_USED_OTHER_PORT;
       const char *sensor_name = sensor_type_to_name(param->sensor);
       snprintf(g_port_label_buf[param->port],
                sizeof(g_port_label_buf[param->port]), "Port %d - %s",
@@ -157,14 +157,14 @@ void select_sensor_cb(void *ctx) {
     // Sensor không có hàm init
     ESP_LOGW(TAG_FUNCTION_MANAGER,
              "select_sensor_cb: init is NULL for sensor %d", param->sensor);
-    message_type = 1;
+    message_type = MESSAGE_SENSOR_NOT_INITIALIZED;
     snprintf(g_port_label_buf[param->port],
              sizeof(g_port_label_buf[param->port]), "Port %d",
              (int)param->port + 1);
   }
 
   // 4. Hiển thị message nếu cần
-  if (message_type >= 0) {
+  if (message_type != MESSAGE_NONE) {
     ScreenShowMessage(message_type);
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
@@ -198,8 +198,13 @@ void readDataSensorTask(void *pvParameters) {
         param->data->selectedSensor[param->port]);
     if (driver == NULL || driver->read == NULL) {
       ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: invalid driver");
+      ScreenShowMessage(MESSAGE_SENSOR_NOT_INITIALIZED);
       vTaskDelay(pdMS_TO_TICKS(1000));
-      continue;
+      MenuRender(param->data->screen.current, &param->data->screen.selected,
+        &param->data->objectInfo);
+      readDataSensorTaskHandle[param->port] = NULL;
+      vTaskDelete(readDataSensorTaskHandle[param->port]);
+
     }
     driver->read(&data);
     const char **field_names = driver->description;

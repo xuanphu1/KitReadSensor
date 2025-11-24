@@ -148,6 +148,7 @@ const char *MessageText[] = {
     "The sensor is used for other Port",
     "The sensor is not initialized",
     "The port was selected",
+    "The port was not selected",
 };
 
 const char **ManagerText[] = {

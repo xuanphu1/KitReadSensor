@@ -5,7 +5,7 @@
 #include "string.h"
 #include "ScreenManager.h"
 #include <stdbool.h>
-#include "DataManager.h"
+#include "Common.h"
 #include "SensorConfig.h"
 #define TAG_FUNCTION_MANAGER "FUNCTION_MANAGER"
 

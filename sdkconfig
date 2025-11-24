@@ -522,6 +522,13 @@ CONFIG_BME_I2C_FREQ_HZ=400000
 # end of BME configuration
 
 #
+# LED RGB Config
+#
+CONFIG_ACTIVE_LED_RGB=y
+CONFIG_LED_RGB_GPIO=8
+# end of LED RGB Config
+
+#
 # RTC configuration
 #
 CONFIG_RTC_PIN_NUM_SCL=

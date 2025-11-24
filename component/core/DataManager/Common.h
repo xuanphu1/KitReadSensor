@@ -1,5 +1,5 @@
-#ifndef __SYMBOL_H__
-#define __SYMBOL_H__
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 #include <stddef.h>
 #include <stdint.h>
@@ -149,4 +149,5 @@ typedef struct {
   bool ShowDataScreen;
 } ShowDataSensorParam_t;
 
-#endif /* __SYMBOL_H__ */
+#endif /* __COMMON_H__ */
+

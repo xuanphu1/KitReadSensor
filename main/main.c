@@ -1,5 +1,6 @@
-#include "MRS_Project.h"
-#include "DataManager.h"
+#include "main.h"
+#include "Common.h"
+#include "LedRGB.h"
 #include "nvs_flash.h"
 
 void app_main(void) {
@@ -12,7 +13,14 @@ void app_main(void) {
     ret = nvs_flash_init();
   }
   ESP_ERROR_CHECK(ret);
-  MenuButtonInit();
+  
+  // Khởi tạo LED RGB
+  esp_err_t led_ret = LedRGB_Init();
+  if (led_ret != ESP_OK) {
+    ESP_LOGW(TAG_MAIN, "Failed to initialize LED RGB: %s", esp_err_to_name(led_ret));
+  }
+  
+  ButtonManagerInit();
   ESP_ERROR_CHECK(i2cInitDevCommon());
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -22,7 +30,6 @@ void app_main(void) {
     ESP_LOGE(TAG_MAIN, "Failed to create SSD1306 handle");
     vTaskDelay(portMAX_DELAY);
   }
-  // ESP_ERROR_CHECK(bme280_init(&bme280_device, &bme280_params, BME280_ADDRESS, CONFIG_I2CDEV_COMMON_PORT, CONFIG_I2CDEV_COMMON_SDA, CONFIG_I2CDEV_COMMON_SCL));
   ScreenManagerInit(&MainScreen);
   MenuSystemInit(&DataManager);
   xTaskCreate(wifi_init_sta, "wifi_init_sta", 4096, &DataManager, 5, NULL);
@@ -32,3 +39,4 @@ void app_main(void) {
     vTaskDelay(50 / portTICK_PERIOD_MS);
   }
 }
+

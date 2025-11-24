@@ -60,6 +60,7 @@ typedef struct {
   void (*init)(void);                  // Hàm khởi tạo sensor
   void (*read)(SensorData_t *);        // Hàm đọc dữ liệu vào struct
   void (*deinit)(void);                // Hàm giải phóng (optional)
+  
 } sensor_driver_t;
 
 #endif /* __SENSOR_TYPES_H__ */

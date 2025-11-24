@@ -1,4 +1,4 @@
-idf_component_register(SRCS "MRS_Project.c"
+idf_component_register(SRCS "main.c"
                     INCLUDE_DIRS "."
-                    REQUIRES nvs_flash WifiManager DataManager MenuButton MenuSystem BME280
+                    REQUIRES nvs_flash WifiManager DataManager ButtonManager MenuSystem BME280 LedRGB
                     )

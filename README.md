@@ -23,29 +23,203 @@
 - Network: Wi‑Fi AP/STA, cấu hình qua giao diện web (SPIFFS).
 
 ### 2) Cấu trúc thư mục
-- `CMakeLists.txt`: cấu hình build cấp dự án, liệt kê các thư mục component.
-- `main/`: entry‑point ứng dụng, khởi tạo hệ thống, tạo task chính.
-- `component/`
-  - `core/`
-    - `DataManager/`: định nghĩa kiểu dữ liệu, trạng thái toàn cục, data context.
-    - `FunctionManager/`: callback logic cho menu/chức năng, tạo task đọc cảm biến,…
-  - `ui/`
-    - `MenuSystem/`: hệ thống menu, điều hướng, liên kết callback.
-    - `ScreenManager/`: render UI lên SSD1306 (text, icon, trang dữ liệu).
-    - `MenuButton/`: đọc trạng thái nút, phát sinh sự kiện điều hướng.
-  - `sensors/`
-    - `SensorTypes/`: định nghĩa enum, struct cơ bản (PortId_t, SensorType_t, SensorData_t, sensor_driver_t).
-    - `SensorRegistry/`: đăng ký và quản lý các sensor driver, cung cấp API truy cập.
-  - `drivers/`
-    - `i2cdev/`: khởi tạo I2C dùng chung (idempotent), tiện ích truy cập I2C.
-    - `ssd1306/`: driver OLED.
-    - `SensorConfig/`: lớp cấu hình và wrapper cho các sensor driver, đồng bộ cấu hình trong lớp driver.
-    - `BME280/`, `BMP280/`, `DS3231/`, `Time/`, `esp_idf_lib_helpers/`.
-  - `network/`
-    - `WifiManager/`: cấu hình/kết nối Wi‑Fi, HTTP handler.
-    - `WebConfigWifi/`: tài nguyên SPIFFS (HTML) cấu hình Wi‑Fi.
-  - `utils/`
-    - `BitManager/`: tiện ích bit/byte chung.
+
+Dự án được tổ chức theo kiến trúc phân lớp (layered architecture) với các domain rõ ràng:
+
+```
+MRS_Project/
+├── CMakeLists.txt              # Cấu hình build cấp dự án, khai báo EXTRA_COMPONENT_DIRS
+├── sdkconfig                    # File cấu hình ESP-IDF (tự động tạo bởi menuconfig)
+├── partitions.csv               # Bảng phân vùng flash (SPIFFS, app, etc.)
+├── README.md                    # Tài liệu dự án (file này)
+│
+├── main/                        # Entry point của ứng dụng
+│   ├── CMakeLists.txt          # Cấu hình build cho main component
+│   ├── MRS_Project.c           # Hàm app_main(), khởi tạo hệ thống, tạo tasks
+│   └── MRS_Project.h           # Header file cho main
+│
+└── component/                   # Thư mục chứa tất cả các component
+    │
+    ├── core/                    # ═══════════════════════════════════════
+    │   │                        # LỚP CORE: Logic nghiệp vụ và quản lý dữ liệu
+    │   │                        # ═══════════════════════════════════════
+    │   ├── DataManager/         # Quản lý dữ liệu toàn cục
+    │   │   ├── CMakeLists.txt
+    │   │   ├── DataManager.h    # Định nghĩa DataManager_t, ScreenState_t, ObjectInfo_t
+    │   │   └── DataManager.c    # Khởi tạo và quản lý trạng thái ứng dụng
+    │   │
+    │   └── FunctionManager/     # Xử lý callback và logic nghiệp vụ
+    │       ├── CMakeLists.txt
+    │       ├── FunctionManager.h # Khai báo các callback functions
+    │       └── FunctionManager.c # Implement: select_sensor_cb, reset_all_ports_callback,
+    │                              #           tạo task đọc cảm biến, xử lý menu actions
+    │
+    ├── ui/                      # ═══════════════════════════════════════
+    │   │                        # LỚP UI: Giao diện người dùng và điều hướng
+    │   │                        # ═══════════════════════════════════════
+    │   ├── MenuSystem/          # Hệ thống menu phân cấp
+    │   │   ├── CMakeLists.txt
+    │   │   ├── MenuSystem.h     # Định nghĩa menu_t, menu_item_t, menu callback
+    │   │   └── MenuSystem.c     # Điều hướng menu, render menu items, pagination
+    │   │                         # Tự động tạo menu từ SensorRegistry
+    │   │
+    │   ├── ScreenManager/       # Quản lý hiển thị trên OLED SSD1306
+    │   │   ├── CMakeLists.txt
+    │   │   ├── ScreenManager.h  # API: ScreenManagerInit, ScreenShowDataSensor, MenuRender
+    │   │   └── ScreenManager.c  # Render text, icons, hiển thị dữ liệu cảm biến tuần tự
+    │   │                         # (mỗi field 300ms, font size 16, căn giữa)
+    │   │
+    │   └── MenuButton/           # Đọc trạng thái nút bấm
+    │       ├── CMakeLists.txt
+    │       ├── MenuButton.h      # API: MenuButtonInit, ReadButtonStatus
+    │       └── MenuButton.c     # Đọc GPIO, phát sinh sự kiện BTN_UP/DOWN/SEL/BACK
+    │                            # Tích hợp LED RGB: sáng LED khi bấm nút
+    │
+    ├── sensors/                 # ═══════════════════════════════════════
+    │   │                        # LỚP SENSOR: Định nghĩa và quản lý cảm biến
+    │   │                        # ═══════════════════════════════════════
+    │   ├── SensorTypes/         # Định nghĩa kiểu dữ liệu cơ bản
+    │   │   ├── CMakeLists.txt
+    │   │   └── SensorTypes.h    # Enum: PortId_t, SensorType_t
+    │   │                         # Struct: SensorData_t, sensor_driver_t
+    │   │                         # Định nghĩa tất cả loại cảm biến (BME280, MQ series, ...)
+    │   │
+    │   └── SensorRegistry/       # Đăng ký và quản lý danh sách cảm biến
+    │       ├── CMakeLists.txt
+    │       ├── SensorRegistry.h # API: sensor_registry_get_count, sensor_registry_get_drivers
+    │       └── SensorRegistry.c # Mảng sensor_drivers[] chứa tất cả cảm biến đã đăng ký
+    │                             # Hàm helper: sensor_type_to_name, get_driver, get_count
+    │
+    ├── drivers/                 # ═══════════════════════════════════════
+    │   │                        # LỚP DRIVER: Driver phần cứng và wrapper
+    │   │                        # ═══════════════════════════════════════
+    │   ├── i2cdev/              # Driver I2C dùng chung (idempotent)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── Kconfig.projbuild # Cấu hình GPIO SDA/SCL, port, clock
+    │   │   ├── i2cdev.h         # API: i2cInitDevCommon, i2c_dev_t
+    │   │   └── i2cdev.c         # Khởi tạo I2C master, tiện ích đọc/ghi I2C
+    │   │
+    │   ├── ssd1306/             # Driver màn hình OLED SSD1306
+    │   │   ├── CMakeLists.txt
+    │   │   ├── ssd1306.h        # API: ssd1306_create, ssd1306_draw_string, etc.
+    │   │   ├── ssd1306.c        # Giao tiếp I2C với OLED, render pixel/text
+    │   │   ├── ssd1306_fonts.h  # Font bitmap
+    │   │   └── ssd1306_fonts.c  # Dữ liệu font
+    │   │
+    │   ├── SensorConfig/        # Wrapper và cấu hình cho sensor drivers
+    │   │   ├── CMakeLists.txt
+    │   │   ├── SensorConfig.h   # Wrapper API: sensor_bme280_init/read/deinit
+    │   │   └── SensorConfig.c   # Implement wrapper, gọi driver thực tế (BME280, ...)
+    │   │                         # Đồng bộ cấu hình trong lớp driver
+    │   │
+    │   ├── BME280/              # Driver cảm biến BME280 (nhiệt độ, độ ẩm, áp suất)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── Kconfig.projbuild
+    │   │   ├── bme280.h
+    │   │   └── bme280.c
+    │   │
+    │   ├── BMP280/              # Driver cảm biến BMP280 (nhiệt độ, áp suất)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── bmp280.h
+    │   │   └── bmp280.c
+    │   │
+    │   ├── DS3231/              # Driver RTC DS3231 (thời gian thực)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── ds3231.h
+    │   │   └── ds3231.c
+    │   │
+    │   ├── Time/                # Wrapper cho DS3231, quản lý thời gian
+    │   │   ├── CMakeLists.txt
+    │   │   ├── Kconfig.projbuild
+    │   │   ├── DS3231Time.h
+    │   │   └── DS3231Time.c
+    │   │
+    │   ├── LedRGB/              # Driver LED RGB WS2812B (ESP32-C6)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── Kconfig.projbuild # ACTIVE_LED_RGB (default y cho ESP32-C6)
+    │   │   ├── LedRGB.h         # API: LedRGB_Init, LedRGB_SetColor, LedRGB_SetButtonColor
+    │   │   └── LedRGB.c         # Sử dụng RMT peripheral, ESP Timer để tắt LED sau delay
+    │   │
+    │   └── esp_idf_lib_helpers/ # Helper macros cho ESP-IDF lib
+    │       ├── CMakeLists.txt
+    │       ├── esp_idf_lib_helpers.h
+    │       └── ets_sys.h
+    │
+    ├── network/                 # ═══════════════════════════════════════
+    │   │                        # LỚP NETWORK: Wi-Fi và Web
+    │   │                        # ═══════════════════════════════════════
+    │   ├── WifiManager/         # Quản lý Wi-Fi (AP/STA mode)
+    │   │   ├── CMakeLists.txt
+    │   │   ├── Kconfig.projbuild # Cấu hình SSID, password, AP/STA
+    │   │   ├── WifiManager.h    # API: wifi_init_sta, wifi_init_softap
+    │   │   └── WifiManager.c    # Khởi tạo Wi-Fi, HTTP server, xử lý kết nối
+    │   │
+    │   └── WebConfigWifi/       # Tài nguyên web cho cấu hình Wi-Fi
+    │       ├── index.html       # Trang cấu hình Wi-Fi (SPIFFS)
+    │       └── redirect.html    # Trang redirect sau khi cấu hình
+    │
+    └── utils/                   # ═══════════════════════════════════════
+        │                        # LỚP UTILS: Tiện ích chung
+        │                        # ═══════════════════════════════════════
+        └── BitManager/          # Tiện ích xử lý bit/byte
+            ├── CMakeLists.txt
+            ├── BitManager.h
+            └── BitManager.c
+```
+
+#### Giải thích chi tiết các lớp:
+
+**1. Lớp Core (`component/core/`)**
+- **Mục đích**: Chứa logic nghiệp vụ và quản lý dữ liệu toàn cục
+- **DataManager**: Lưu trữ trạng thái ứng dụng (selected sensors, screen state, object info)
+- **FunctionManager**: Xử lý các callback từ menu, tạo tasks đọc cảm biến, reset ports
+
+**2. Lớp UI (`component/ui/`)**
+- **Mục đích**: Giao diện người dùng và điều hướng
+- **MenuSystem**: Hệ thống menu phân cấp, tự động tạo menu từ SensorRegistry, hỗ trợ pagination
+- **ScreenManager**: Render UI lên OLED (text, icons, dữ liệu cảm biến)
+- **MenuButton**: Đọc GPIO nút bấm, tích hợp LED RGB feedback
+
+**3. Lớp Sensors (`component/sensors/`)**
+- **Mục đích**: Định nghĩa và quản lý danh sách cảm biến
+- **SensorTypes**: Định nghĩa enum và struct cơ bản (PortId_t, SensorType_t, SensorData_t)
+- **SensorRegistry**: Đăng ký tất cả cảm biến, cung cấp API truy cập danh sách
+
+**4. Lớp Drivers (`component/drivers/`)**
+- **Mục đích**: Driver phần cứng và wrapper functions
+- **i2cdev**: Khởi tạo I2C dùng chung (idempotent)
+- **ssd1306**: Driver màn hình OLED
+- **SensorConfig**: Wrapper functions cho các sensor driver cụ thể
+- **BME280, BMP280, DS3231**: Driver cảm biến cụ thể
+- **LedRGB**: Driver LED RGB WS2812B (ESP32-C6), sử dụng RMT peripheral
+
+**5. Lớp Network (`component/network/`)**
+- **Mục đích**: Quản lý Wi-Fi và web interface
+- **WifiManager**: Khởi tạo Wi-Fi AP/STA, HTTP server
+- **WebConfigWifi**: Tài nguyên HTML cho cấu hình Wi-Fi qua web
+
+**6. Lớp Utils (`component/utils/`)**
+- **Mục đích**: Tiện ích chung
+- **BitManager**: Xử lý bit/byte operations
+
+#### Luồng dữ liệu:
+
+```
+User Input (Button) 
+    ↓
+MenuButton → MenuSystem → FunctionManager
+    ↓                              ↓
+ScreenManager ← SensorRegistry ← SensorConfig ← Driver (BME280, etc.)
+    ↓
+SSD1306 OLED Display
+```
+
+#### Dependency Flow:
+
+- **UI Layer** phụ thuộc vào **Core Layer** và **Sensors Layer**
+- **Sensors Layer** phụ thuộc vào **Drivers Layer**
+- **Core Layer** phụ thuộc vào **Sensors Layer** và **Drivers Layer**
+- **Drivers Layer** độc lập, chỉ phụ thuộc vào ESP-IDF và hardware
 
 ### 3) Yêu cầu và Build
 - Yêu cầu: ESP‑IDF v5.x, đã export `IDF_PATH`.

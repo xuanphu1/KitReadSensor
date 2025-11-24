@@ -1,5 +1,5 @@
 #include "ScreenManager.h"
-#include "DataManager.h"
+#include "Common.h"
 ssd1306_handle_t oled = NULL;
 
 static void ssd1306_draw_menu_item(menu_item_t *item, int index, int selected,
@@ -172,9 +172,9 @@ void ScreenWifiConnecting(DataManager_t *data) {
   }
 }
 
-void ScreenShowMessage(int index) {
+void ScreenShowMessage(Message_t message) {
   ssd1306_clear_screen(oled, 0);
-  ssd1306_draw_string(oled, 0, 0, (uint8_t *)MessageText[index], 12, 1);
+  ssd1306_draw_string(oled, 0, 0, (uint8_t *)MessageText[message], 12, 1);
   ssd1306_refresh_gram(oled);
 }
 

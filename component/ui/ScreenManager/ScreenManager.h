@@ -2,7 +2,7 @@
 #define __MENU_RENDER_H__
 
 #include "ssd1306.h"
-#include "DataManager.h"
+#include "Common.h"
 #include "BitManager.h"
 #include "esp_log.h"
 #include "string.h"
@@ -15,7 +15,7 @@ void ScreenManagerInit(ssd1306_handle_t *_oled);
 void MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t *objectInfo);
 void SensorRender(PortId_t port, SensorData_t *data);
 void ScreenWifiConnecting(DataManager_t *data);
-void ScreenShowMessage(int index);
+void ScreenShowMessage(Message_t message);
 void ScreenShowDataSensor(const char **field_names,
                           const float *values,
                           const char **units,

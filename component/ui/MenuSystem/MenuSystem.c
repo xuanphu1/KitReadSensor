@@ -1,5 +1,5 @@
 #include "MenuSystem.h"
-#include "DataManager.h"
+#include "Common.h"
 #include "SensorRegistry.h"
 #include <stdbool.h>
 #include <sys/_types.h>

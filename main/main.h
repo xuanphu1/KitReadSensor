@@ -1,5 +1,5 @@
-#include "DataManager.h"
-#include "MenuButton.h"
+#include "Common.h"
+#include "ButtonManager.h"
 #include "MenuSystem.h"
 #include "ScreenManager.h"
 #include "WifiManager.h"
@@ -13,3 +13,4 @@
 static const char *TAG_MAIN = "MAIN_PROJECT";
 ssd1306_handle_t MainScreen = NULL;
 static DataManager_t DataManager; // cấp phát static/global hoặc malloc
+

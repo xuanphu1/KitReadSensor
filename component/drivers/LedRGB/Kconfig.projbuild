@@ -1,0 +1,17 @@
+menu "LED RGB Config"
+    config ACTIVE_LED_RGB
+        bool "Active LED RGB"
+        default y if IDF_TARGET_ESP32C6
+        default n
+        help 
+            Enable LED RGB functionality.
+            Automatically enabled for ESP32-C6, disabled for other targets.
+
+    config LED_RGB_GPIO
+        int "LED RGB GPIO Pin"
+        default 8
+        help
+            GPIO pin number for LED RGB (WS2812). 
+            For ESP32-C6, commonly used pins: 8, 9, 10, etc.
+endmenu
+

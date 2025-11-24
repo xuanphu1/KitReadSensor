@@ -1,9 +1,10 @@
-#include "MenuButton.h"
+#include "ButtonManager.h"
+#include "LedRGB.h"
 
 int last_up = 1, last_down = 1, last_sel = 1, last_back = 1;
 int up = 0, down = 0, sel = 0, back = 0;
 
-void MenuButtonInit(void) {
+void ButtonManagerInit(void) {
   gpio_config_t io_conf = {.pin_bit_mask =
                                (1ULL << BTN_UP_GPIO) | (1ULL << BTN_DOWN_GPIO) |
                                (1ULL << BTN_SEL_GPIO) | (1ULL << BTN_BACK_GPIO),
@@ -12,17 +13,8 @@ void MenuButtonInit(void) {
                            .pull_down_en = GPIO_PULLDOWN_DISABLE,
                            .intr_type = GPIO_INTR_DISABLE};
   gpio_config(&io_conf);
-  ESP_LOGI(TAG_MENU_BUTTON, "MenuButtonInit done");
+  ESP_LOGI(TAG_BUTTON_MANAGER, "ButtonManagerInit done");
 }
-
-// void NavigationPointer(ssd1306_handle_t oled, uint8_t value,
-//                        uint8_t prev_value) {
-//   ssd1306_clear_region(oled, 0, prev_value * 12, 18, 15);
-//   // Draw new arrow
-//   ssd1306_draw_bitmap(oled, 0, value * 12,
-//                       (const uint8_t *)image_Release_arrow_bits, 18, 15);
-//   ssd1306_refresh_gram(oled);
-// }
 
 static int read_button_once(gpio_num_t pin) {
   int level = gpio_get_level(pin);
@@ -45,12 +37,16 @@ button_type_t ReadButtonStatus(void) {
 
   if (up && !last_up) {
     result = BTN_UP;
+    LedRGB_SetButtonColor(BTN_UP);
   } else if (down && !last_down) {
     result = BTN_DOWN;
+    LedRGB_SetButtonColor(BTN_DOWN);
   } else if (sel && !last_sel) {
     result = BTN_SEL;
+    LedRGB_SetButtonColor(BTN_SEL);
   } else if (back && !last_back) {
     result = BTN_BACK;
+    LedRGB_SetButtonColor(BTN_BACK);
   }
   last_up = up;
   last_down = down;
@@ -58,3 +54,4 @@ button_type_t ReadButtonStatus(void) {
   last_back = back;
   return result;
 }
+

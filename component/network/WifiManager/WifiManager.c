@@ -1,5 +1,5 @@
 #include "WifiManager.h"
-#include "DataManager.h"
+#include "Common.h"
 
 // WiFi variables
 EventGroupHandle_t wifi_event_group;
