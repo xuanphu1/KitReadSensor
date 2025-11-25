@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "Common.h"
 #include "SensorConfig.h"
+#include "ErrorCodes.h"
 #define TAG_FUNCTION_MANAGER "FUNCTION_MANAGER"
 
 void wifi_config_callback(void *ctx);

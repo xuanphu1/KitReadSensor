@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "ErrorCodes.h"
 
 /* -------------------- Sensor Definitions -------------------- */
 // Số lượng cổng sensor
@@ -57,9 +58,9 @@ typedef struct {
   const char *unit[20];                // Đơn vị đo (ví dụ: "°C", "hPa")
   bool is_init;                        // Trạng thái khởi tạo
   uint8_t unit_count;                  // Số lượng đơn vị/trường dữ liệu
-  void (*init)(void);                  // Hàm khởi tạo sensor
-  void (*read)(SensorData_t *);        // Hàm đọc dữ liệu vào struct
-  void (*deinit)(void);                // Hàm giải phóng (optional)
+  system_err_t (*init)(void);         // Hàm khởi tạo sensor
+  system_err_t (*read)(SensorData_t *); // Hàm đọc dữ liệu vào struct
+  system_err_t (*deinit)(void);        // Hàm giải phóng (optional)
   
 } sensor_driver_t;
 

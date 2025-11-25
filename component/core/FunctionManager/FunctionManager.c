@@ -135,8 +135,16 @@ void select_sensor_cb(void *ctx) {
     } else if (!driver->is_init) {
       PortSelected[param->port] = param->port; // Cập nhật PortSelected
       // Sensor chưa được khởi tạo
-      driver->init();
-      driver->is_init = true;
+      system_err_t init_ret = driver->init();
+      if (init_ret != MRS_OK) {
+        ESP_LOGE(TAG_FUNCTION_MANAGER, "select_sensor_cb: init failed for sensor %d: %s",
+                 param->sensor, system_err_to_name(init_ret));
+        message_type = MESSAGE_SENSOR_NOT_INITIALIZED;
+        snprintf(g_port_label_buf[param->port],
+                 sizeof(g_port_label_buf[param->port]), "Port %d",
+                 (int)param->port + 1);
+      } else {
+        driver->is_init = true;
       const char *sensor_name = sensor_type_to_name(param->sensor);
       snprintf(g_port_label_buf[param->port],
                sizeof(g_port_label_buf[param->port]), "Port %d - %s",
@@ -204,9 +212,18 @@ void readDataSensorTask(void *pvParameters) {
         &param->data->objectInfo);
       readDataSensorTaskHandle[param->port] = NULL;
       vTaskDelete(readDataSensorTaskHandle[param->port]);
-
+      vTaskDelete(NULL);
+      return;
     }
-    driver->read(&data);
+    
+    system_err_t read_ret = driver->read(&data);
+    if (read_ret != MRS_OK) {
+      ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: read failed: %s",
+               system_err_to_name(read_ret));
+      // Tiếp tục loop để thử lại
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      continue;
+    }
     const char **field_names = driver->description;
     const char **units = driver->unit;
     size_t count = driver->unit_count;

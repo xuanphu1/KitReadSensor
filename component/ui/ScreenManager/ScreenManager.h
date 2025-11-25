@@ -7,17 +7,18 @@
 #include "esp_log.h"
 #include "string.h"
 #include "WifiManager.h"
+#include "ErrorCodes.h"
 
 
 #define TAG_SCREEN_MANAGER "SCREEN_MANAGER"
 
-void ScreenManagerInit(ssd1306_handle_t *_oled);
-void MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t *objectInfo);
-void SensorRender(PortId_t port, SensorData_t *data);
-void ScreenWifiConnecting(DataManager_t *data);
-void ScreenShowMessage(Message_t message);
-void ScreenShowDataSensor(const char **field_names,
-                          const float *values,
-                          const char **units,
-                          size_t count);
+system_err_t ScreenManagerInit(ssd1306_handle_t *_oled);
+system_err_t MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t *objectInfo);
+system_err_t SensorRender(PortId_t port, SensorData_t *data);
+system_err_t ScreenWifiConnecting(DataManager_t *data);
+system_err_t ScreenShowMessage(Message_t message);
+system_err_t ScreenShowDataSensor(const char **field_names,
+                                  const float *values,
+                                  const char **units,
+                                  size_t count);
 #endif  

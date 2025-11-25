@@ -7,12 +7,18 @@
 #define TAG_SENSOR_REGISTRY "SENSOR_REGISTRY"
 
 /* -------------------- Test Functions (temporary) -------------------- */
-static void TestInit(void) {
+static system_err_t TestInit(void) {
   ESP_LOGI(TAG_SENSOR_REGISTRY, "TestInit");
+  return MRS_OK;
 }
 
-static void TestRead(SensorData_t *data) {
+static system_err_t TestRead(SensorData_t *data) {
+  if (data == NULL) {
+    ESP_LOGW(TAG_SENSOR_REGISTRY, "TestRead: data is NULL");
+    return MRS_ERR_CORE_INVALID_PARAM;
+  }
   ESP_LOGI(TAG_SENSOR_REGISTRY, "TestRead");
+  return MRS_OK;
 }
 
 /* -------------------- Sensor Drivers Registry -------------------- */
@@ -20,9 +26,9 @@ static void TestRead(SensorData_t *data) {
 static sensor_driver_t sensor_drivers[] = {
     {
         .name = "BME280",
-        .init = sensor_bme280_init,
-        .read = sensor_bme280_read,
-        .deinit = sensor_bme280_deinit,
+        .init = bme280Initialize,
+        .read = bme280ReadData,
+        .deinit = bme280Deinitialize,
         .description = {"Temperature", "Pressure", "Humidity"},
         .unit = {"°C", "hPa", "%"},
         .unit_count = 3,
