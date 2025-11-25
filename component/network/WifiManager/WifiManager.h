@@ -20,6 +20,7 @@
 #include "esp_spiffs.h"
 #include "cJSON.h"
 #include "Common.h"
+#include "ErrorCodes.h"
 
 // WiFi event group bits
 #define WIFI_CONNECTED_BIT BIT0
@@ -37,9 +38,9 @@
 
 // Function declarations
 
-void wifi_init_ap(void);
-void wifi_init_sta(void *pvParameters);
-void wifi_connect_handler(DataManager_t *data);
-void update_wifi_status(wifiInfo_t *WifiInfo);
+system_err_t wifi_init_ap(void);
+void wifi_init_sta(void *pvParameters);  // Task function, cannot return value
+system_err_t wifi_connect_handler(DataManager_t *data);
+system_err_t update_wifi_status(wifiInfo_t *WifiInfo);
 
 #endif // __WIFI_MANAGER_H__

@@ -33,7 +33,7 @@ void app_main(void) {
   ScreenManagerInit(&MainScreen);
   MenuSystemInit(&DataManager);
   xTaskCreate(wifi_init_sta, "wifi_init_sta", 4096, &DataManager, 5, NULL);
-  xTaskCreate(NavigationScreen_Task, "NavigationScreen_Task", 4096,
+  xTaskCreate(MenuNavigation_Task, "MenuNavigation_Task", 4096,
               &DataManager, 5, NULL);
   while (1) {
     vTaskDelay(50 / portTICK_PERIOD_MS);

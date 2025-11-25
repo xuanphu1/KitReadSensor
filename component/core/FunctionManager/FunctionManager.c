@@ -3,6 +3,7 @@
 #include "ScreenManager.h"
 #include "SensorConfig.h"
 #include "SensorRegistry.h"
+#include "WifiManager.h"
 #include "freertos/idf_additions.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -13,7 +14,11 @@ static TaskHandle_t readDataSensorTaskHandle[NUM_PORTS];
 
 void wifi_config_task(void *pvParameters) {
   DataManager_t *data = (DataManager_t *)pvParameters;
-  wifi_init_ap();
+  system_err_t ret = wifi_init_ap();
+  if (ret != MRS_OK) {
+    ESP_LOGE(TAG_FUNCTION_MANAGER, "Failed to initialize WiFi AP: %s",
+             system_err_to_name(ret));
+  }
 
   if (data->objectInfo.wifiInfo.wifiStatus == CONNECTED) {
     data->objectInfo.wifiInfo.wifiStatus = DISCONNECTED;
@@ -21,8 +26,18 @@ void wifi_config_task(void *pvParameters) {
   }
   while (1) {
     ScreenWifiConnecting(data);
-    update_wifi_status(&(data->objectInfo.wifiInfo));
-    wifi_connect_handler(data);
+    ret = update_wifi_status(&(data->objectInfo.wifiInfo));
+    if (ret != MRS_OK) {
+      ESP_LOGW(TAG_FUNCTION_MANAGER, "Failed to update WiFi status: %s",
+               system_err_to_name(ret));
+    }
+
+    ret = wifi_connect_handler(data);
+    if (ret != MRS_OK && ret != MRS_ERR_NETWORK_TIMEOUT) {
+      ESP_LOGW(TAG_FUNCTION_MANAGER, "WiFi connect handler error: %s",
+               system_err_to_name(ret));
+    }
+
     if (data->objectInfo.wifiInfo.wifiStatus == CONNECTED) {
       MenuRender(data->MenuReturn[0], &(data->screen.selected),
                  &(data->objectInfo));
@@ -92,7 +107,7 @@ void select_sensor_cb(void *ctx) {
   // Debug: Log ngay khi callback được gọi
   ESP_LOGI(TAG_FUNCTION_MANAGER, "select_sensor_cb called: param=%p", param);
   if (param != NULL) {
-    ESP_LOGI(TAG_FUNCTION_MANAGER, "  param->port=%d, param->sensor=%d", 
+    ESP_LOGI(TAG_FUNCTION_MANAGER, "  param->port=%d, param->sensor=%d",
              param->port, param->sensor);
     ESP_LOGI(TAG_FUNCTION_MANAGER, "  param->data=%p", param->data);
   }
@@ -137,7 +152,8 @@ void select_sensor_cb(void *ctx) {
       // Sensor chưa được khởi tạo
       system_err_t init_ret = driver->init();
       if (init_ret != MRS_OK) {
-        ESP_LOGE(TAG_FUNCTION_MANAGER, "select_sensor_cb: init failed for sensor %d: %s",
+        ESP_LOGE(TAG_FUNCTION_MANAGER,
+                 "select_sensor_cb: init failed for sensor %d: %s",
                  param->sensor, system_err_to_name(init_ret));
         message_type = MESSAGE_SENSOR_NOT_INITIALIZED;
         snprintf(g_port_label_buf[param->port],
@@ -145,10 +161,11 @@ void select_sensor_cb(void *ctx) {
                  (int)param->port + 1);
       } else {
         driver->is_init = true;
-      const char *sensor_name = sensor_type_to_name(param->sensor);
-      snprintf(g_port_label_buf[param->port],
-               sizeof(g_port_label_buf[param->port]), "Port %d - %s",
-               (int)param->port + 1, sensor_name);
+        const char *sensor_name = sensor_type_to_name(param->sensor);
+        snprintf(g_port_label_buf[param->port],
+                 sizeof(g_port_label_buf[param->port]), "Port %d - %s",
+                 (int)param->port + 1, sensor_name);
+      }
     } else {
       // Sensor đã được khởi tạo
       PortSelected[param->port] = param->port;
@@ -202,20 +219,20 @@ void readDataSensorTask(void *pvParameters) {
   }
   while (1) {
     SensorData_t data;
-    sensor_driver_t *driver = sensor_registry_get_driver(
-        param->data->selectedSensor[param->port]);
+    sensor_driver_t *driver =
+        sensor_registry_get_driver(param->data->selectedSensor[param->port]);
     if (driver == NULL || driver->read == NULL) {
       ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: invalid driver");
       ScreenShowMessage(MESSAGE_SENSOR_NOT_INITIALIZED);
       vTaskDelay(pdMS_TO_TICKS(1000));
       MenuRender(param->data->screen.current, &param->data->screen.selected,
-        &param->data->objectInfo);
+                 &param->data->objectInfo);
       readDataSensorTaskHandle[param->port] = NULL;
       vTaskDelete(readDataSensorTaskHandle[param->port]);
       vTaskDelete(NULL);
       return;
     }
-    
+
     system_err_t read_ret = driver->read(&data);
     if (read_ret != MRS_OK) {
       ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: read failed: %s",

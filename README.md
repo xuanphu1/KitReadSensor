@@ -31,10 +31,22 @@ Mã nguồn được tổ chức theo kiến trúc phân lớp (layered architec
 10. Khắc phục sự cố nhanh
 
 ### 1) Giới thiệu nhanh
-- UI: menu điều hướng, hiển thị dữ liệu cảm biến theo từng trường và đơn vị.
-- Sensors: tầng trung gian đọc/định tuyến dữ liệu tới UI.
-- Drivers: i2cdev (khởi tạo I2C idempotent), SSD1306, BME280/BMP280, DS3231/Time.
-- Network: Wi‑Fi AP/STA, cấu hình qua giao diện web (SPIFFS).
+- **UI**: Menu điều hướng với `MenuNavigation_Task`, hiển thị dữ liệu cảm biến theo từng trường và đơn vị.
+- **Sensors**: Tầng trung gian đọc/định tuyến dữ liệu tới UI, sử dụng registry pattern.
+- **Drivers**: i2cdev (khởi tạo I2C idempotent), SSD1306, BME280/BMP280, DS3231/Time.
+- **Network**: Wi‑Fi AP/STA với captive portal, cấu hình qua giao diện web (SPIFFS).
+- **Error Handling**: Hệ thống quản lý lỗi thống nhất với `system_err_t` và mã lỗi theo module.
+
+#### Khởi tạo hệ thống (main.c)
+Hệ thống được khởi tạo theo thứ tự:
+1. NVS flash
+2. LED RGB (WS2812B)
+3. ButtonManager
+4. I2C (i2cdev)
+5. SSD1306 OLED
+6. ScreenManager
+7. MenuSystem
+8. Tạo tasks: `wifi_init_sta`, `MenuNavigation_Task`
 
 ### 2) Cấu trúc thư mục
 
@@ -74,8 +86,10 @@ MRS_Project/
     │   ├── MenuSystem/          # Hệ thống menu phân cấp
     │   │   ├── CMakeLists.txt
     │   │   ├── MenuSystem.h     # Định nghĩa menu_t, menu_item_t, menu callback
+    │   │   │                      # API: MenuSystemInit, MenuNavigation_Task
     │   │   └── MenuSystem.c     # Điều hướng menu, render menu items, pagination
     │   │                         # Tự động tạo menu từ SensorRegistry
+    │   │                         # Task: MenuNavigation_Task - xử lý điều hướng menu
     │   │
     │   ├── ScreenManager/       # Quản lý hiển thị trên OLED SSD1306
     │   │   ├── CMakeLists.txt
@@ -83,10 +97,10 @@ MRS_Project/
     │   │   └── ScreenManager.c  # Render text, icons, hiển thị dữ liệu cảm biến tuần tự
     │   │                         # (mỗi field 300ms, font size 16, căn giữa)
     │   │
-    │   └── MenuButton/           # Đọc trạng thái nút bấm
+    │   └── ButtonManager/       # Đọc trạng thái nút bấm
     │       ├── CMakeLists.txt
-    │       ├── MenuButton.h      # API: MenuButtonInit, ReadButtonStatus
-    │       └── MenuButton.c     # Đọc GPIO, phát sinh sự kiện BTN_UP/DOWN/SEL/BACK
+    │       ├── ButtonManager.h  # API: ButtonManagerInit, ReadButtonStatus
+    │       └── ButtonManager.c  # Đọc GPIO, phát sinh sự kiện BTN_UP/DOWN/SEL/BACK
     │                            # Tích hợp LED RGB: sáng LED khi bấm nút
     │
     ├── sensors/                 # ═══════════════════════════════════════
@@ -167,8 +181,11 @@ MRS_Project/
     │   ├── WifiManager/         # Quản lý Wi-Fi (AP/STA mode)
     │   │   ├── CMakeLists.txt
     │   │   ├── Kconfig.projbuild # Cấu hình SSID, password, AP/STA
-    │   │   ├── WifiManager.h    # API: wifi_init_sta, wifi_init_softap
+    │   │   ├── WifiManager.h    # API: wifi_init_ap, wifi_init_sta (task),
+    │   │   │                      #       wifi_connect_handler, update_wifi_status
+    │   │   │                      # Tất cả hàm trả về system_err_t với error handling
     │   │   └── WifiManager.c    # Khởi tạo Wi-Fi, HTTP server, xử lý kết nối
+    │   │                         # Captive portal, DNS server, web interface
     │   │
     │   ├── MeshManager/         # Quản lý Mesh Network (đang phát triển)
     │   │   └── (thư mục trống, sẵn sàng cho tích hợp ESP-Mesh-Lite)
@@ -180,10 +197,16 @@ MRS_Project/
     └── utils/                   # ═══════════════════════════════════════
         │                        # LỚP UTILS: Tiện ích chung
         │                        # ═══════════════════════════════════════
-        └── BitManager/          # Tiện ích xử lý bit/byte
+        ├── BitManager/          # Tiện ích xử lý bit/byte
+        │   ├── CMakeLists.txt
+        │   ├── BitManager.h
+        │   └── BitManager.c
+        │
+        └── ErrorCodes/           # Hệ thống quản lý mã lỗi thống nhất
             ├── CMakeLists.txt
-            ├── BitManager.h
-            └── BitManager.c
+            ├── ErrorCodes.h     # Định nghĩa system_err_t, các mã lỗi theo module
+            │                      # API: system_err_to_name, system_err_is_module
+            └── ErrorCodes.c     # Implementation các helper functions
 ```
 
 #### Giải thích chi tiết các lớp:
@@ -196,8 +219,10 @@ MRS_Project/
 **2. Lớp UI (`component/ui/`)**
 - **Mục đích**: Giao diện người dùng và điều hướng
 - **MenuSystem**: Hệ thống menu phân cấp, tự động tạo menu từ SensorRegistry, hỗ trợ pagination
+  - Task: `MenuNavigation_Task` - xử lý điều hướng menu và button events
 - **ScreenManager**: Render UI lên OLED (text, icons, dữ liệu cảm biến)
-- **MenuButton**: Đọc GPIO nút bấm, tích hợp LED RGB feedback
+  - Tất cả hàm trả về `system_err_t` với error handling
+- **ButtonManager**: Đọc GPIO nút bấm, tích hợp LED RGB feedback
 
 **3. Lớp Sensors (`component/sensors/`)**
 - **Mục đích**: Định nghĩa và quản lý danh sách cảm biến
@@ -214,13 +239,20 @@ MRS_Project/
 
 **5. Lớp Network (`component/network/`)**
 - **Mục đích**: Quản lý Wi-Fi, web interface và mesh networking
-- **WifiManager**: Khởi tạo Wi-Fi AP/STA, HTTP server
+- **WifiManager**: Khởi tạo Wi-Fi AP/STA, HTTP server, captive portal
+  - Tất cả hàm trả về `system_err_t` với error handling đầy đủ
+  - API: `wifi_init_ap()`, `wifi_init_sta()` (task), `wifi_connect_handler()`, `update_wifi_status()`
+  - Hỗ trợ DNS server cho captive portal, web interface cấu hình Wi-Fi
 - **MeshManager**: Quản lý mesh network (đang phát triển, có thể tích hợp ESP-Mesh-Lite)
 - **WebConfigWifi**: Tài nguyên HTML cho cấu hình Wi-Fi qua web (lưu trong SPIFFS)
 
 **6. Lớp Utils (`component/utils/`)**
 - **Mục đích**: Tiện ích chung
 - **BitManager**: Xử lý bit/byte operations
+- **ErrorCodes**: Hệ thống quản lý mã lỗi thống nhất cho toàn dự án
+  - Định nghĩa `system_err_t` (tương thích với `esp_err_t`)
+  - Mã lỗi được tổ chức theo module (Core, Sensors, UI, Network, Drivers, Utils)
+  - Helper functions: `system_err_to_name()`, `system_err_is_module()`, etc.
 
 #### Luồng dữ liệu:
 
@@ -387,6 +419,10 @@ Chạy `idf.py menuconfig` để điều chỉnh các cấu hình này.
 - Callback UI tập trung ở `FunctionManager` (core); `MenuSystem` chỉ gán callback và context.
 - Tránh overflow/ghi vượt mảng; luôn kiểm tra giới hạn chỉ số trước khi truy cập.
 - Khởi tạo idempotent cho mọi hạ tầng (I2C, Wi‑Fi, …) để gọi lặp an toàn.
+- **Error Handling**: Sử dụng `system_err_t` thay vì `esp_err_t` cho các hàm trong dự án
+  - Tất cả hàm khởi tạo và xử lý quan trọng trả về `system_err_t`
+  - Kiểm tra và xử lý lỗi đầy đủ, sử dụng `system_err_to_name()` để log lỗi
+  - Mã lỗi được định nghĩa trong `ErrorCodes.h` theo từng module
 
 ### 6) Thêm Cảm biến mới
 
@@ -690,7 +726,23 @@ Xem file `INTEGRATE_ESP_MDF.md` để biết hướng dẫn tích hợp ESP-MDF 
 
 ---
 
-**Phiên bản**: 1.0  
+**Phiên bản**: 1.1  
 **Cập nhật lần cuối**: 2024
+
+### Changelog
+
+#### Version 1.1
+- ✅ Đổi tên `NavigationScreen_Task` → `MenuNavigation_Task` để phản ánh đúng chức năng điều hướng menu
+- ✅ Chuyển tất cả hàm trong `WifiManager` sang `system_err_t` với error handling đầy đủ
+  - `wifi_init_ap()`: Trả về `system_err_t` với kiểm tra lỗi chi tiết
+  - `wifi_connect_handler()`: Thêm validation SSID/password, error handling
+  - `update_wifi_status()`: Thêm kiểm tra tham số và trạng thái
+- ✅ Thêm hệ thống quản lý lỗi thống nhất (`ErrorCodes` component)
+  - Định nghĩa `system_err_t` (tương thích với `esp_err_t`)
+  - Mã lỗi được tổ chức theo module (Core, Sensors, UI, Network, Drivers, Utils)
+  - Helper functions: `system_err_to_name()`, `system_err_is_module()`, etc.
+- ✅ Cập nhật `ButtonManager` (đổi tên từ `MenuButton`)
+- ✅ Cải thiện error handling trong `ScreenManager` và `FunctionManager`
+- ✅ Cập nhật tài liệu API và cấu trúc component
 
 

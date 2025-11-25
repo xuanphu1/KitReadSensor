@@ -241,7 +241,7 @@ void MenuSystemInit(DataManager_t *data) {
 }
 
 /* -------------------- Navigation Task -------------------- */
-void NavigationScreen_Task(void *pvParameter) {
+void MenuNavigation_Task(void *pvParameter) {
   DataManager_t *data = (DataManager_t *)pvParameter;
 
   data->screen.current = &Root_Menu;

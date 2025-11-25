@@ -19,7 +19,7 @@
 
 
 void MenuSystemInit(DataManager_t *data);
-void NavigationScreen_Task(void *pvParameter);
+void MenuNavigation_Task(void *pvParameter);
 void ReadSensor_Task(void *pvParameter);
 
 // SensorSelection được cấp phát động, không cần extern declaration

@@ -61,8 +61,12 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
   uint32_t offset = 0;
   if (menu->image.image != NULL) {
     switch (menu->object) {
-    case OBJECT_WIFI:
-      update_wifi_status(&(objectInfo->wifiInfo));
+    case OBJECT_WIFI: {
+      system_err_t ret = update_wifi_status(&(objectInfo->wifiInfo));
+      if (ret != MRS_OK) {
+        ESP_LOGW(TAG_SCREEN_MANAGER, "Failed to update WiFi status: %s",
+                 system_err_to_name(ret));
+      }
 
       ssd1306_draw_bitmap(
           oled, 55, 0,
@@ -70,6 +74,7 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
               menu->image.image[menu->object][objectInfo->wifiInfo.wifiStatus],
           menu->image.width, menu->image.height);
       break;
+    }
     case OBJECT_BATTERY:
       ssd1306_draw_bitmap(
           oled, 55, 0,
