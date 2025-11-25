@@ -321,6 +321,12 @@ system_err_t wifi_init_ap(void) {
            AP_SSID);
   ESP_LOGI(TAG, "AP IP address: 192.168.4.1");
 
+  // Clear STA-related bits before setting AP mode bit
+  // This ensures update_wifi_status() returns correct status
+  if (wifi_event_group != NULL) {
+    xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);
+  }
+
   // Start DNS server for captive portal
   BaseType_t task_ret = xTaskCreate(dns_server_task, "dns_server", 4096, NULL, 5,
                                     &dns_server_task_handle);
@@ -484,10 +490,17 @@ system_err_t update_wifi_status(wifiInfo_t *WifiInfo) {
   }
 
   EventBits_t bits = xEventGroupGetBits(wifi_event_group);
-  if (bits & WIFI_CONNECTED_BIT) {
+  
+  // Check AP mode first - if AP mode is active, we're not connected to STA
+  if (bits & WIFI_AP_MODE_BIT) {
+    WifiInfo->wifiStatus = DISCONNECTED;
+    WifiInfo->wifiName = NULL;
+  } else if (bits & WIFI_CONNECTED_BIT) {
+    // STA mode and connected
     WifiInfo->wifiStatus = CONNECTED;
     WifiInfo->wifiName = (char *)pending_ssid;
-  } else if (bits & WIFI_FAIL_BIT || bits & WIFI_AP_MODE_BIT) {
+  } else if (bits & WIFI_FAIL_BIT) {
+    // STA mode but connection failed
     WifiInfo->wifiStatus = DISCONNECTED;
     WifiInfo->wifiName = NULL;
   } else {
@@ -497,7 +510,11 @@ system_err_t update_wifi_status(wifiInfo_t *WifiInfo) {
   }
   
   // ESP_LOGI(TAG, "Update Wifi Status successfully: %d", WifiInfo->wifiStatus);
-  // ESP_LOGI(TAG, "Wifi Name: %s", (char *)WifiInfo->wifiName);
+  if (WifiInfo->wifiName != NULL) {
+    // ESP_LOGI(TAG, "Wifi Name: %s", WifiInfo->wifiName);
+  } else {
+    // ESP_LOGI(TAG, "Wifi Name: (none)");
+  }
   return MRS_OK;
 }
 

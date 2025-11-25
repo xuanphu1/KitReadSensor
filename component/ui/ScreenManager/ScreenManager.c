@@ -104,7 +104,8 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
           (uint8_t *)
               menu->text.text[menu->object][objectInfo->wifiInfo.wifiStatus],
           menu->text.size, 1);
-      if (objectInfo->wifiInfo.wifiStatus == CONNECTED) {
+      if (objectInfo->wifiInfo.wifiStatus == CONNECTED &&
+          objectInfo->wifiInfo.wifiName != NULL) {
         char wifi_info_text[64];
         snprintf(wifi_info_text, sizeof(wifi_info_text), "%s%s",
                  objectInfo->wifiInfo.wifiName,
