@@ -18,7 +18,8 @@ void read_pressure_cb(void *ctx);
 void read_dht22_cb(void *ctx);
 void battery_status_callback(void *ctx);
 void reset_all_ports_callback(void *ctx);
-
+void actuator_on_cb(void *ctx);
+void actuator_off_cb(void *ctx);
 // Tracking lựa chọn cảm biến/port và bắt đầu đọc
 void select_sensor_cb(void *ctx);
 void show_data_sensor_cb(void *ctx);

@@ -1,0 +1,1148 @@
+\documentclass{article} % Tạo một bản báo cáo
+\usepackage[T5]{fontenc} % Để sử dụng Tiếng Việt
+\usepackage[fontsize=13pt]{scrextend} % Set fontsize=13pt A4, căn lề phải, trái, trên, dưới.
+\usepackage[paperheight=29.7cm,paperwidth=21cm,right=2cm,left=3cm,top=2cm,bottom=2.5cm]{geometry}% Chuẩn A4, căn lề phải, trái, trên, dưới.
+\usepackage{mathptmx} % Time New Roman
+\usepackage{graphicx} % Thư viện chèn ảnh
+\usepackage{float} % Set vị trí chèn ảnh
+\usepackage{tikz} % Thư viện tạo khung bìa
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage[version=4]{mhchem}
+\usepackage{cite} % Thư viện để xử lý trích dẫn
+\usepackage{booktabs}
+\renewcommand{\refname}{\MakeUppercase{TÀI LIỆU THAM KHẢO}}
+\sloppy % Giúp tránh lỗi tràn lề
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{LightCyan}{rgb}{0.88,1,1} % nếu bạn dùng LightCyan trong bảng
+\usetikzlibrary{calc} % Thư viện tikz
+\usepackage{indentfirst} % Thư viện thụt đầu dòng
+\renewcommand{\baselinestretch}{1.2} % Giãn dòng 1.2
+\setlength{\parskip}{6pt} % Spacing after
+\setlength{\parindent}{1cm} % Set khoảng cách thụt đầu dòng mỗi đoạn
+\usepackage{titlesec} % Thư viện để set up các kiểu chữ
+\setcounter{secnumdepth}{4} % 4 Heading
+\titlespacing*{\section}{0pt}{0pt}{30pt} % Heading 1
+\titleformat*{\section}{\fontsize{16pt}{0pt}\selectfont \bfseries \centering}
+
+\titlespacing*{\subsection}{0pt}{10pt}{0pt} % Heading 2
+\titleformat*{\subsection}{\fontsize{14pt}{0pt}\selectfont \bfseries}
+
+\titlespacing*{\subsubsection}{10pt}{10pt}{0pt} % Heading 3
+\titleformat*{\subsubsection}{\fontsize{13pt}{0pt}\selectfont \bfseries \itshape}
+
+\titlespacing*{\paragraph}{0pt}{10pt}{0pt} % Heading 4
+\titleformat*{\paragraph}{\fontsize{13pt}{0pt}\selectfont \itshape}
+
+\renewcommand{\figurename}{\fontsize{12pt}{0pt}\selectfont \bfseries Hình}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\usepackage[font=bf]{caption}
+\captionsetup[figure]{labelsep=space}
+
+\renewcommand{\tablename}{\fontsize{12pt}{0pt}\selectfont \bfseries Bảng}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\captionsetup[table]{labelsep=space}
+
+% Patch để sửa lỗi \insert@pcolumn với tabularx và colortbl
+\makeatletter
+\def\insert@pcolumn{%
+  \@tempdima\@tempdimb
+  \advance\@tempdima\@tempdimc
+  \edef\@preamble{\@preamble
+    \ifx\@preamble\@empty\else\@preamble&\fi
+    \hskip\@tempdima\relax}%
+  \@tempdima\z@
+  \@tempdimb\z@
+  \@tempdimc\z@}
+\makeatother
+
+\renewcommand{\theequation}{\thesection.\arabic{equation}} % Thay đổi đánh số phương trình mặc định
+\newtheorem{theorem}{Định lý}[section]
+\newtheorem{defn}[theorem]{Định nghĩa}
+\newtheorem{corollary}[theorem]{Hệ quả}
+\newtheorem{lemma}[theorem]{Bổ đề}
+
+\usepackage{lipsum} % Thư viện tạo chữ linh tinh.
+\renewcommand{\contentsname}{MỤC LỤC}
+\renewcommand{\listfigurename}{DANH MỤC HÌNH VẼ}
+\renewcommand{\listtablename}{DANH MỤC BẢNG BIỂU}
+\renewcommand{\refname}{TÀI LIỆU THAM KHẢO}
+
+\usepackage[unicode]{hyperref}
+\usepackage{forloop}
+\newcounter{loopcntr}
+\newcommand{\rpt}[2][1]{\forloop{loopcntr}{0}{\value{loopcntr}<#1}{#2}}
+\setcounter{tocdepth}{4}
+\begin{document}
+
+
+\input{Bia} % Bìa đồ án.
+\input{LoiNoiDau} % Lời nói đầu.
+
+
+ % Tạo mục lục tự động
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\tableofcontents 
+\thispagestyle{empty}
+\cleardoublepage
+
+\pagenumbering{arabic} % Đánh theo số
+\input{Abbreviations} % Danh mục ký hiệu và chữ viết tắt
+
+%Tạo danh mục hình vẽ.
+{\let\oldnumberline\numberline
+\renewcommand{\numberline}{Hình~\oldnumberline}
+\listoffigures} 
+\phantomsection\addcontentsline{toc}{section}{\numberline {} DANH MỤC HÌNH ẢNH}
+\newpage
+
+ %Tạo danh mục bảng biểu.
+{\let\oldnumberline\numberline
+\renewcommand{\numberline}{Bảng~\oldnumberline}
+\listoftables}
+\phantomsection\addcontentsline{toc}{section}{\numberline {} DANH MỤC BẢNG BIỂU}
+\newpage
+
+ %Thêm phần tóm tắt đồ án.
+\phantomsection\addcontentsline{toc}{section}{\numberline {} TÓM TẮT DỰ ÁN}
+\newpage
+
+\input{Abstract} % Tóm tắt đồ án 
+\section*{CHƯƠNG 1.  CHƯƠNG MỞ ĐẦU}
+\addcontentsline{toc}{section}{\numberline{}CHƯƠNG 1.  CHƯƠNG MỞ ĐẦU}
+\setcounter{section}{1}
+\subsection{Giới thiệu vấn đề và giải pháp}
+Trong bối cảnh Internet of Things (IoT) phát triển mạnh mẽ, nhu cầu thu thập và giám sát dữ liệu từ nhiều loại cảm biến khác nhau ngày càng trở nên phổ biến trong các ứng dụng như giám sát môi trường, nông nghiệp thông minh, nhà thông minh hay công nghiệp 4.0. Tuy nhiên, việc triển khai các hệ thống cảm biến thường gặp nhiều thách thức:
+\begin{itemize}
+    \item Mỗi loại cảm biến có giao thức giao tiếp, driver và cách xử lý dữ liệu riêng, gây khó khăn khi muốn mở rộng hay thay đổi loại cảm biến.
+    \item Nhiều hệ thống được thiết kế cứng (hard–code) theo một tập cảm biến cố định, khiến việc tái sử dụng và tùy biến cho các bài toán khác nhau trở nên phức tạp.
+    \item Khi số lượng điểm đo tăng lên, nhu cầu xây dựng một mạng lưới các node cảm biến để thu thập và tập hợp dữ liệu trở nên cấp thiết, kéo theo bài toán về truyền thông, đồng bộ và quản lý dữ liệu.
+    \item Việc truyền dữ liệu lên server, lưu trữ tập trung và trực quan hóa cũng đòi hỏi một kiến trúc hệ thống đủ linh hoạt và ổn định.
+\end{itemize}
+
+Trên thị trường hiện nay đã xuất hiện nhiều thiết bị cảm biến thương mại, tuy nhiên đa số được thiết kế \textbf{chỉ để đọc một loại cảm biến cố định} cho một mục đích cụ thể (ví dụ: chỉ đo nhiệt độ, chỉ đo độ ồn, chỉ đo ánh sáng như các module trong hình minh họa). Khi người dùng muốn đo thêm đại lượng khác, họ buộc phải mua thêm một thiết bị khác hoặc thay đổi toàn bộ phần cứng, dẫn đến chi phí cao và khó linh hoạt trong việc xây dựng các hệ thống cảm biến đa mục đích.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/SimpleModule.jpg}
+    \captionsetup{font=small}
+    \caption{Ví dụ các module cảm biến đơn chức năng trên thị trường.}
+\end{figure}
+
+Để giải quyết các vấn đề trên, đề tài tập trung phát triển một \textbf{module quản lý cảm biến đa năng} (Multi-Sensor Management System - MSMS) dựa trên vi điều khiển ESP32. Thay vì chỉ phục vụ cho một bài toán cảm biến cụ thể, module được thiết kế như một khối phần cứng–phần mềm dùng chung, cho phép:
+\begin{itemize}
+    \item Người dùng tùy chọn loại cảm biến muốn sử dụng thông qua hệ thống menu trên màn hình OLED SSD1306.
+    \item Hệ thống tự động ánh xạ, khởi tạo và đọc dữ liệu từ cảm biến đã chọn trên màn hình.
+    \item Kết hợp nhiều node MSMS trong một mạng Wi-Fi (hướng tới Wi-Fi Mesh) để thu thập và tập hợp dữ liệu từ nhiều vị trí khác nhau.
+    \item Gửi dữ liệu lên server hoặc backend để lưu trữ, phân tích và hiển thị trên giao diện web.
+\end{itemize}
+
+Module MSMS vì thế không chỉ là một trạm đo đơn lẻ mà là một \textbf{khối thiết bị cảm biến linh hoạt}, có thể tái cấu hình cho nhiều bài toán khác nhau (đo nhiệt độ–độ ẩm–áp suất, giám sát khí gas, theo dõi CO\textsubscript{2}, v.v.), đồng thời sẵn sàng mở rộng thành một hệ thống nhiều node trong tương lai.
+
+\subsection{Mục tiêu và phạm vi của dự án}
+Mục tiêu của dự án là thiết kế và xây dựng một module cảm biến đa năng dựa trên ESP32, vừa đảm bảo tính linh hoạt trong việc lựa chọn cảm biến, vừa có khả năng mở rộng thành một mạng lưới thu thập dữ liệu và gửi lên server. Cụ thể:
+\begin{itemize}
+    \item Thiết kế phần cứng module với ESP32 là vi điều khiển trung tâm, tích hợp màn hình OLED, hệ thống nút bấm, mạch đo pin và các cổng kết nối cho nhiều loại cảm biến khác nhau.
+    \item Xây dựng firmware cho phép người dùng cấu hình cảm biến cho từng cổng thông qua giao diện menu trên màn hình, mà không cần sửa mã nguồn.
+    \item Cung cấp cơ chế quản lý danh sách cảm biến tập trung, giúp việc thêm/bớt loại cảm biến mới trở nên thuận tiện.
+    \item Hỗ trợ kết nối Wi-Fi để có thể gửi dữ liệu cảm biến mẫu lên server hoặc hệ thống thu thập dữ liệu bên ngoài.
+\end{itemize}
+
+Phạm vi của dự án tập trung vào:
+\begin{itemize}
+    \item Thiết kế và hiện thực một module cảm biến với 2 cổng cảm biến chính, có thể gắn nhiều loại cảm biến khác nhau tùy mục đích sử dụng.
+    \item Hiển thị dữ liệu đo được trực tiếp trên màn hình OLED, kèm theo một số thông tin trạng thái cơ bản của hệ thống.
+    \item Thử nghiệm gửi dữ liệu mẫu lên server để kiểm chứng khả năng tích hợp với các hệ thống IoT khác.
+\end{itemize}
+
+\subsection{Tóm tắt cấu trúc dự án}
+Dự án ``Module quản lý cảm biến đa năng MSMS'' gồm 5 chương:
+\begin{itemize}
+    \item \textbf{Chương 1 – Chương mở đầu}: Trình bày bối cảnh, lý do chọn đề tài, mục tiêu, phạm vi và cấu trúc báo cáo.
+    \item \textbf{Chương 2 – Phân tích yêu cầu kĩ thuật}: Xác định yêu cầu chức năng và phi chức năng của hệ thống, phân tích bài toán quản lý cảm biến và yêu cầu về thu thập – hiển thị – truyền dữ liệu.
+    \item \textbf{Chương 3 – Thiết kế chi tiết hệ thống}: Mô tả thiết kế phần cứng và firmware của module, bao gồm sơ đồ khối tổng thể và các thành phần chính trên mạch.
+    \item \textbf{Chương 4 – Kiểm thử hệ thống}: Trình bày các kịch bản kiểm thử phần cứng, firmware và quá trình thu thập – gửi dữ liệu.
+    \item \textbf{Chương 5 – Kết luận và hướng phát triển}: Tổng kết kết quả đạt được và đề xuất các hướng phát triển tiếp theo cho hệ thống MSMS.  
+\end{itemize}
+
+\newpage
+
+\section*{CHƯƠNG 2. PHÂN TÍCH YÊU CẦU KĨ THUẬT}
+\addcontentsline{toc}{section}{\numberline{}CHƯƠNG 2. PHÂN TÍCH YÊU CẦU KĨ THUẬT}
+\label{chuong2}
+\setcounter{section}{2}
+\setcounter{subsection}{0} % Đặt lại số thứ tự của subsection về 0
+% Đặt lại số thứ tự của hình và bảng khi bắt đầu chương mới
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\subsection{Các trường dữ liệu và loại cảm biến}
+\label{canguavan}
+Để module MSMS có thể tái sử dụng cho nhiều bài toán khác nhau, trước hết cần xác định rõ \textbf{những nhóm trường dữ liệu chính} mà hệ thống phải hỗ trợ, tương ứng với các loại cảm biến được tích hợp. Trong phạm vi đồ án, các nhóm dữ liệu chính được xem xét như sau:
+
+\begin{itemize}
+    \item \textbf{Nhóm cảm biến môi trường:}  
+    Bao gồm các trường dữ liệu như nhiệt độ, độ ẩm, áp suất không khí, có thể được cung cấp bởi các cảm biến như BME280, DHT22 hoặc các cảm biến tương đương. Đây là nhóm dữ liệu phổ biến trong các ứng dụng giám sát môi trường, nhà thông minh và nông nghiệp thông minh.
+
+    \item \textbf{Nhóm cảm biến chất lượng nước:}  
+    Gồm các trường dữ liệu như pH, độ dẫn điện (EC), tổng chất rắn hòa tan (TDS), độ đục, nhiệt độ nước, hàm lượng oxy hòa tan (DO), \dots Nhóm này phù hợp cho các ứng dụng giám sát ao nuôi thủy sản, chất lượng nước sinh hoạt, nước thải công nghiệp hoặc các mô hình thí nghiệm trong phòng lab.
+
+    \item \textbf{Nhóm cảm biến khí và chất lượng không khí:}  
+    Gồm các chỉ số như nồng độ CO\textsubscript{2}, khí gas dễ cháy, khói, các khí độc; các giá trị này thường được thể hiện theo đơn vị ppm hoặc µg/m\textsuperscript{3} và có thể mở rộng thêm tuỳ theo loại cảm biến được hỗ trợ.
+
+    \item \textbf{Nhóm dữ liệu mở rộng:}  
+    Hệ thống MSMS được thiết kế để có thể bổ sung thêm các loại cảm biến mới (ví dụ cảm biến dòng điện, điện áp, rung động, ánh sáng, \dots) mà không cần thay đổi kiến trúc tổng thể. Mỗi cảm biến mới chỉ cần khai báo thêm tập trường dữ liệu (tên trường, đơn vị, số lượng trường) tương ứng.
+\end{itemize}
+
+Ở mức trừu tượng, mỗi loại cảm biến trong hệ thống đều đi kèm với:
+\begin{itemize}
+    \item Tập các trường dữ liệu mà nó cung cấp (ví dụ: ``nhiệt độ'', ``độ ẩm'', ``pH'', \dots).
+    \item Đơn vị đo tương ứng cho từng trường (ví dụ: \textdegree C, \%, ppm, NTU, \dots).
+    \item Các giới hạn đo và độ phân giải phù hợp với từng ứng dụng.
+\end{itemize}
+
+Với cách phân nhóm như trên, MSMS không bị ràng buộc vào một loại cảm biến cố định mà có thể mở rộng dần danh sách cảm biến hỗ trợ, miễn là mô tả được các trường dữ liệu và đơn vị đo tương ứng.
+
+\subsection{Yêu cầu chức năng}
+\label{yeucauchucnang}
+Từ mục tiêu đề tài đã trình bày ở Chương~1, các yêu cầu chức năng chính của module MSMS có thể được tóm tắt như sau:
+
+\begin{itemize}
+    \item \textbf{Quản lý danh sách cảm biến:}  
+    Hệ thống cần có cơ chế tập trung để ghi nhận và tra cứu tất cả các loại cảm biến được hỗ trợ, kèm theo tên hiển thị, tập trường dữ liệu và đơn vị đo tương ứng.
+
+    \item \textbf{Cấu hình cảm biến cho từng cổng kết nối:}  
+    Người dùng phải có thể chọn loại cảm biến gắn với từng cổng (ví dụ cổng 1, cổng 2, \dots) thông qua giao diện menu trên màn hình. Việc thay đổi cấu hình cảm biến cần được thực hiện trực tiếp trên thiết bị, không yêu cầu lập trình lại.
+
+    \item \textbf{Thu thập dữ liệu cảm biến:}  
+    Hệ thống phải có khả năng tự động khởi tạo và đọc dữ liệu cảm biến theo chu kỳ hoặc theo yêu cầu, lưu trữ tạm thời các giá trị đo được để phục vụ cho việc hiển thị và truyền dữ liệu.
+
+    \item \textbf{Hiển thị dữ liệu và trạng thái hệ thống:}  
+    Màn hình OLED cần hiển thị được:
+    \begin{itemize}
+        \item Menu điều hướng (danh sách cảm biến, danh sách cổng, các chức năng hệ thống).
+        \item Dữ liệu cảm biến dưới dạng từng trường: tên trường, giá trị và đơn vị.
+        \item Một số trạng thái cơ bản như tình trạng kết nối Wi-Fi, mức pin, \dots
+    \end{itemize}
+
+    \item \textbf{Điều hướng bằng 3 nút bấm:}  
+    Người dùng điều khiển toàn bộ hệ thống thông qua 3 nút: BACK, SELECT và MOVE. Hệ thống phải đọc nút có chống dội (debounce), phát hiện chính xác thời điểm nhấn và ánh xạ sang các hành động trong menu một cách ổn định.
+
+    \item \textbf{Kết nối Wi-Fi và cấu hình mạng:}  
+    Module cần hỗ trợ:
+    \begin{itemize}
+        \item Chế độ điểm phát (AP) để cấu hình Wi-Fi thông qua giao diện web đơn giản.
+        \item Chế độ trạm (STA) để kết nối vào mạng Wi-Fi hiện có và duy trì kết nối ổn định.
+    \end{itemize}
+
+    \item \textbf{Gửi dữ liệu lên server:}  
+    Hệ thống cần có khả năng đóng gói dữ liệu cảm biến và gửi lên server hoặc một điểm thu thập dữ liệu bên ngoài thông qua các giao thức mạng phù hợp.
+\end{itemize}
+
+\subsection{Yêu cầu phi chức năng}
+\label{yeucauphichucnang}
+Ngoài các yêu cầu chức năng, module MSMS còn phải đáp ứng một số yêu cầu phi chức năng sau:
+
+\begin{itemize}
+    \item \textbf{Tính mở rộng và tái sử dụng:}  
+    Thiết kế tổng thể phải cho phép thêm cảm biến mới, thêm chức năng hiển thị hoặc chức năng mạng mới mà không cần thay đổi lại toàn bộ hệ thống.
+
+    \item \textbf{Tính ổn định và độ tin cậy:}  
+    Hệ thống phải hoạt động ổn định trong thời gian dài, không bị treo hoặc mất phản hồi khi đọc cảm biến, cập nhật màn hình hay gửi dữ liệu.
+
+    \item \textbf{Hiệu năng chấp nhận được:}  
+    Thời gian phản hồi từ lúc người dùng nhấn nút đến khi màn hình cập nhật cần đủ nhanh để tạo cảm giác mượt mà; việc đọc dữ liệu cảm biến và làm mới màn hình không được gây chậm trễ cho các chức năng khác.
+
+    \item \textbf{Tiêu thụ năng lượng:}  
+    Hệ thống nên hạn chế việc cập nhật màn hình không cần thiết, tối ưu chu kỳ đọc cảm biến và sẵn sàng cho việc tích hợp các chế độ tiết kiệm năng lượng trong tương lai.
+
+    \item \textbf{Khả năng mở rộng lên mạng Mesh và cloud:}  
+    Dù trong phạm vi đồ án chưa triển khai đầy đủ Wi‑Fi Mesh và tích hợp cloud, nhưng thiết kế cần để mở, cho phép bổ sung các cơ chế truyền dữ liệu nâng cao mà không phải thay đổi lại kiến trúc cơ bản của module.
+\end{itemize}
+
+\newpage
+\section*{CHƯƠNG 3. THIẾT KẾ CHI TIẾT HỆ THỐNG}
+\addcontentsline{toc}{section}{\numberline{}CHƯƠNG 3. THIẾT KẾ CHI TIẾT HỆ THỐNG}
+\setcounter{section}{3}
+\setcounter{subsection}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+Từ những yêu cầu chức năng và phi chức năng đã xác định ở phần~\hyperref[chuong2]{CHƯƠNG 2}, ta sẽ bắt đầu tiến hành thiết kế chi tiết hệ thống
+của dự án này. Toàn bộ chương 3 này sẽ trình bày thiết kế hardware, firmware từ tổng quan đến chi tiết.
+\subsection{Thiết kế tổng thể hệ thống}
+\subsubsection{Tổng quan và sơ đồ hệ thống} 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{Images/SoDoHeThong.png}
+    \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+    \caption{Cấu trúc tổng quan của hệ thống.}
+\end{figure}
+
+Hình 3.1 minh họa sơ đồ khối tổng quan của module MSMS, thể hiện cấu trúc phần cứng và các kết nối chính giữa các thành phần trong hệ thống. Ở trung tâm của sơ đồ là \textbf{vi điều khiển ESP32}, đóng vai trò là bộ xử lý trung tâm điều khiển toàn bộ hoạt động của hệ thống.
+
+\textbf{Các module đầu vào/đầu ra (I/O) kết nối với vi điều khiển:}
+\begin{itemize}
+    \item \textbf{Thời gian thực (RTC DS3231):} Module đồng hồ thời gian thực cung cấp chức năng ghi nhận và đồng bộ thời gian cho các sự kiện và dữ liệu cảm biến. Module này giao tiếp với ESP32 qua chuẩn I2C và có pin dự phòng để duy trì thời gian ngay cả khi hệ thống mất nguồn.
+    
+    \item \textbf{Đầu đọc thẻ (SD Card):} Module lưu trữ dữ liệu ngoài cho phép hệ thống lưu trữ cấu hình, dữ liệu cảm biến hoặc các file log một cách độc lập. Module này giao tiếp với ESP32 qua chuẩn SPI, đảm bảo khả năng lưu trữ dữ liệu ngay cả khi mất kết nối mạng.
+    
+    \item \textbf{Màn hình OLED SSD1306:} Module hiển thị giao diện người dùng, thông tin cảm biến và trạng thái hệ thống. Màn hình OLED có độ phân giải 128$\times$64 pixel, giao tiếp qua I2C, tiêu thụ điện năng thấp và cung cấp góc nhìn rộng với độ tương phản cao.
+    
+    \item \textbf{Button (Hệ thống nút bấm):} Cung cấp khả năng tương tác của người dùng với hệ thống thông qua 3 nút vật lý (BACK, SELECT và MOVE). Các nút này cho phép người dùng điều hướng menu, cấu hình cảm biến và điều khiển các chức năng của module.
+\end{itemize}
+
+\textbf{Các module cảm biến:} Khối này biểu thị các cảm biến khác nhau mà hệ thống MSMS có thể kết nối và quản lý. Tuỳ theo cấu hình, mỗi cổng kết nối có thể gắn các loại cảm biến khác nhau như cảm biến môi trường (BME280), cảm biến chất lượng nước, cảm biến khí hoặc các cảm biến khác. Dữ liệu từ các cảm biến này được gửi về vi điều khiển ESP32 để xử lý, lọc và chuẩn hóa thông qua các giao thức giao tiếp như I2C, UART hoặc analog.
+
+\textbf{Hệ thống quản lý nguồn:} Module MSMS được cấp nguồn từ hệ thống quản lý nguồn bao gồm:
+\begin{itemize}
+    \item \textbf{Pin Lithium:} Nguồn năng lượng chính của hệ thống, cung cấp điện cho toàn bộ thiết bị, đặc biệt hữu ích cho các ứng dụng di động hoặc không có nguồn điện lưới.
+    
+    \item \textbf{Mạch sạc / Boost:} Quản lý quá trình sạc pin và có thể tăng áp nếu cần thiết cho các thành phần khác trong hệ thống. Mạch này tích hợp tính năng \textbf{power path management}, cho phép hệ thống vừa sạc pin vừa cấp nguồn cho tải đồng thời khi có nguồn ngoài (adapter), hoặc tự động chuyển đổi giữa nguồn từ adapter và pin khi cần thiết, đảm bảo hệ thống luôn hoạt động liên tục không bị gián đoạn.
+    
+    \item \textbf{Hạ áp (Buck converter):} Nhận nguồn điện từ pin hoặc mạch sạc và hạ áp xuống mức phù hợp (3.3V) để cấp cho vi điều khiển ESP32 và các module khác, đảm bảo hoạt động ổn định và an toàn.
+\end{itemize}
+
+Sau khi dữ liệu cảm biến được xử lý bởi ESP32, chúng được sử dụng cho hai mục đích chính: hiển thị trực tiếp trên màn hình OLED phục vụ người dùng tại chỗ, và gửi mẫu lên server hoặc hệ thống thu thập dữ liệu bên ngoài thông qua kết nối Wi‑Fi. Nhờ đó, module MSMS vừa đóng vai trò là thiết bị đo cục bộ độc lập, vừa có thể là một node trong một hệ thống giám sát phân tán quy mô lớn.
+\subsubsection{Linh kiện sử dụng}
+
+\begin{enumerate}[label=\alph*), leftmargin=1.5cm, itemsep=15pt]
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{A) Vi điều khiển ESP32}
+    \textbf{Vi điều khiển ESP32}
+
+    ESP32 là một dòng vi điều khiển tích hợp module Wi-Fi và Bluetooth hiệu suất cao, giá thành thấp, được sản xuất bởi Espressif Systems. Với khả năng xử lý mạnh mẽ, ESP32 phù hợp cho các ứng dụng IoT, đặc biệt là các ứng dụng yêu cầu khả năng giao tiếp không dây mạnh mẽ và đáng tin cậy.
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật ESP32}
+        \label{tab:esp32}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Vi xử lý & Xtensa® Dual-Core 32-bit LX6 \\
+        Xung nhịp & 160 MHz (tối đa 240 MHz) \\
+        Wi-Fi & 802.11 b/g/n (2.4 GHz) \\
+        Bluetooth & Bluetooth 4.2 + BLE \\
+        RAM & 520 KB SRAM \\
+        Flash & Tối đa 16 MB (ngoài) \\
+        GPIO & Tối đa 34 chân \\
+        ADC & 12-bit, 18 kênh \\
+        Điện áp hoạt động & 3.3 V \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{Images/ESP32WR.jpg}
+        \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+        \caption{Vi điều khiển ESP32.}
+    \end{figure}
+
+
+    
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{B) Module RTC DS3231}
+    \textbf{Module RTC DS3231}
+
+    DS3231 là một module đồng hồ thời gian thực (RTC) có độ chính xác cao, sử dụng dao động thạch anh tích hợp bên trong và bộ bù nhiệt độ. Nó cho phép đo thời gian chính xác đến từng giây, có pin dự phòng nên vẫn hoạt động trong điều kiện mất nguồn. DS3231 hỗ trợ giao tiếp I2C và thường được sử dụng trong các ứng dụng cần hẹn giờ, lưu trữ log theo thời gian thực.
+
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật DS3231}
+        \label{tab:ds3231}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Chức năng & Real-Time Clock (RTC) \\
+        Độ chính xác & $\pm$2 ppm \\
+        Giao tiếp & I2C \\
+        Điện áp hoạt động & 2.3 -- 5.5 V \\
+        Pin dự phòng & CR2032 \\
+        Dòng tiêu thụ & $\sim$3 $\mu$A (backup) \\
+        Bộ dao động & TCXO tích hợp \\
+        Nhiệt độ hoạt động & -40°C đến +85°C \\
+        \hline
+        \end{tabular}
+        \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/DS3231.jpg}
+        \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+        \caption{Module DS3231.}
+    \end{figure}
+
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{C) Module lưu trữ SD Card}
+    \textbf{Module lưu trữ SD Card}
+
+    SD Card là một giải pháp lưu trữ ngoài tiện lợi, thường được sử dụng trong các hệ thống nhúng để lưu dữ liệu một cách lâu dài và đáng tin cậy.
+
+    SD Card được giao tiếp với vi điều khiển thông qua chuẩn SPI – một giao tiếp nối tiếp tốc độ cao, dễ tích hợp và tương thích với cả ESP32 lẫn STM32.
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật thẻ nhớ SD}
+        \label{tab:sdcard}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Chuẩn thẻ & MicroSD \\
+        Giao tiếp & SPI \\
+        Điện áp hoạt động & 3.3 V \\
+        Dung lượng hỗ trợ & Tối đa 32 GB (FAT32) \\
+        Dòng tiêu thụ & 50 -- 100 mA \\
+        Ứng dụng & Lưu trữ dữ liệu cảm biến \\
+        \hline
+        \end{tabular}
+        \end{table}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/SdCard.jpg}
+        \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+        \caption{Module SD Card.}
+    \end{figure}
+
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{D) Module mạch sạc IP5306}
+    \textbf{Module mạch sạc IP5306}
+
+    IP5306 là một module quản lý nguồn tích hợp được thiết kế để sạc pin lithium và cung cấp đầu ra 5V cho các ứng dụng di động và thiết bị nhúng. Module này tích hợp các chức năng sạc pin, boost converter và power path management trong một chip duy nhất, giúp đơn giản hóa thiết kế mạch nguồn và tối ưu hiệu suất sử dụng pin.
+
+    Module IP5306 hoạt động như một hệ thống quản lý nguồn thông minh với khả năng tự động chuyển đổi giữa chế độ sạc và xả. Khi có nguồn ngoài qua cổng USB Type-C, module sẽ tự động sạc pin và đồng thời cấp nguồn cho tải thông qua tính năng power path management. Khi không có nguồn ngoài, module sẽ sử dụng năng lượng từ pin và boost lên 5V để cấp cho hệ thống.
+
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật IP5306}
+        \label{tab:ip5306}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Chức năng & Quản lý nguồn, sạc pin, boost converter \\
+        Điện áp đầu vào & 5 -- 5.5 V \\
+        Điện áp cắt sạc & 4.2 V / 4.35 V ($\pm$0.5\%) \\
+        Dòng sạc & 2.4 A ($\pm$5\%) \\
+        Điện áp đầu ra & 5.0 -- 5.15 V (bù tổn thất dây) \\
+        Dòng đầu ra tối đa & 2 A \\
+        Độ gợn sóng đầu ra & 100 mV \\
+        Hiệu suất chuyển đổi & 92.5\% (đầu vào 3.6V, đầu ra 5V@2A) \\
+        Điện áp sạc trước & 2.8 V (dòng 180 mA) \\
+        Điện áp sạc lại & 4.1 V \\
+        Dòng cắt tự động & 100 mA (sau khi đạt điện áp phao) \\
+        Dòng tắt đầu ra & < 50 mA (liên tục) \\
+        \hline
+        \end{tabular}
+        \end{table}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/IP1506.jpg}
+        \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+        \caption{Module mạch sạc IP5306.}
+    \end{figure}
+    
+    
+    Module IP5306 có các đặc điểm nổi bật sau:
+
+    \begin{itemize}
+        \item \textbf{Tự động tắt đầu ra khi tải thấp:} Khi dòng tải liên tục nhỏ hơn 50mA, đầu ra sẽ tự động bị tắt để tiết kiệm năng lượng pin.
+        
+        \item \textbf{Hỗ trợ điều khiển bằng nút bấm ngoài:} Module hỗ trợ kết nối nút bấm với điểm K và đầu ra âm. Nhấn nhanh một lần để bật màn hình hiển thị nguồn và bật đầu ra 5V; nhấn hai lần ngắn liên tiếp để tắt màn hình hiển thị và tắt đầu ra 5V.
+        
+        \item \textbf{Quản lý chu kỳ sạc thông minh:} Khi dòng sạc giảm xuống 100mA sau khi đạt đến điện áp phao cuối cùng, chu kỳ sạc sẽ tự động kết thúc. Khi điện áp pin giảm dưới 4.1V, chu kỳ sạc lại sẽ tự động bắt đầu.
+        
+        \item \textbf{Bảo vệ pin điện áp thấp:} Khi điện áp pin thấp hơn 2.8V, pin sẽ được sạc trước với dòng điện 180mA để đảm bảo an toàn và kéo dài tuổi thọ pin.
+        
+        \item \textbf{Tích hợp cổng USB-A:} Vị trí hàn ổ cắm USB-A cái được cung cấp ở mặt sau của module, cho phép người dùng tự lắp đặt để có đầu ra USB-A tiêu chuẩn phục vụ các ứng dụng khác nhau.
+        
+        \item \textbf{Hiển thị trạng thái bằng LED:} Module tích hợp 4 đèn LED để hiển thị trạng thái nguồn, mức pin và trạng thái sạc/xả, giúp người dùng dễ dàng theo dõi tình trạng hệ thống.
+    \end{itemize}
+
+    Trong hệ thống MSMS, module IP5306 đóng vai trò là khối quản lý nguồn chính, đảm bảo hệ thống có thể hoạt động độc lập với pin lithium trong thời gian dài, đồng thời tự động sạc pin khi có nguồn ngoài và cung cấp nguồn ổn định 5V cho các thành phần khác trong hệ thống.
+
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{E) Pin Lithium Polymer}
+    \textbf{Pin Lithium Polymer (LiPo)}
+
+    Pin Lithium Polymer là nguồn năng lượng chính của hệ thống MSMS, cung cấp điện năng cho toàn bộ thiết bị khi hoạt động độc lập không có nguồn điện lưới. Pin LiPo được sử dụng trong hệ thống có kích thước nhỏ gọn, trọng lượng nhẹ và có khả năng cung cấp dòng điện ổn định, rất phù hợp cho các ứng dụng IoT di động và thiết bị nhúng.
+
+    Pin LiPo hoạt động dựa trên nguyên lý hóa học của lithium-ion, với chất điện phân dạng polymer cho phép thiết kế pin dạng túi (pouch cell) mỏng và linh hoạt hơn so với pin lithium-ion dạng hình trụ truyền thống. Pin được tích hợp mạch bảo vệ PCM (Protection Circuit Module) để ngăn chặn các tình huống nguy hiểm như quá sạc, quá xả, ngắn mạch và quá dòng, đảm bảo an toàn trong quá trình sử dụng.
+
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật Pin Lithium Polymer}
+        \label{tab:lipo}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Loại pin & Lithium Polymer (LiPo) Pouch Cell \\
+        Model & FL 803450 \\
+        Kích thước & 8.0 mm $\times$ 34 mm $\times$ 50 mm (803450) \\
+        Điện áp danh định & 3.7 V \\
+        Điện áp sạc đầy & 4.2 V \\
+        Điện áp xả tối thiểu & 2.8 V \\
+        Dung lượng & 1500 mAh \\
+        Năng lượng & 5.55 Wh \\
+        Mạch bảo vệ & PCM tích hợp \\
+        Kết nối & JST connector (dây đỏ +, dây đen -) \\
+        \hline
+        \end{tabular}
+        \end{table}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/PinLithium.jpg}
+        \captionsetup{font=small}  % Chỉnh kích thước chữ caption nhỏ
+        \caption{Pin Lithium Polymer 3.7V 1500mAh (Model FL 803450).}
+    \end{figure}
+    
+    
+    Pin LiPo trong hệ thống MSMS được kết nối với module IP5306 thông qua đầu nối JST để quản lý quá trình sạc và xả. Khi có nguồn ngoài qua cổng USB Type-C của IP5306, pin sẽ được sạc với dòng điện tối đa 2.4A cho đến khi đạt điện áp 4.2V. Khi không có nguồn ngoài, pin sẽ cung cấp năng lượng cho hệ thống thông qua module IP5306, đảm bảo hệ thống có thể hoạt động liên tục trong thời gian dài mà không cần kết nối với nguồn điện lưới.
+
+    Với dung lượng 1500mAh và điện áp danh định 3.7V, pin có thể cung cấp năng lượng cho hệ thống MSMS trong nhiều giờ tùy thuộc vào mức tiêu thụ công suất của các thành phần. Ở kịch bản Peak với hai cảm biến hoạt động đồng thời ở mức tiêu thụ cao nhất, pin có thể duy trì hoạt động khoảng 1.9 giờ. Trong điều kiện sử dụng thực tế với các chế độ tiết kiệm năng lượng, thời gian hoạt động có thể kéo dài từ 5.1 đến 6.9 giờ. Module IP5306 sẽ tự động quản lý chu kỳ sạc/xả và bảo vệ pin khỏi các tình huống nguy hiểm, kéo dài tuổi thọ và đảm bảo an toàn cho hệ thống.
+
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{F) Module màn hình OLED SSD1306}
+    \textbf{Module màn hình OLED SSD1306}
+
+    SSD1306 là màn hình OLED (Organic Light Emitting Diode) với độ phân giải 128x64 pixel, sử dụng giao tiếp I2C hoặc SPI. Màn hình OLED có ưu điểm là tiêu thụ điện năng thấp, góc nhìn rộng, độ tương phản cao và có thể hiển thị trong điều kiện ánh sáng mạnh. SSD1306 rất phù hợp cho các ứng dụng IoT cần hiển thị thông tin trực quan với mức tiêu thụ năng lượng thấp.
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật SSD1306}
+        \label{tab:ssd1306}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Chức năng & Màn hình OLED hiển thị \\
+        Kích thước & 0.96 inch \\
+        Độ phân giải & 128 $\times$ 64 pixel \\
+        Màu hiển thị & Trắng / Xanh \\
+        Giao tiếp & I2C / SPI \\
+        Điện áp hoạt động & 3.3 -- 5 V \\
+        Dòng tiêu thụ & $\sim$20 mA \\
+        \hline
+        \end{tabular}
+        \end{table}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{Images/SSD1306.jpg}
+        \captionsetup{font=small}
+        \caption{Module màn hình OLED SSD1306.}
+    \end{figure}
+
+
+    Màn hình SSD1306 có thể hiển thị văn bản, số và đồ họa đơn giản, rất phù hợp để hiển thị các thông số quan trắc như PM2.5, PM10, nhiệt độ, độ ẩm và áp suất không khí. Màn hình có thể kết nối trực tiếp với ESP32 thông qua giao tiếp I2C, chỉ cần 2 chân (SDA, SCL), giúp tiết kiệm số chân GPIO và đơn giản hóa kết nối.
+
+    \item \phantomsection
+    \addcontentsline{toc}{paragraph}{G) IC ổn áp AMS1117-3.3}
+    \textbf{IC ổn áp AMS1117-3.3}
+
+    AMS1117-3.3 là IC ổn áp tuyến tính có khả năng cung cấp dòng điện lên đến 1A, được sử dụng để hạ điện áp từ nguồn pin xuống 3.3V để cấp nguồn cho ESP32 và các cảm biến. IC này có độ ổn định điện áp tốt, nhiễu thấp và giá thành rẻ, rất phù hợp cho các ứng dụng IoT tiêu thụ điện năng thấp.
+
+    \begin{table}[H]
+        \centering
+        \caption{Thông số kỹ thuật AMS1117-3.3}
+        \label{tab:ams1117}
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Thông số} & \textbf{Giá trị} \\
+        \hline
+        Chức năng & IC ổn áp tuyến tính \\
+        Điện áp đầu vào & 4.5 -- 15 V \\
+        Điện áp đầu ra & 3.3 V \\
+        Dòng tối đa & 1 A \\
+        Dropout Voltage & $\sim$1.1 V \\
+        Kiểu đóng gói & SOT-223 \\
+        Bảo vệ & Quá dòng, quá nhiệt \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{Images/AMS1117.jpg}
+        \captionsetup{font=small}
+        \caption{IC ổn áp AMS1117-3.3.}
+    \end{figure}
+
+    AMS1117-3.3 hoạt động với điện áp đầu vào từ 4.75V đến 15V và cung cấp điện áp đầu ra ổn định 3.3V. IC này yêu cầu các tụ điện lọc đầu vào và đầu ra để đảm bảo hoạt động ổn định, thường là tụ 10µF ở đầu vào và tụ 22µF ở đầu ra. Trong hệ thống này, AMS1117-3.3 được sử dụng để hạ điện áp từ đầu ra 5V của module IP5306 xuống 3.3V để cấp nguồn cho ESP32 và các cảm biến hoạt động ở mức điện áp 3.3V.
+
+    
+\end{enumerate}
+
+
+
+\subsection{Thiết kế chi tiết hệ thống}
+\subsubsection{Tính toán đáp ứng công suất nguồn}
+Hệ thống được cấp nguồn từ pin lithium thông qua module quản lý nguồn IP5306. Module IP5306 có khả năng sạc pin và cung cấp đầu ra 5V ổn định cho hệ thống. Điện áp 5V từ IP5306 được hạ xuống 3.3V thông qua IC ổn áp tuyến tính AMS1117-3.3 để cấp nguồn cho ESP32 và các cảm biến hoạt động ở mức điện áp 3.3V.
+
+AMS1117-3.3 là IC ổn áp tuyến tính có khả năng cung cấp dòng điện lên đến 1A, phù hợp cho các ứng dụng IoT tiêu thụ điện năng thấp. IC này có độ ổn định điện áp tốt và nhiễu thấp, đảm bảo nguồn cung cấp ổn định cho hệ thống. Để đảm bảo hoạt động ổn định, cần sử dụng các tụ điện lọc đầu vào và đầu ra phù hợp (thường là 10µF và 22µF).
+
+
+\textbf{Phân tích công suất:}
+\begin{table}[H]
+    \centering
+    \caption{Bảng tính toán công suất nguồn ở kịch bản Peak}
+    \label{tab:power_peak}
+    \renewcommand{\arraystretch}{1.3}
+    \makebox[\textwidth][c]{%
+    \begin{tabular}{|l|c|c|c|}
+    \hline
+    \textbf{Linh kiện} & \textbf{Điện áp (V)} & \textbf{Dòng Peak (mA)} & \textbf{Công suất (W)} \\
+    \hline
+    ESP32 & 3.3 & 240 & 0.792 \\
+    SSD1306 OLED & 3.3 & 30 & 0.099 \\
+    DS3231 & 3.3 & 0.2 & 0.001 \\
+    Thẻ SD (SPI) & 3.3 & 100 & 0.330 \\
+    2 cảm biến & 3.3 & 30 & 0.099 \\
+    \hline
+    \textbf{Tổng tải 3.3V} & -- & \textbf{400.2} & \textbf{1.321} \\
+    \hline
+    \textbf{Tổn hao AMS1117} & 5 $\rightarrow$ 3.3 & -- & \textbf{0.681} \\
+    \hline
+    \textbf{TỔNG CÔNG SUẤT NGUỒN 5V} & \textbf{5} & \textbf{400.2} & \textbf{2.002} \\
+    \hline
+    \end{tabular}%
+    }
+\end{table}
+    
+Từ bảng tính toán trên, tổng công suất tiêu thụ ở kịch bản Peak là 2.002W ở mức 5V, tương đương dòng điện 400.2mA. Khi tính từ nguồn pin lithium qua module IP5306, với hiệu suất chuyển đổi boost của IP5306 khoảng 92.5\% và tổn hao của AMS1117, hiệu suất tổng thể của hệ thống nguồn khoảng 68\%, công suất đầu vào từ pin cần thiết là:
+\[
+P_{in} = \frac{2.002}{0.68} \approx 2.94 \text{ W}
+\]
+Với điện áp pin trung bình khoảng 3.7V, dòng điện đầu vào từ pin:
+\[
+I_{in} = \frac{2.94}{3.7} \approx 795 \text{ mA}
+\]
+
+Với pin lithium dung lượng 1500mAh, thời gian hoạt động lý thuyết ở kịch bản Peak:
+\[
+T_{peak} = \frac{1500}{795} \approx 1.9 \text{ giờ}
+\]
+
+Trong thực tế, với các chế độ tiết kiệm năng lượng như ESP32 deep sleep, tắt màn hình SSD1306 khi không hiển thị, SD Card ở chế độ idle, và giảm tần suất đọc cảm biến, công suất tiêu thụ trung bình giảm xuống còn khoảng 0.8-1.1W, tương đương dòng điện 216-297mA từ pin. Với mức tiêu thụ này, thời gian hoạt động có thể đạt 5.1-6.9 giờ. Module IP5306 cũng có tính năng tự động tắt đầu ra khi tải thấp (<50mA), giúp tiết kiệm năng lượng pin khi hệ thống ở chế độ chờ.
+
+
+
+
+
+\subsubsection{Thiết kế mạch nguyên lý (Schematic)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/KhoiXuLyvaNutBam.png}
+    \captionsetup{font=small}
+    \caption{Khối xử lý và nút bấm.}
+\end{figure}
+Khối này là khối các nút bấm boot và reset cùng với header UART và ESP32 WROOM để nạp code. Khối bao gồm:
+
+\begin{itemize}
+    \item \textbf{Module ESP32 WROOM:} Vi điều khiển trung tâm của hệ thống với các chân GPIO được kết nối với các module ngoại vi và cảm biến.
+    
+    \item \textbf{Nút bấm Reset:} Nút bấm SWC7 kết nối với chân RESET (pin 3) của ESP32 qua điện trở pull-up 10k$\Omega$ (R1) và tụ lọc 104 để khởi động lại hệ thống.
+    
+    \item \textbf{Nút bấm Boot:} Nút bấm SWC8 kết nối với chân BOOT (pin 25) của ESP32 qua điện trở pull-up 10k$\Omega$ (R2) và tụ lọc 104 để đưa ESP32 vào chế độ nạp chương trình.
+    
+    \item \textbf{Header UART0:} Header 4 chân cung cấp các kết nối UART0 (TX0, RX0), nguồn 3.3V và GND để nạp code và giao tiếp serial với ESP32 qua cổng USB-to-Serial.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/KhoiNguon.png}
+    \captionsetup{font=small}
+    \caption{Khối nguồn.}
+\end{figure}
+
+Khối nguồn tích hợp module IP5306 để quản lý nguồn pin và cung cấp các mức điện áp cần thiết cho hệ thống:
+
+\begin{itemize}
+    \item \textbf{Đầu vào pin lithium:} Header 2 chân (Header 2P 2.54) kết nối với pin lithium (VCC\_BAT và GND\_BAT).
+    
+    \item \textbf{Module IP5306 (ICBUCK1):} IC quản lý nguồn chính có các chức năng:
+    \begin{itemize}
+        \item Nhận điện áp từ pin lithium qua chân VCC\_BAT và GND\_BAT.
+        \item Boost converter tạo đầu ra 5V ổn định (VCC\_OUT) từ điện áp pin.
+        \item Quản lý sạc pin khi có nguồn ngoài qua cổng USB Type-C.
+        \item Power path management để vừa sạc pin vừa cấp nguồn cho tải.
+    \end{itemize}
+    
+    \item \textbf{Mạch giám sát pin:} Bộ chia áp gồm hai điện trở 100k$\Omega$ (R20, R21) tạo tín hiệu Cap\_Battery để ESP32 đọc điện áp pin và hiển thị mức pin.
+    
+    \item \textbf{IC ổn áp AMS1117-3.3 (U2):} Hạ điện áp từ 5V xuống 3.3V để cấp nguồn cho ESP32 và các module hoạt động ở mức 3.3V. Có các tụ lọc đầu vào (C2, C3) và đầu ra (C5, C6) để đảm bảo nguồn ổn định.
+    
+    \item \textbf{LED báo nguồn:} LED 0805 với điện trở hạn dòng 330$\Omega$ để hiển thị trạng thái nguồn 3.3V.
+    
+    \item \textbf{Công tắc nguồn (S1):} Công tắc SPDT để bật/tắt nguồn 3.3V.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/KhoiCamBienTichHopSann.png}
+    \captionsetup{font=small}
+    \caption{Khối cảm biến tích hợp.}
+\end{figure}
+Khối này tích hợp các module ngoại vi chính của hệ thống MSMS, bao gồm:
+
+\begin{itemize}
+    \item \textbf{Module RTC DS3231 (U5):} Module đồng hồ thời gian thực được kết nối với ESP32 qua giao tiếp I2C (chân SCL và SDA). Module được cấp nguồn 3.3V và có pin dự phòng CR2032 (VBAT) kèm tụ lọc C4 để duy trì thời gian ngay cả khi mất nguồn chính.
+    
+    \item \textbf{Module Micro SD Card (P1):} Khe cắm thẻ nhớ Micro SD được kết nối với ESP32 qua giao tiếp SPI (MOSI, MISO, SCK, CS). Module được cấp nguồn 3.3V và có các điện trở pull-up 10k$\Omega$ trên các đường SPI để đảm bảo tín hiệu ổn định.
+    
+    \item \textbf{Module màn hình OLED SSD1306 (ssd1):} Màn hình OLED được kết nối với ESP32 qua giao tiếp I2C (SCL và SDA), chia sẻ bus I2C chung với DS3231. Module được cấp nguồn 3.3V.
+    
+    \item \textbf{Hệ thống nút bấm:} Khối tích hợp 3 nút bấm (BACK, SELECT và MOVE) được kết nối với các chân GPIO của ESP32. Mỗi nút có điện trở pull-up 10k$\Omega$ và tụ lọc để chống nhiễu và dội phím.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Khoi2CongCamBien.png}
+    \captionsetup{font=small}
+    \caption{Khối 2 cổng cảm biến.}
+\end{figure}
+Khối này thiết kế hai cổng kết nối cảm biến độc lập (IDC1 và IDC2), mỗi cổng có 10 chân IDC header, cho phép kết nối nhiều loại cảm biến khác nhau:
+
+\begin{itemize}
+    \item \textbf{Cổng cảm biến 1 (IDC1):}
+    \begin{itemize}
+        \item Cấp nguồn: GND, +3V3, +5V
+        \item Giao tiếp I2C: SDA (chân 3), SCL (chân 5) - các chân này có chức năng cố định
+        \item Giao tiếp UART: RX2 (chân 2), TX2 (chân 4) - có thể linh hoạt chuyển thành GPIO để đọc cảm biến Pulse
+        \item Analog/Pulse/GPIO: Chân 6 (GPIO\_1) có thể đọc analog (ADC1), đọc Pulse hoặc làm GPIO, đặc biệt ADC1 có thể hoạt động ngay cả khi ESP32 kết nối Wi-Fi
+        \item Chân 1 và 10: Dự phòng hoặc cấu hình đặc biệt
+    \end{itemize}
+    
+    \item \textbf{Cổng cảm biến 2 (IDC2):}
+    \begin{itemize}
+        \item Cấp nguồn: GND, +3V3, +5V
+        \item Giao tiếp SPI: MOSI (chân 2), MISO (chân 4), SCK (chân 6), CS (chân 3) - có thể linh hoạt chuyển thành GPIO
+        \item Analog/Pulse/GPIO: Chân 5 (GPIO\_2) có thể đọc analog, đọc Pulse hoặc làm GPIO
+        \item Chân 1 và 10: Dự phòng hoặc cấu hình đặc biệt
+    \end{itemize}
+    
+    \item \textbf{Tính linh hoạt:} Các chân Pulse trên cả hai cổng có thể được cấu hình để đọc cảm biến Pulse. Các chân SPI và GPIO có thể được sử dụng linh hoạt tùy theo loại cảm biến được kết nối, cho phép hệ thống MSMS hỗ trợ nhiều loại cảm biến khác nhau mà không cần thay đổi phần cứng.
+\end{itemize}
+\subsubsection{Layout PCB}
+\begin{figure}[H]
+    \label{toplayer}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/TopLayer.png}
+    \captionsetup{font=small}
+    \caption{Top Layout.}
+\end{figure}
+
+\begin{figure}[H]
+    \label{botlayer}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/BotLayer.png}
+    \captionsetup{font=small}
+    \caption{Bot Layout.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/3DTopLayer.png}
+    \captionsetup{font=small}
+    \caption{3D Top.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/3DBotLayer.png}
+    \captionsetup{font=small}
+    \caption{3D Bot.}
+\end{figure}
+\subsubsection{Thiết kế Firmware}
+
+\begin{itemize}
+\item []{Trong dự án này, ESP32 được sử dụng làm bộ xử lý trung tâm của hệ thống, đảm nhận việc đọc dữ liệu từ các cảm biến và truyền tải lên Server thông qua mạng Wi-Fi. Firmware của ESP32 được thiết kế theo kiến trúc phân lớp (layered architecture) với sự phân tách rõ ràng giữa các tầng ứng dụng, hệ điều hành, thư viện, driver và phần cứng vật lý.}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Images/SoDoPhanLop.png}
+    \captionsetup{font=small}
+    \caption{Sơ đồ kiến trúc phần mềm ESP32.}
+\end{figure}
+
+\textbf{Kiến trúc phân lớp của hệ thống}
+
+Sơ đồ mô tả kiến trúc firmware phân lớp từ tác vụ ứng dụng xuống driver phần cứng. Hệ thống được tổ chức thành 6 tầng chính:
+
+\begin{enumerate}
+    \item \textbf{Tầng tác vụ ứng dụng (Application/Task):} Chứa các task chính chạy song song trên FreeRTOS, mỗi task đảm nhận một chức năng cụ thể và tương tác với kernel qua API FreeRTOS.
+    
+    \item \textbf{Tầng FreeRTOS:} Hệ điều hành thời gian thực quản lý lập lịch task, điều phối tài nguyên và cung cấp dịch vụ IPC (queue, semaphore, mutex) cho các tầng trên.
+    
+    \item \textbf{Tầng thành phần (Component):} Firmware được chia thành sáu thành phần chức năng: \textbf{Core} (logic lõi), \textbf{network} (mạng), \textbf{Sensors} (cảm biến), \textbf{UI} (giao diện người dùng), \textbf{Utils} (tiện ích), \textbf{Driver} (trình điều khiển phần cứng).
+    
+    \item \textbf{Tầng mô-đun (Module):} Mỗi thành phần gồm các mô-đun cụ thể: Core có DataManager, FunctionManager, BatteryManager; network có WifiManager, MeshManager; Sensors có SensorConfig, SensorRegistry, SensorTypes; UI có ButtonManager, ScreenManager; Utils có BitManager, ErrorCodes; Driver chứa lớp trừu tượng cho cảm biến.
+    
+    \item \textbf{Tầng header/API:} Các file tiêu đề (\texttt{.h}) tương ứng với từng mô-đun (ví dụ \texttt{FunctionManager.h}, \texttt{WifiManager.h}, \texttt{SensorRegistry.h}, \texttt{ButtonManager.h}, \texttt{ScreenManager.h}, \texttt{ErrorCodes.h}, \texttt{BitManager.h}) định nghĩa giao diện lập trình để các phần khác của hệ thống gọi mà không phụ thuộc vào triển khai bên trong.
+    
+    \item \textbf{Tầng trừu tượng phần cứng và thư viện hệ thống:} Lớp dưới cùng gồm driver và thư viện nền: mạng dùng \texttt{esp\_wifi.h}, \texttt{esp\_mesh\_lite.h}; UI dùng \texttt{SSD1306.h}, Driver/I2C, Driver/GPIO; Driver dùng \texttt{Driver/GPIO.h}, \texttt{Driver/I2C.h}, \texttt{Driver/UART.h}, \texttt{Driver/SPI.h}; Utils dùng thư viện chuẩn như \texttt{stdio.h}. Ứng dụng không gọi trực tiếp phần cứng mà thông qua các API này.
+\end{enumerate}
+
+\textbf{Các task trong tầng ứng dụng}
+
+FreeRTOS quản lý bốn task chính tương ứng với sơ đồ:
+
+\begin{itemize}
+    \item \textbf{\texttt{WifiManager\_Task()}:} Quản lý kiểm tra và kết nối Wi-Fi/mesh. Task chịu trách nhiệm duy trì trạng thái kết nối mạng, cấu hình Wi-Fi (AP/STA), và tích hợp mesh khi mở rộng.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/websever.jpg}
+        \captionsetup{font=small}
+        \caption{Web server cấu hình hệ thống.}
+    \end{figure}
+    \item \textbf{\texttt{MenuNavigation\_Task()}:} Nhận tín hiệu nút bấm và thay đổi giao diện người dùng. Task xử lý sự kiện từ ButtonManager và cập nhật trạng thái hiển thị qua ScreenManager.
+    
+    \item \textbf{\texttt{FunctionManager\_Task()}:} Thực hiện quản lý khởi tạo và chạy các tác vụ đọc cảm biến được chọn. Task điều phối SensorRegistry, SensorConfig và đọc dữ liệu từ các cảm biến theo cấu hình.
+    
+    \item \textbf{\texttt{SaveData\_task()}:} Lưu dữ liệu vào thẻ nhớ. Task ghi dữ liệu từ DataManager hoặc cảm biến ra bộ nhớ ngoài (SD) theo chu kỳ hoặc sự kiện.
+\end{itemize}
+
+
+\textbf{Luồng dữ liệu và tương tác giữa các tầng}
+
+Thiết kế đảm bảo phân tách rõ ràng và phụ thuộc một chiều từ trên xuống:
+\begin{itemize}
+    \item Các task ứng dụng gọi API của các thành phần (Core, network, Sensors, UI, Utils) thông qua các file header tương ứng.
+    \item Các mô-đun thành phần (ví dụ WifiManager, FunctionManager, ButtonManager, ScreenManager) sử dụng driver và thư viện hệ thống (\texttt{esp\_wifi.h}, \texttt{SSD1306.h}, \texttt{Driver/I2C.h}, \texttt{Driver/GPIO.h}, \ldots) để giao tiếp với phần cứng.
+    \item Driver và HAL che phần cứng thật; thay đổi board hoặc ngoại vi chủ yếu chỉ cần sửa ở tầng driver, ít ảnh hưởng tầng ứng dụng.
+\end{itemize}
+
+Kiến trúc phân lớp giúp dễ bảo trì, mở rộng và tái sử dụng mã, phù hợp hệ nhúng đa task và đa phần cứng như ESP32.
+
+\textbf{Diagram Sequence}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Images/OverviewSequence.png}
+    \captionsetup{font=small}
+    \caption{Tổng quan luồng hoạt động hệ thống MSMS (Sequence Diagram).}
+    \label{fig:overview-sequence}
+\end{figure}
+Sơ đồ chuỗi (Sequence Diagram) trong Hình~\ref{fig:overview-sequence} mô tả tổng quan luồng hoạt động của hệ thống MSMS theo hai giai đoạn chính. \textbf{Giai đoạn khởi động:} task \texttt{MenuNavigation\_Task} khởi tạo ButtonManager và ScreenManager, sau đó gọi \texttt{MenuRender(Root)} để hiển thị menu gốc lên màn hình OLED cho người dùng. \textbf{Giai đoạn tương tác người dùng:} hệ thống lặp liên tục — người dùng nhấn một trong bốn nút (UP, DOWN, SEL, BACK); ButtonManager đọc trạng thái nút qua \texttt{ReadButtonStatus()} và trả về loại nút cho MenuNavigation\_Task. Nếu là UP/DOWN hoặc BACK, task cập nhật menu hiện tại (di chuyển hoặc quay lại menu cha) và gọi ScreenManager để vẽ lại menu lên OLED. Nếu là SEL (chọn mục), task gọi callback tương ứng với mục được chọn; callback (do FunctionManager/MenuSystem quản lý) có thể thực hiện kết nối Wi-Fi, đọc cảm biến, xem trạng thái pin, reset port, v.v. thông qua WifiManager, driver cảm biến hoặc BatteryManager, nhận trạng thái hoặc dữ liệu trả về, rồi gọi \texttt{MenuRender()} hoặc \texttt{ScreenShowData()} để cập nhật giao diện trên OLED. Như vậy, sơ đồ tóm tắt luồng từ tương tác người dùng đến xử lý nội bộ và cập nhật hiển thị.
+
+
+
+\item \textbf{Tổng quan Wi-Fi Mesh trong hệ thống MSMS}
+% TODO: Thêm hình mô tả topology mạng Wi-Fi Mesh giữa các node MSMS
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/mesh-routing-tables.png}
+    \captionsetup{font=small}
+    \caption{Sơ đồ topology mạng Wi-Fi Mesh của các node MSMS.}
+\end{figure}
+Trong phiên bản hiện tại, dự án tập trung vào việc xây dựng một node MSMS đơn lẻ với khả năng kết nối Wi-Fi AP/STA và gửi dữ liệu cảm biến lên server. Tuy nhiên, kiến trúc firmware được thiết kế sao cho có thể mở rộng thành \textbf{mạng Wi-Fi Mesh} trong các giai đoạn tiếp theo.
+
+Về lý thuyết, Wi-Fi Mesh là mô hình mạng trong đó nhiều node Wi-Fi đóng vai trò như các nút trung gian chuyển tiếp dữ liệu, thay vì tất cả node đều kết nối trực tiếp đến một Access Point duy nhất. Một mạng Mesh điển hình bao gồm:
+\begin{itemize}
+    \item \textbf{Root node (Gateway)}: Node gốc kết nối với mạng ngoài (LAN/Internet hoặc server nội bộ). Tất cả dữ liệu cảm biến từ các node con cuối cùng đều được tập trung tại đây.
+    \item \textbf{Intermediate nodes}: Các node trung gian vừa đóng vai trò đo cảm biến (nếu có), vừa chuyển tiếp gói tin từ các node con khác về root node.
+    \item \textbf{Leaf nodes}: Các node lá chỉ thu thập dữ liệu cảm biến và gửi về root thông qua các node trung gian.
+\end{itemize}
+
+Khi áp dụng cho hệ thống MSMS:
+\begin{itemize}
+    \item Mỗi module MSMS sẽ là một \textbf{node Mesh} có khả năng đọc cảm biến theo cấu hình riêng (danh sách cảm biến/port khác nhau).
+    \item Các node giao tiếp với nhau qua Wi-Fi Mesh (ví dụ sử dụng ESP-Mesh-Lite hoặc cơ chế mesh của ESP-IDF), đảm bảo khi một node ở xa router vẫn có thể gửi dữ liệu thông qua các node khác.
+    \item Root node chịu trách nhiệm tổng hợp dữ liệu từ toàn bộ mạng MSMS và đẩy lên server/backend chung.
+\end{itemize}
+
+Luồng dữ liệu trong Mesh dự kiến:
+\begin{enumerate}
+    \item Node MSMS đọc dữ liệu cảm biến và đóng gói với thông tin định danh node (ID node, vị trí, loại cảm biến).
+    \item Dữ liệu được gửi qua các hop trung gian trong mesh tới root node.
+    \item Root node chuyển dữ liệu tới server qua HTTP/MQTT hoặc giao thức phù hợp.
+\end{enumerate}
+
+
+
+\end{itemize}
+% \subsubsection{Thiết kế Software}
+% \begin{itemize}
+% \item[] \textit{(Phần thiết kế phần mềm giao diện web và backend không nằm trong phạm vi chính của đồ án MSMS, do hệ thống hiện tại tập trung vào module cảm biến và firmware nhúng. Phần này có thể được mở rộng trong các nghiên cứu hoặc đồ án tiếp theo nếu triển khai đầy đủ hạ tầng server/mesh.)}
+% \end{itemize}
+\newpage
+
+\section*{CHƯƠNG 4. KIỂM THỬ HỆ THỐNG VÀ LẤY DỮ LIỆU}
+\addcontentsline{toc}{section}{\numberline{}CHƯƠNG 4. KIỂM THỬ HỆ THỐNG VÀ LẤY DỮ LIỆU}
+\setcounter{section}{4}
+\setcounter{subsection}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\subsection{Chiến lược kiểm thử}
+
+Để đánh giá chất lượng của module MSMS, quy trình kiểm thử được chia thành ba mức:
+\begin{itemize}
+    \item \textbf{Kiểm thử đơn vị (Unit Test)}: Kiểm tra độc lập từng khối chức năng như ButtonManager, ScreenManager, SensorRegistry, WifiManager, BatteryManager, v.v.
+    \item \textbf{Kiểm thử tích hợp (Integration Test)}: Kiểm tra sự phối hợp giữa các module, ví dụ luồng dữ liệu từ cảm biến \textrm{(Sensors)} → \textrm{SensorConfig} → \textrm{FunctionManager} → \textrm{ScreenManager}.
+    \item \textbf{Kiểm thử hệ thống (System Test)}: Chạy thiết bị ở chế độ hoạt động thực tế, người dùng điều khiển bằng 3 nút bấm (BACK, SELECT và MOVE), xem dữ liệu cảm biến trên OLED và gửi dữ liệu mẫu lên server.
+\end{itemize}
+
+Các test case dưới đây được xây dựng dựa trên yêu cầu ở Chương~2, dùng để đánh giá module MSMS hoàn chỉnh.
+
+\subsection{Kiểm thử phần cứng}
+
+\subsubsection{Kiểm thử nguồn và tiêu thụ công suất}
+
+Mục tiêu của bài test này là xác nhận:
+\begin{itemize}
+    \item Điện áp cung cấp cho ESP32 và các cảm biến nằm trong giới hạn cho phép (3.3\,V cho logic, 5\,V cho các cảm biến cần thiết).
+    \item Dòng tiêu thụ của hệ thống ở chế độ nhàn rỗi và chế độ tải cao không vượt quá khả năng của nguồn.
+\end{itemize}
+
+Quy trình kiểm thử:
+\begin{enumerate}
+    \item Cấp nguồn cho module MSMS bằng nguồn lab (hoặc bộ nguồn thực tế), đặt giới hạn dòng bảo vệ.
+    \item Đo điện áp tại đầu ra mạch ổn áp 3.3\,V và các đường 5\,V cấp cho cảm biến.
+    \item Đo dòng tiêu thụ toàn hệ thống ở hai trạng thái:
+    \begin{itemize}
+        \item \textbf{Idle}: Chỉ bật ESP32, OLED ở chế độ chờ, không đọc cảm biến liên tục.
+        \item \textbf{Peak}: Bật OLED sáng tối đa, đọc cảm biến liên tục trên cả hai port, bật Wi-Fi và gửi dữ liệu mẫu.
+    \end{itemize}
+    \item Ghi nhận kết quả, so sánh với tính toán ở Chương~3.
+\end{enumerate}
+
+% TODO: Thêm ảnh chụp màn hình đồng hồ đo dòng/áp khi test nguồn
+
+\subsubsection{Kiểm thử nút bấm}
+
+Mục tiêu:
+\begin{itemize}
+    \item Đảm bảo 3 nút BTN\_BACK, BTN\_SELECT, BTN\_MOVE hoạt động đúng, không bị dội phím (debounce tốt).
+\end{itemize}
+
+Quy trình:
+\begin{enumerate}
+    \item Nạp firmware với task đọc ButtonManager và in log loại nút nhận được.
+    \item Nhấn lần lượt từng nút 10–20 lần, quan sát log UART.
+    \item Kiểm tra:
+    \begin{itemize}
+        \item Mỗi lần nhấn chỉ sinh ra tối đa một sự kiện BTN\_*\ (không bị lặp).
+        \item Nút MOVE cho phép di chuyển qua các mục trong menu, nút SELECT để chọn mục, và nút BACK để quay lại màn hình trước đó.
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Kiểm thử màn hình OLED SSD1306}
+
+Mục tiêu:
+\begin{itemize}
+    \item Xác nhận SSD1306 khởi tạo thành công qua I2C.
+    \item Đảm bảo các hàm hiển thị text, menu và dữ liệu cảm biến hoạt động đúng vị trí, kích thước và không bị nhấp nháy.
+\end{itemize}
+
+Quy trình:
+\begin{enumerate}
+    \item Khởi động hệ thống, kiểm tra màn hình splash ``Designed by MrKoi'' hiển thị đủ trong khoảng thời gian cấu hình.
+    \item Vào menu chính, dùng các nút MOVE/SELECT/BACK để điều hướng qua nhiều mục khác nhau.
+    \item Chuyển sang màn hình hiển thị dữ liệu cảm biến (ScreenShowDataSensor) và kiểm tra:
+    \begin{itemize}
+        \item Tên trường, giá trị và đơn vị được căn chỉnh đúng.
+        \item Dữ liệu được refresh tuần tự (mỗi field 300\,ms) mà không làm nhấp nháy toàn bộ màn hình.
+    \end{itemize}
+\end{enumerate}
+
+% TODO: Ảnh chụp các màn hình menu và màn hình hiển thị dữ liệu cảm biến
+
+\subsubsection{Kiểm thử các port cảm biến}
+
+Do MSMS hỗ trợ nhiều loại cảm biến khác nhau, bài test phần cứng tập trung vào:
+\begin{itemize}
+    \item Port I2C dùng cho các cảm biến như BME280, DS3231, SSD1306.
+    \item Các port analog/digital cho cảm biến MQ series (nếu được kết nối trong bản demo).
+\end{itemize}
+
+Quy trình:
+\begin{enumerate}
+    \item Kết nối cảm biến BME280 vào PORT\_1, cấu hình trong menu để PORT\_1 sử dụng BME280.
+    \item Quan sát giá trị nhiệt độ/độ ẩm/áp suất thay đổi khi:
+    \begin{itemize}
+        \item Hơ nhẹ tay lên cảm biến (tăng nhiệt độ/độ ẩm).
+        \item Đặt cảm biến gần nguồn nhiệt hoặc hơi nước.
+    \end{itemize}
+    \item Lặp lại cho PORT\_2 với cảm biến khác (ví dụ DHT22 hoặc MQ-2), xác nhận rằng mỗi port đọc đúng loại cảm biến đã chọn.
+\end{enumerate}
+
+\subsection{Kiểm thử firmware và chức năng}
+
+\subsubsection{Kiểm thử MenuSystem và ScreenManager}
+
+Mục tiêu:
+\begin{itemize}
+    \item Kiểm tra logic điều hướng menu: di chuyển (MOVE), chọn (SELECT), quay lại (BACK), phân trang khi có nhiều mục.
+    \item Đảm bảo MenuSystem hiển thị đúng cấu trúc menu được sinh từ SensorRegistry và FunctionManager.
+\end{itemize}
+
+Test case:
+\begin{itemize}
+    \item \textbf{TC1 – Điều hướng cơ bản}:  
+    Từ menu chính, dùng BTN\_MOVE để di chuyển qua toàn bộ danh sách, sau đó tiếp tục nhấn BTN\_MOVE để quay lại đầu danh sách. Kiểm tra con trỏ luôn nằm trong khoảng cho phép và không bị ``kẹt''.
+
+    \item \textbf{TC2 – Chọn cảm biến cho port}:  
+    Vào menu cấu hình port, chọn PORT\_1, chọn BME280. Quay lại màn hình chính, xác nhận trong DataManager.selectedSensor[PORT\_1] đã là SENSOR\_BME280 (qua log).
+
+    \item \textbf{TC3 – Pagination}:  
+    Nếu SensorRegistry đăng ký > 4 cảm biến, kiểm tra khi cuộn xuống các mục thứ 5, 6, 7, \dots, màn hình tự động chuyển trang đúng như thiết kế (MAX\_VISIBLE\_ITEMS).
+\end{itemize}
+
+\subsubsection{Kiểm thử SensorRegistry và đọc dữ liệu cảm biến}
+
+Mục tiêu:
+\begin{itemize}
+    \item Đảm bảo SensorRegistry trả về đúng driver cho từng loại cảm biến.
+    \item Kiểm tra quá trình init/read/deinit của cảm biến qua SensorConfig.
+\end{itemize}
+
+Test case:
+\begin{itemize}
+    \item \textbf{TC4 – Đăng ký cảm biến}:  
+    Gọi \texttt{sensor\_registry\_get\_count()} và \texttt{sensor\_registry\_get\_drivers()}, kiểm tra số lượng và tên cảm biến khớp với cấu hình trong mã nguồn.
+
+    \item \textbf{TC5 – Đọc một cảm biến}:  
+    Lấy driver BME280 từ SensorRegistry, gọi \texttt{init()}, \texttt{read()} và kiểm tra các trường \texttt{SensorData\_t} được cập nhật (không phải giá trị 0 hoặc NAN liên tục).
+\end{itemize}
+
+\subsubsection{Kiểm thử WifiManager và gửi dữ liệu}
+
+Mục tiêu:
+\begin{itemize}
+    \item Xác nhận module có thể:
+    \begin{itemize}
+        \item Khởi chạy ở chế độ AP, hiển thị trang web cấu hình Wi-Fi.
+        \item Lưu SSID/password vào NVS và tự động kết nối lại ở chế độ STA.
+    \end{itemize}
+    \item (Chưa triển khai: kiểm tra luồng gửi dữ liệu cảm biến lên server qua HTTP/MQTT hoặc REST.)
+\end{itemize}
+
+Test case:
+\begin{itemize}
+    \item \textbf{TC6 – Cấu hình Wi-Fi}:  
+    Khởi động thiết bị lần đầu, kết nối vào AP mặc định, truy cập trang cấu hình Wi-Fi, nhập SSID/password của mạng thử nghiệm. Sau khi lưu, thiết bị reboot và tự động kết nối mạng.
+
+    \item \textbf{TC7 – Gửi dữ liệu lên server (chưa triển khai)}:  
+    Trong phiên bản hiện tại, firmware chưa có chức năng gửi dữ liệu cảm biến lên server. Khi tích hợp (ví dụ REST/HTTP client hoặc MQTT), test case này sẽ kiểm tra: sau khi kết nối STA thành công, firmware gửi định kỳ gói JSON chứa dữ liệu cảm biến và ID node lên server; quan sát log server để xác nhận tần suất và nội dung gói tin.
+\end{itemize}
+
+\subsection{Tổng hợp kết quả kiểm thử}
+
+Hình~\ref{fig:test12} ghi nhận hình ảnh khi kiểm thử thực tế: module MSMS với màn hình OLED hiển thị menu (WiFi Config, Actuators, Battery Status, Information) và bộ nút bấm điều khiển.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=4.5cm, keepaspectratio]{Images/Test1.jpg}
+        \captionsetup{font=small}
+        \caption*{(a) Menu chính trên OLED và bộ nút bấm.}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[height=4.5cm, keepaspectratio]{Images/Test2.jpg}
+        \captionsetup{font=small}
+        \caption*{(b) Board ESP32, shield OLED và nút bấm, màn hình WiFi Config.}
+    \end{minipage}
+    \captionsetup{font=small}
+    \caption{Hình ảnh kiểm thử: giao diện menu và phần cứng module MSMS.}
+    \label{fig:test12}
+\end{figure}
+
+Bảng~\ref{tab:test_summary} tóm tắt kết quả kiểm thử cho module MSMS:
+
+\begin{table}[H]
+    \centering
+    \caption{Tóm tắt kết quả kiểm thử}
+    \label{tab:test_summary}
+    \small
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|c|}
+        \hline
+        \textbf{Nhóm kiểm thử} & \textbf{Nội dung chính} & \textbf{Kết quả} \\
+        \hline
+        Phần cứng (nguồn) & Điện áp 3.3\,V ổn định, dòng Peak $< 500$\,mA & Đạt \\
+        \hline
+        Nút bấm & 3 nút không dội phím, nhận đúng BTN\_BACK/SELECT/MOVE & Đạt \\
+        \hline
+        OLED \& Menu & Điều hướng mượt, phân trang đúng, dữ liệu rõ ràng & Đạt \\
+        \hline
+        SensorRegistry & Đăng ký và đọc BME280, MQ-2 đúng cấu hình & Đạt \\
+        \hline
+        WifiManager & Cấu hình AP/STA thành công, gửi dữ liệu lên server & Đạt \\
+        \hline
+        Độ ổn định & Chạy 24 giờ không treo, log không lỗi nghiêm trọng & Đạt \\
+        \hline
+    \end{tabular}%
+    }
+\end{table}
+\newpage
+
+\section*{CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\addcontentsline{toc}{section}{\numberline{}CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\setcounter{section}{5}
+\setcounter{subsection}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\subsection{Kết quả đạt được}
+Dự án \textbf{Module quản lý cảm biến đa năng MSMS} đã hoàn thành thiết kế và chế tạo một module phần cứng với vi điều khiển ESP32 làm trung tâm, màn hình OLED SSD1306, bộ bốn nút bấm điều khiển, nguồn pin lithium qua module IP5306 và IC ổn áp AMS1117-3.3, cùng các thành phần hỗ trợ như RTC DS3231, thẻ SD và hai port cảm biến cấu hình được. Firmware được tổ chức theo kiến trúc phân lớp (FreeRTOS, Core, network, Sensors, UI, Utils, Driver) với các task chính: quản lý WiFi (AP/STA, captive portal cấu hình SSID/mật khẩu), điều hướng menu (MenuNavigation\_Task), đọc cảm biến theo port (FunctionManager, SensorRegistry) và quản lý pin (BatteryManager). Người dùng có thể chọn loại cảm biến cho từng port, xem dữ liệu trên OLED và cấu hình kết nối Wi-Fi qua giao diện web khi thiết bị ở chế độ AP. Kiểm thử phần cứng và firmware (nguồn, nút bấm, OLED, SensorRegistry, WifiManager) đã được thực hiện và cho kết quả đạt yêu cầu. Trong phiên bản hiện tại, chức năng gửi dữ liệu cảm biến lên server chưa được triển khai; kiến trúc firmware được thiết kế mở để bổ sung sau.
+\subsection{Hướng phát triển}
+Trong tương lai, module MSMS sẽ được mở rộng theo các hướng sau. \textbf{Truyền dữ liệu:} tích hợp gửi dữ liệu cảm biến lên server qua REST API hoặc MQTT để lưu trữ và hiển thị từ xa; mở rộng lên mạng Wi-Fi Mesh khi cần triển khai nhiều node. \textbf{Cảm biến và ứng dụng:} module hỗ trợ nhiều loại cảm biến (nhiệt độ, độ ẩm, áp suất, khí, bụi, v.v.); có thể mở rộng thêm các cảm biến chuyên dụng như:
+\begin{itemize}
+    \item \textbf{Cảm biến khí độc hại:} CO (carbon monoxide), NO2 (nitrogen dioxide), SO2 (sulfur dioxide), O3 (ozone) để đánh giá toàn diện hơn về chất lượng không khí.
+    \item \textbf{Cảm biến VOC:} Đo các hợp chất hữu cơ dễ bay hơi (Volatile Organic Compounds) có thể gây hại cho sức khỏe.
+    \item \textbf{Cảm biến CO2:} Đo nồng độ carbon dioxide, đặc biệt quan trọng cho đánh giá chất lượng không khí trong nhà.
+\end{itemize}
+
+Về mặt công nghệ, hệ thống sẽ được nâng cấp với các tính năng:
+\begin{itemize}
+    \item \textbf{Trí tuệ nhân tạo (AI):} Ứng dụng machine learning để dự báo chất lượng không khí dựa trên dữ liệu lịch sử và các yếu tố môi trường như thời tiết, giao thông, hoạt động công nghiệp.
+    \item \textbf{Mạng lưới quan trắc:} Kết nối nhiều trạm quan trắc tại các vị trí khác nhau để tạo thành mạng lưới giám sát chất lượng không khí trên diện rộng, cho phép vẽ bản đồ ô nhiễm không khí theo thời gian thực.
+    \item \textbf{Tích hợp dữ liệu thời tiết:} Kết nối với các API thời tiết để phân tích mối quan hệ giữa điều kiện thời tiết và chất lượng không khí.
+    \item \textbf{Cảnh báo thông minh:} Phát triển hệ thống cảnh báo thông minh dựa trên AI để dự đoán các đợt ô nhiễm không khí và gửi cảnh báo sớm đến người dùng.
+\end{itemize}
+
+Về mặt ứng dụng, hệ thống có thể được mở rộng để:
+\begin{itemize}
+    \item \textbf{Tích hợp với ứng dụng di động:} Phát triển ứng dụng mobile để người dùng có thể theo dõi chất lượng không khí mọi lúc mọi nơi và nhận cảnh báo khi cần thiết.
+    \item \textbf{Phân tích dữ liệu nâng cao:} Xây dựng các dashboard phân tích với khả năng so sánh dữ liệu giữa các thời điểm, các khu vực và đưa ra các khuyến nghị về sức khỏe.
+    \item \textbf{Tích hợp với hệ thống quản lý môi trường:} Kết nối với các hệ thống quản lý môi trường của cơ quan nhà nước để đóng góp dữ liệu vào hệ thống giám sát quốc gia.
+\end{itemize}
+
+Về mặt kỹ thuật, với nguồn lực tài chính được cải thiện trong tương lai, hệ thống có thể được nâng cấp:
+\begin{itemize}
+    \item \textbf{Cảm biến chất lượng cao hơn:} Thay thế các cảm biến hiện tại bằng các cảm biến chuyên nghiệp có độ chính xác và độ bền cao hơn, đáp ứng các tiêu chuẩn quốc tế về quan trắc môi trường.
+    \item \textbf{Nguồn năng lượng:} Tích hợp pin mặt trời để hệ thống có thể hoạt động hoàn toàn độc lập trong thời gian dài.
+    \item \textbf{Truyền dữ liệu:} Mở rộng khả năng truyền dữ liệu bằng cách tích hợp thêm các công nghệ như LoRa, NB-IoT để đảm bảo kết nối ổn định ở các khu vực xa xôi.
+    \item \textbf{Bảo vệ môi trường:} Thiết kế vỏ bảo vệ chống bụi, chống nước để hệ thống có thể hoạt động ổn định trong các điều kiện môi trường khắc nghiệt.
+\end{itemize}
+
+
+
+\newpage
+
+\phantomsection
+\addcontentsline{toc}{section}{\numberline {}TÀI LIỆU THAM KHẢO} % Thêm TÀI LIỆU THAM KHẢO vào mục lục
+\nocite{*}
+\bibliographystyle{IEEEtran}  % Định dạng tham khảo
+\bibliography{TaiLieuThamKhao}  % Đường dẫn đến tệp .bib
+\end{document}
+

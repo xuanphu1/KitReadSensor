@@ -1,0 +1,23 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Ví dụ các module cảm biến đơn chức năng trên thị trường.}}{5}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Cấu trúc tổng quan của hệ thống.}}{11}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Vi điều khiển ESP32.}}{13}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Module DS3231.}}{14}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Module SD Card.}}{15}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Module mạch sạc IP5306.}}{16}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Pin Lithium Polymer 3.7V 1500mAh (Model FL 803450).}}{18}{figure.caption.23}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Module màn hình OLED SSD1306.}}{19}{figure.caption.26}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces IC ổn áp AMS1117-3.3.}}{20}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Khối xử lý và nút bấm.}}{22}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Khối nguồn.}}{23}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Khối cảm biến tích hợp.}}{24}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Khối 2 cổng cảm biến.}}{25}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Top Layout.}}{26}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Bot Layout.}}{27}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces 3D Top.}}{27}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces 3D Bot.}}{28}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Sơ đồ kiến trúc phần mềm ESP32.}}{28}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Web server cấu hình hệ thống.}}{30}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Tổng quan luồng hoạt động hệ thống MSMS (Sequence Diagram).}}{31}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Sơ đồ topology mạng Wi-Fi Mesh của các node MSMS.}}{32}{figure.caption.42}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Hình ảnh kiểm thử: giao diện menu và phần cứng module MSMS.}}{38}{figure.caption.43}%

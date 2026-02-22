@@ -3,6 +3,7 @@
 #include "MenuSystem.h"
 #include "ScreenManager.h"
 #include "WifiManager.h"
+#include "BatteryManager.h"
 #include "driver/i2c.h"
 #include "esp_log.h"
 #include "ssd1306.h"

@@ -4,12 +4,14 @@
 #include "SensorConfig.h"
 #include "SensorRegistry.h"
 #include "WifiManager.h"
+#include "BatteryManager.h"
 #include "freertos/idf_additions.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "driver/gpio.h"
 
 static PortId_t PortSelected[NUM_PORTS] = {PORT_NONE, PORT_NONE, PORT_NONE};
-static const char *port_name[3] = {"Port 1", "Port 2", "Port 3"};
+static const char *port_name[NUM_PORTS] = {"Port 1", "Port 2", "Port 3"};
 static TaskHandle_t readDataSensorTaskHandle[NUM_PORTS];
 
 void wifi_config_task(void *pvParameters) {
@@ -53,6 +55,34 @@ void wifi_config_callback(void *ctx) {
   xTaskCreate(wifi_config_task, "wifi_connect_task", 4096, data, 5, NULL);
 }
 
+
+/* -------------------- Actuators (GPIO output) -------------------- */
+static void actuator_set_level(void *ctx, int level) {
+  int gpio_num = (int)(uintptr_t)ctx;
+  gpio_config_t io = {
+    .pin_bit_mask = (1ULL << gpio_num),
+    .mode = GPIO_MODE_OUTPUT,
+    .pull_up_en = GPIO_PULLUP_DISABLE,
+    .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    .intr_type = GPIO_INTR_DISABLE,
+  };
+  if (gpio_config(&io) != ESP_OK) {
+    ESP_LOGE(TAG_FUNCTION_MANAGER, "Actuator GPIO %d config failed", gpio_num);
+    return;
+  }
+  gpio_set_level((gpio_num_t)gpio_num, level);
+  ESP_LOGI(TAG_FUNCTION_MANAGER, "Actuator GPIO %d -> %s", gpio_num, level ? "ON" : "OFF");
+}
+
+
+void actuator_on_cb(void *ctx) {
+  actuator_set_level(ctx, 1);
+}
+
+void actuator_off_cb(void *ctx) {
+  actuator_set_level(ctx, 0);
+}
+
 void information_callback(void *ctx) {}
 
 void read_temperature_cb(void *ctx) {}
@@ -63,7 +93,23 @@ void read_pressure_cb(void *ctx) {}
 
 void read_dht22_cb(void *ctx) {}
 
-void battery_status_callback(void *ctx) {}
+void battery_status_callback(void *ctx) {
+  DataManager_t *data = (DataManager_t *)ctx;
+  if (data == NULL) {
+    ESP_LOGW(TAG_FUNCTION_MANAGER, "battery_status_callback: data is NULL");
+    return;
+  }
+  
+  ESP_LOGI(TAG_FUNCTION_MANAGER, "Battery Status callback triggered");
+  
+  // Cập nhật thông tin pin từ BatteryManager
+  BatteryManager_UpdateInfo(&(data->objectInfo.batteryInfo));
+  
+  // Hiển thị menu Battery Status
+  if (data->MenuReturn[1] != NULL) {
+    MenuRender(data->MenuReturn[1], &(data->screen.selected), &(data->objectInfo));
+  }
+}
 
 // Biến global static để chia sẻ giữa các hàm
 static char g_port_label_buf[NUM_PORTS][24];
@@ -82,20 +128,20 @@ void reset_all_ports_callback(void *ctx) {
     drivers[i].is_init = false;
   }
 
-  data->screen.current->items[0].name = g_port_label_buf[0];
-  data->screen.current->items[1].name = g_port_label_buf[1];
-  data->screen.current->items[2].name = g_port_label_buf[2];
-  if (readDataSensorTaskHandle[0] != NULL) {
-    vTaskDelete(readDataSensorTaskHandle[0]);
-    readDataSensorTaskHandle[0] = NULL;
+  if (data->on_ports_reset) {
+    data->on_ports_reset(data);
   }
-  if (readDataSensorTaskHandle[1] != NULL) {
-    vTaskDelete(readDataSensorTaskHandle[1]);
-    readDataSensorTaskHandle[1] = NULL;
+  /* Cập nhật tên mục trong menu hiện tại (vd Show data sensor) nếu cần */
+  for (PortId_t i = 0; i < NUM_PORTS; i++) {
+    data->screen.current->items[i].name = g_port_label_buf[i];
   }
-  if (readDataSensorTaskHandle[2] != NULL) {
-    vTaskDelete(readDataSensorTaskHandle[2]);
-    readDataSensorTaskHandle[2] = NULL;
+  
+  // Dừng và xóa các task đọc sensor đang chạy
+  for (PortId_t i = 0; i < NUM_PORTS; i++) {
+    if (readDataSensorTaskHandle[i] != NULL) {
+      vTaskDelete(readDataSensorTaskHandle[i]);
+      readDataSensorTaskHandle[i] = NULL;
+    }
   }
   ESP_LOGI(TAG_FUNCTION_MANAGER, "Reset all ports");
   MenuRender(data->screen.current, &data->screen.selected, &data->objectInfo);
@@ -194,21 +240,10 @@ void select_sensor_cb(void *ctx) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 
-  // 5. Quay lại menu parent và render
-  if (param->data->screen.current && param->data->screen.current->parent) {
-    param->data->screen.current = param->data->screen.current->parent;
-    param->data->screen.selected = (int8_t)param->port;
-    param->data->screen.current->items[param->port].name =
-        g_port_label_buf[param->port];
-    ESP_LOGI(TAG_FUNCTION_MANAGER, "Name of menu item: %s",
-             param->data->screen.current->items[param->port].name);
-  } else {
-    ESP_LOGW(TAG_FUNCTION_MANAGER,
-             "select_sensor_cb: current or parent is NULL");
+  // 5. Cập nhật tên Port trong menu Sensors (Port X - tên cảm biến) và quay về menu Sensors
+  if (param->data->on_sensor_selected) {
+    param->data->on_sensor_selected(param->data, param->port);
   }
-
-  MenuRender(param->data->screen.current, &param->data->screen.selected,
-             &param->data->objectInfo);
 }
 
 void readDataSensorTask(void *pvParameters) {

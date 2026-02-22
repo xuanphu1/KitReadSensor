@@ -1,5 +1,5 @@
-#ifndef IMAGE_SCREEN_H
-#define IMAGE_SCREEN_H
+#ifndef BIT_MANAGER_H
+#define BIT_MANAGER_H
 #include "Common.h"
 
 

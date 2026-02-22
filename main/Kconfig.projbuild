@@ -1,0 +1,81 @@
+menu "Pin config"
+    # UART 2: ESP32 = TX 17, RX 16 | ESP32-C6 = TX 5, RX 4
+    config TX_UART_2
+        int "TX UART 2"
+        default 17 if IDF_TARGET_ESP32
+        default 5 if IDF_TARGET_ESP32C6
+        help
+            TX for UART interface.
+
+    config RX_UART_2
+        int "RX UART 2 "
+        default 16 if IDF_TARGET_ESP32
+        default 4 if IDF_TARGET_ESP32C6
+        help
+            RX for UART interface.
+
+    # SPI: ESP32 = MISO 19, SCK 18, MOSI 23, CS 4 | ESP32-C6 = MOSI 2, MISO 3, SCK 23, CS 22
+    config MOSI_PIN
+        int "MOSI PIN"
+        default 23 if IDF_TARGET_ESP32
+        default 11 if IDF_TARGET_ESP32C6
+        help
+            MOSI for SPI interface.
+
+    config MISO_PIN
+        int "MISO PIN"
+        default 19 if IDF_TARGET_ESP32
+        default 18 if IDF_TARGET_ESP32C6
+        help
+            MISO for SPI interface.
+
+    config SCK_PIN
+        int "SCK PIN"
+        default 18 if IDF_TARGET_ESP32
+        default 23 if IDF_TARGET_ESP32C6
+        help
+            SCK for SPI interface.
+
+    config CS_PIN
+        int "CS PIN"
+        default 4 if IDF_TARGET_ESP32
+        default 22 if IDF_TARGET_ESP32C6
+        help
+            CS for SPI interface.
+
+    # IO port: ESP32 = 32, 26, 27, 35, 33 | ESP32-C6 = 0, 1, 10, 11, 18
+    config IO_1_PORT_1
+        int "IO 1 PORT 1"
+        default 32 if IDF_TARGET_ESP32
+        default 0 if IDF_TARGET_ESP32C6
+        help
+            IO 1 Port 1 GPIO.
+
+    config IO_1_PORT_2
+        int "IO 1 PORT 2"
+        default 26 if IDF_TARGET_ESP32
+        default 1 if IDF_TARGET_ESP32C6
+        help
+            This is trigger pin that use for the type of Pulse Sensor.
+
+    config IO_2_PORT_2
+        int "IO 2 PORT 2"
+        default 27 if IDF_TARGET_ESP32
+        default 10 if IDF_TARGET_ESP32C6
+        help
+            This is Echo pin that use for the type of Pulse Sensor.
+
+    config IO_3_PORT_2
+        int "IO 3 PORT 2"
+        default 35 if IDF_TARGET_ESP32
+        default 2 if IDF_TARGET_ESP32C6
+        help
+            Read Analog or output GPIO.
+
+    config IO_1_PORT_3
+        int "IO 1 PORT 3"
+        default 33 if IDF_TARGET_ESP32
+        default 3 if IDF_TARGET_ESP32C6
+        help
+            Read Analog or output GPIO.
+endmenu

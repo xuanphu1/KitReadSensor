@@ -33,6 +33,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"°C", "hPa", "%"},
         .unit_count = 3,
         .is_init = false,
+        .interface = COMMUNICATION_I2C,
     },
     {
         .name = "MH-Z14A",
@@ -43,6 +44,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_UART,
     },
     {
         .name = "PMS7003",
@@ -53,6 +55,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ug/m3", "ug/m3", "ug/m3"},
         .unit_count = 3,
         .is_init = false,
+        .interface = COMMUNICATION_UART,
     },
     {
         .name = "DHT22",
@@ -63,8 +66,9 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"°C", "%"},
         .unit_count = 2,
         .is_init = false,
+        .interface = COMMUNICATION_PULSE,
     },
-    // MQ Series Sensors
+    // MQ Series Sensors (analog)
     {
         .name = "MQ-2",
         .init = NULL,
@@ -74,6 +78,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-3",
@@ -84,6 +89,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-4",
@@ -94,6 +100,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-5",
@@ -104,6 +111,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-6",
@@ -114,6 +122,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-7",
@@ -124,6 +133,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-8",
@@ -134,6 +144,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-9",
@@ -144,6 +155,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
     {
         .name = "MQ-135",
@@ -154,6 +166,7 @@ static sensor_driver_t sensor_drivers[] = {
         .unit = {"ppm"},
         .unit_count = 1,
         .is_init = false,
+        .interface = COMMUNICATION_ANALOG,
     },
 };
 
@@ -208,5 +221,36 @@ sensor_driver_t *sensor_registry_get_driver(SensorType_t sensor_type) {
     return NULL;
   }
   return &sensor_drivers[sensor_type];
+}
+
+size_t sensor_registry_get_count_by_interface(TypeCommunication_t iface) {
+  size_t total = sensor_registry_get_count();
+  size_t n = 0;
+  for (size_t i = 0; i < total; i++) {
+    if (sensor_drivers[i].interface == iface) {
+      n++;
+    }
+  }
+  return n;
+}
+
+sensor_driver_t *sensor_registry_get_driver_at_interface(TypeCommunication_t iface,
+                                                         size_t index,
+                                                         SensorType_t *out_sensor_type) {
+  size_t total = sensor_registry_get_count();
+  size_t k = 0;
+  for (size_t i = 0; i < total; i++) {
+    if (sensor_drivers[i].interface != iface) {
+      continue;
+    }
+    if (k == index) {
+      if (out_sensor_type) {
+        *out_sensor_type = (SensorType_t)i;
+      }
+      return &sensor_drivers[i];
+    }
+    k++;
+  }
+  return NULL;
 }
 

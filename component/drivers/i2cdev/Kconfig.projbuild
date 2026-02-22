@@ -1,13 +1,16 @@
 menu "I2C common config"
-
+    # I2C: ESP32 = SDA 21, SCL 22 | ESP32-C6 = SDA 6, SCL 7
     config I2CDEV_COMMON_SDA
         int "I2C SDA GPIO"
-        default 6
+        default 21 if IDF_TARGET_ESP32
+        default 6 if IDF_TARGET_ESP32C6
         help
             SDA GPIO for the I2C interface.
+
     config I2CDEV_COMMON_SCL
         int "I2C SCL GPIO"
-        default 7
+        default 22 if IDF_TARGET_ESP32
+        default 7 if IDF_TARGET_ESP32C6
         help
             SCL GPIO for the I2C interface.
 

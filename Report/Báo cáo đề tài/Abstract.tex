@@ -1,0 +1,10 @@
+\section*{TÓM TẮT ĐỒ ÁN}
+
+Trong bối cảnh các ứng dụng IoT ngày càng phổ biến, nhu cầu xây dựng những module cảm biến linh hoạt, có thể tái sử dụng cho nhiều bài toán khác nhau đang trở nên cấp thiết. Thay vì thiết kế từng hệ thống cảm biến cố định cho từng mục đích riêng lẻ, đề tài này tập trung vào việc phát triển một \textbf{module quản lý cảm biến đa năng} (Multi-Sensor Management System – MSMS) dựa trên vi điều khiển ESP32, cho phép người dùng tùy chọn loại cảm biến cần sử dụng và cấu hình trực tiếp trên thiết bị.
+
+Module MRS được thiết kế như một khối phần cứng–firmware dùng chung: ESP32 đóng vai trò bộ xử lý trung tâm, kết nối với nhiều loại cảm biến khác nhau (cảm biến môi trường, cảm biến khí, \dots). Thông qua màn hình OLED và 4 nút bấm điều hướng, người dùng có thể chọn cảm biến cho từng cổng kết nối, xem dữ liệu đo được theo từng trường (tên trường – giá trị – đơn vị) mà không cần can thiệp vào mã nguồn hay nạp lại firmware.
+
+Hệ thống hỗ trợ quản lý tập trung danh sách cảm biến, cho phép thêm/bớt loại cảm biến mới một cách thuận tiện. Dữ liệu sau khi đo được có thể hiển thị trực tiếp trên thiết bị và gửi mẫu lên server qua Wi-Fi để phục vụ cho việc lưu trữ, phân tích hoặc tích hợp vào các hệ thống lớn hơn. Kiến trúc của module cũng được chuẩn bị để có thể mở rộng thành mạng nhiều node trong tương lai, nơi nhiều module MRS có thể thu thập dữ liệu tại nhiều vị trí khác nhau và tập trung về một điểm xử lý chung.
+
+Kết quả đạt được là một module cảm biến có khả năng cấu hình linh hoạt, dễ mở rộng và phù hợp với nhiều ứng dụng khác nhau như giám sát môi trường, nông nghiệp thông minh hay các hệ thống cảm biến phân tán. Dự án đặt nền tảng cho các nghiên cứu tiếp theo về mạng nhiều node, kết nối cloud và các cơ chế xử lý – phân tích dữ liệu cảm biến ở quy mô lớn.
+\cleardoublepage

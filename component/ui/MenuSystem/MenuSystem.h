@@ -21,6 +21,10 @@
 void MenuSystemInit(DataManager_t *data);
 void MenuNavigation_Task(void *pvParameter);
 void ReadSensor_Task(void *pvParameter);
+/** Cập nhật tên Sensor_Menu_Items[0..2] thành "Port X" hoặc "Port X - tên cảm biến" theo data->selectedSensor. */
+void MenuSystem_UpdatePortNames(DataManager_t *data);
+/** Chuyển màn hình về menu Sensors và vẽ lại; selected_index là chỉ số mục được chọn (0=Port1, 1=Port2, 2=Port3). */
+void MenuSystem_GoToSensorMenu(DataManager_t *data, int8_t selected_index);
 
 // SensorSelection được cấp phát động, không cần extern declaration
 // Sử dụng sensor_registry_get_count() để lấy số lượng sensor thực tế

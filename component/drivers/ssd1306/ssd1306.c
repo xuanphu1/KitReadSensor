@@ -6,6 +6,7 @@
 
 #include "ssd1306.h"
 #include "driver/i2c.h"
+#include "freertos/task.h"
 #include "string.h" // for memset
 
 #define SSD1306_WRITE_CMD (0x00)
@@ -51,7 +52,7 @@ static esp_err_t ssd1306_write_data(ssd1306_handle_t dev,
   assert(ESP_OK == ret);
   ret = i2c_master_stop(cmd);
   assert(ESP_OK == ret);
-  ret = i2c_master_cmd_begin(device->bus, cmd, 1000 / portTICK_PERIOD_MS);
+  ret = i2c_master_cmd_begin(device->bus, cmd, pdMS_TO_TICKS(2000));
   i2c_cmd_link_delete(cmd);
 
   return ret;
@@ -74,7 +75,7 @@ static esp_err_t ssd1306_write_cmd(ssd1306_handle_t dev,
   assert(ESP_OK == ret);
   ret = i2c_master_stop(cmd);
   assert(ESP_OK == ret);
-  ret = i2c_master_cmd_begin(device->bus, cmd, 1000 / portTICK_PERIOD_MS);
+  ret = i2c_master_cmd_begin(device->bus, cmd, pdMS_TO_TICKS(2000));
   i2c_cmd_link_delete(cmd);
 
   return ret;
