@@ -24,12 +24,13 @@
 }
 \renewcommand{\baselinestretch}{1.2}
 \setlength{\parindent}{1cm}
+\setlength{\emergencystretch}{2.5em}
 \usepackage{titlesec}
-\titlespacing*{\section}{0pt}{0pt}{20pt}
-\titleformat*{\section}{\fontsize{14pt}{0pt}\selectfont \bfseries \centering}
-\titlespacing*{\subsection}{0pt}{10pt}{0pt}
+\titlespacing*{\section}{0pt}{24pt}{20pt}
+\titleformat{\section}{\fontsize{14pt}{0pt}\selectfont \bfseries \centering}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{16pt}{10pt}
 \titleformat*{\subsection}{\fontsize{13pt}{0pt}\selectfont \bfseries}
-\titlespacing*{\subsubsection}{8pt}{8pt}{0pt}
+\titlespacing*{\subsubsection}{8pt}{12pt}{6pt}
 \titleformat*{\subsubsection}{\fontsize{12pt}{0pt}\selectfont \bfseries \itshape}
 
 % Cấu hình listing cho mã nguồn C
@@ -49,18 +50,23 @@
   tabsize=2,
 }
 
+\usepackage[unicode,pdfencoding=auto,colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdfborder=0 0 0]{hyperref}
+
 \title{BÁO CÁO CHI TIẾT CODE VÀ CÁCH TRIỂN KHAI\\Module quản lý cảm biến đa năng (MSMS)}
 \author{}
 \date{}
 
 \begin{document}
 \maketitle
+\setcounter{tocdepth}{3}
 \tableofcontents
 \newpage
 
 %==============================================================================
-\section{Tổng quan cấu trúc mã nguồn}
+\section{Chương 1: Tổng quan cấu trúc và các module firmware}
 %==============================================================================
+
+\subsection{Tổng quan cấu trúc mã nguồn}
 
 Firmware MSMS được tổ chức theo mô hình \textbf{component} của ESP-IDF: mã nguồn nằm trong \texttt{main/} (điểm vào và khởi tạo toàn cục) và \texttt{component/} (các module chức năng độc lập, mỗi component có thể có \texttt{.c}, \texttt{.h} và \texttt{CMakeLists.txt} riêng).
 
@@ -74,19 +80,21 @@ Firmware MSMS được tổ chức theo mô hình \textbf{component} của ESP-I
     \end{itemize}
     \item \textbf{component/core/}
     \begin{itemize}
-        \item \textbf{DataManager/} -- \texttt{Common.c}, \texttt{Common.h}: Định nghĩa các kiểu dữ liệu dùng chung (\texttt{DataManager\_t}, \texttt{menu\_item\_t}, \texttt{menu\_list\_t}, \texttt{objectInfoManager\_t}, \texttt{SelectionParam\_t}, \ldots).
+        \item \textbf{DataManager/} -- \texttt{Common.c}, \texttt{Common.h}: Định nghĩa các kiểu dữ liệu dùng chung (\texttt{DataManager\_t}, \texttt{menu\_item\_t}, \texttt{menu\_list\_t}, \texttt{objectInfoManager\_t}, \texttt{SelectionParam\_t}, \ldots). (Các kiểu khác xem \texttt{Common.h}.)
         \item \textbf{FunctionManager/} -- \texttt{FunctionManager.c}, \texttt{FunctionManager.h}: Triển khai các callback của menu (cấu hình Wi-Fi, chọn cảm biến, reset port, trạng thái pin, điều khiển actuator ON/OFF).
         \item \textbf{BatteryManager/} -- \texttt{BatteryManager.c}, \texttt{BatteryManager.h}: Đọc ADC pin, cập nhật mức pin và thông tin hiển thị.
     \end{itemize}
     \item \textbf{component/sensors/}
     \begin{itemize}
-        \item \textbf{SensorTypes/} -- \texttt{SensorTypes.h}: Định nghĩa \texttt{SensorType\_t}, \texttt{PortId\_t}, \texttt{TypeCommunication\_t}, \texttt{SensorData\_t}, \texttt{sensor\_driver\_t}.
+        \item \textbf{SensorTypes/} -- \texttt{SensorTypes.h}: Định nghĩa \texttt{SensorType\_t}, \texttt{PortId\_t}, \\
+        \texttt{TypeCommunication\_t}, 
+        \texttt{SensorData\_t}, \texttt{sensor\_driver\_t}. (Chi tiết ở mục 1.6.1.)
         \item \textbf{SensorRegistry/} -- \texttt{SensorRegistry.c}, \texttt{SensorRegistry.h}: Bảng đăng ký driver cảm biến (BME280, MH-Z14A, PMS7003, DHT22, MQ-2 đến MQ-135), lọc theo giao tiếp (UART, I2C, SPI, ANALOG, PULSE).
         \item \textbf{SensorConfig/} -- \texttt{SensorConfig.c}, \texttt{SensorConfig.h}: Khởi tạo/đọc/giải phóng cảm biến (wrapper BME280 và mở rộng sau).
     \end{itemize}
     \item \textbf{component/ui/}
     \begin{itemize}
-        \item \textbf{MenuSystem/} -- \texttt{MenuSystem.c}, \texttt{MenuSystem.h}: Cây menu (Root $\to$ WiFi Config, Sensors, Actuators, Battery Status, Information), cấu trúc Sensors $\to$ Port 1/2/3 $\to$ UART/I2C/SPI/ANALOG/PULSE $\to$ danh sách cảm biến, và task điều hướng \texttt{MenuNavigation\_Task}.
+        \item \textbf{MenuSystem/} -- \texttt{MenuSystem.c}, \texttt{MenuSystem.h}: Cây menu Root $\to$ WiFi Config, Sensors, Actuators, Battery Status, Information; Sensors $\to$ Port 1/2/3 $\to$ UART/I2C/SPI/ANALOG/PULSE $\to$ danh sách cảm biến; task \texttt{MenuNavigation\_Task}.
         \item \textbf{ScreenManager/} -- \texttt{ScreenManager.c}, \texttt{ScreenManager.h}: Vẽ menu lên OLED (\texttt{MenuRender}), màn hình Wi-Fi đang kết nối, tin nhắn, dữ liệu cảm biến; dùng mutex để tránh tranh chấp I2C.
         \item \textbf{ButtonManager/} -- \texttt{ButtonManager.c}, \texttt{ButtonManager.h}: Đọc 4 nút (UP, DOWN, SEL, BACK), debounce, trả về \texttt{ReadButtonStatus()}.
     \end{itemize}
@@ -150,8 +158,8 @@ Hình~\ref{fig:tree-dir} minh họa cấu trúc thư mục chính của dự án
         [ErrorCodes]
       ]
       [drivers
-        [ssd1306, i2cdev]
-        [BME280, BMP280, DS3231, LedRGB]
+        [{ssd1306, i2cdev}]
+        [{BME280, BMP280, DS3231, LedRGB}]
       ]
     ]
   ]
@@ -171,56 +179,55 @@ Hình~\ref{fig:tree-dir} minh họa cấu trúc thư mục chính của dự án
     \item \textbf{LED RGB:} \texttt{LedRGB\_Init()}.
     \item \textbf{Nút bấm:} \texttt{ButtonManagerInit()}.
     \item \textbf{I2C chung:} \texttt{i2cInitDevCommon()} (cấu hình SDA/SCL từ Kconfig).
-    \item \textbf{Màn hình OLED:} \texttt{ssd1306\_create(I2C\_NUM\_0, \ldots)}, \texttt{ScreenManagerInit(\&MainScreen)}.
+    \item \textbf{Màn hình OLED:} \texttt{ssd1306\_create(I2C\_NUM\_0, \ldots)}, \\ \texttt{ScreenManagerInit(\&MainScreen)}.
+    \item \textbf{Dữ liệu Port:} Gán \texttt{DataManager.selectedSensor[i] = SENSOR\_NONE} cho mọi port \texttt{i} trước khi gọi \texttt{MenuSystemInit}, để menu Sensors lúc khởi động hiển thị ``Port 1'', ``Port 2'', ``Port 3'' (tránh zero-init hiển thị nhầm ``Port 1 - BME280'').
     \item \textbf{Menu:} \texttt{MenuSystemInit(\&DataManager)} -- gán \texttt{Data->screen.current = \&Root\_Menu}, khởi tạo menu Sensors theo Port 1/2/3 $\to$ giao tiếp $\to$ cảm biến và \texttt{selectedSensorName} (phục vụ callback, màn hình dữ liệu cảm biến).
     \item \textbf{Task:} \texttt{xTaskCreate(wifi\_init\_sta, \ldots)}, \texttt{xTaskCreate(MenuNavigation\_Task, \ldots)}. (BatteryManager init/task có thể bật lại nếu dùng.)
 \end{enumerate}
 
 Sau đó vòng lặp chính chỉ \texttt{vTaskDelay}; toàn bộ tương tác người dùng và cập nhật màn hình diễn ra trong \texttt{MenuNavigation\_Task} và các callback.
 
-%==============================================================================
-\section{DataManager (Common) -- Dữ liệu dùng chung}
-%==============================================================================
+\subsection{DataManager (Common) -- Dữ liệu dùng chung}
 
-\subsection{Vai trò}
+\subsubsection{Vai trò}
 
 \texttt{Common.h} (và \texttt{Common.c} tối thiểu) là nơi định nghĩa các kiểu và hằng dùng chung cho toàn bộ firmware, đảm bảo UI, Sensor và Core dùng chung một mô hình dữ liệu.
 
-\subsection{Cấu trúc chính}
+\subsubsection{Cấu trúc chính}
 
 \begin{itemize}
     \item \textbf{Nút bấm:} \texttt{button\_type\_t} (BTN\_UP, BTN\_DOWN, BTN\_SEL, BTN\_BACK, BTN\_NONE); \texttt{ButtonManager\_t} (trạng thái và thời gian debounce).
     \item \textbf{Menu:} \texttt{menu\_item\_type\_t} (MENU\_ACTION, MENU\_SUBMENU, \ldots); \texttt{menu\_item\_t} (name, type, callback, ctx, children); \texttt{menu\_list\_t} (items, text, image, count, object, parent, \texttt{port\_index}). Trường \texttt{port\_index} dùng cho cấu trúc menu (0..NUM\_PORTS-1 cho menu từng port; $\ge$ NUM\_PORTS cho menu hiển thị nhiều port, ví dụ Actuators).
     \item \textbf{Màn hình:} \texttt{ScreenManager\_t} (current menu, selected index, prev\_selected).
-    \item \textbf{Thông tin đối tượng:} \texttt{objectInfoManager\_t} (batteryInfo, wifiInfo, \texttt{selectedSensorName[NUM\_PORTS]}). \texttt{selectedSensorName} do MenuSystem cập nhật từ \texttt{DataManager->selectedSensor}, dùng trong callback và màn hình dữ liệu cảm biến.
-    \item \textbf{DataManager\_t:} \texttt{sensor}, \texttt{button}, \texttt{screen}, \texttt{objectInfo}, \texttt{MenuReturn[10]}, \texttt{selectedSensor[NUM\_PORTS]}.
+    \item \textbf{Thông tin đối tượng:} \texttt{objectInfoManager\_t} (batteryInfo, wifiInfo, \\ \texttt{selectedSensorName[NUM\_PORTS]}). \\
+    \texttt{selectedSensorName} do MenuSystem cập nhật từ \texttt{DataManager->selectedSensor}, dùng trong callback và màn hình dữ liệu cảm biến.
+    \item \textbf{DataManager\_t:} \texttt{sensor}, \texttt{button}, \texttt{screen}, \texttt{objectInfo}, \texttt{MenuReturn[10]}, \\ \texttt{selectedSensor[NUM\_PORTS]}; cùng hai callback: \texttt{on\_sensor\_selected(data, port)} (cập nhật tên menu, quay về menu Sensors), \texttt{on\_ports\_reset(data)} (đưa tên Port về ``Port 1'', ``Port 2'', ``Port 3'').
     \item \textbf{SelectionParam\_t}, \textbf{ShowDataSensorParam\_t:} Tham số truyền vào callback chọn cảm biến và hiển thị dữ liệu theo port.
 \end{itemize}
 
 Các GPIO nút bấm (BTN\_UP\_GPIO, \ldots) và \texttt{MAX\_VISIBLE\_ITEMS} cũng được định nghĩa tại đây.
 
-%==============================================================================
-\section{SensorTypes và SensorRegistry}
-%==============================================================================
+\subsection{SensorTypes và SensorRegistry}
 
-\subsection{SensorTypes.h}
+\subsubsection{SensorTypes.h}
 
 Định nghĩa:
 \begin{itemize}
     \item \texttt{PortId\_t} (PORT\_1, PORT\_2, PORT\_3), \texttt{NUM\_PORTS = 3}, \texttt{SensorType\_t} (SENSOR\_BME280, SENSOR\_MHZ14A, \ldots).
-    \item \texttt{TypeCommunication\_t}: COMMUNICATION\_UART, I2C, SPI, ANALOG, PULSE (để nhóm menu theo giao tiếp).
+    \item \texttt{TypeCommunication\_t}: COMMUNICATION\_UART, I2C, SPI, ANALOG, PULSE (nhóm menu theo giao tiếp).
     \item \texttt{SensorData\_t}: Mảng \texttt{data\_fl}, \texttt{data\_uint32}, \ldots để lưu giá trị đọc được.
     \item \texttt{sensor\_driver\_t}: name, description, unit, unit\_count, \texttt{interface} (TypeCommunication\_t), is\_init, con trỏ hàm init/read/deinit.
 \end{itemize}
 
-\subsection{SensorRegistry}
+\subsubsection{SensorRegistry}
 
 \begin{itemize}
     \item \textbf{Mảng tĩnh} \texttt{sensor\_drivers[]}: Mỗi phần tử là một \texttt{sensor\_driver\_t} tương ứng một loại cảm biến (BME280, MH-Z14A, PMS7003, DHT22, MQ-2 $\ldots$ MQ-135), kèm \texttt{interface} (I2C, UART, PULSE, ANALOG).
-    \item \textbf{API:} \texttt{sensor\_registry\_get\_drivers()}, \texttt{sensor\_registry\_get\_count()}, \texttt{sensor\_registry\_get\_driver(sensor\_type)}, \texttt{sensor\_registry\_get\_count\_by\_interface(iface)}, \texttt{sensor\_registry\_get\_driver\_at\_interface(iface, index, out\_sensor\_type)}. Hai hàm cuối phục vụ việc xây menu theo giao tiếp (UART/I2C/SPI/ANALOG/PULSE).
+    \item \textbf{API:} \texttt{sensor\_registry\_get\_drivers()}, \texttt{sensor\_registry\_get\_count()}, \\ \texttt{sensor\_registry\_get\_driver(sensor\_type)}, \\
+    \texttt{sensor\_registry\_get\_count\_by\_interface(iface)}, \\ \texttt{sensor\_registry\_get\_driver\_at\_interface(iface, index, out\_sensor\_type)}. Hai hàm cuối dùng để xây menu theo giao tiếp (UART, I2C, SPI, ANALOG, PULSE).
 \end{itemize}
 
-\subsection{Sơ đồ cây cảm biến theo giao tiếp}
+\subsubsection{Sơ đồ cây cảm biến theo giao tiếp}
 
 Menu Sensors hiển thị cảm biến theo từng giao tiếp; nguồn dữ liệu là \texttt{sensor\_drivers[]} lọc bởi \texttt{interface}. Hình~\ref{fig:tree-sensors} minh họa nhóm cảm biến theo \texttt{TypeCommunication\_t}.
 
@@ -234,7 +241,7 @@ Menu Sensors hiển thị cảm biến theo từng giao tiếp; nguồn dữ li�
   }
   [SensorRegistry (sensor\_drivers[])
     [UART
-      [MH-Z14A]
+      [{MH-Z14A}]
       [PMS7003]
     ]
     [I2C
@@ -244,8 +251,8 @@ Menu Sensors hiển thị cảm biến theo từng giao tiếp; nguồn dữ li�
       [(trống hoặc mở rộng)]
     ]
     [ANALOG
-      [MQ-2, MQ-3, MQ-4, MQ-5]
-      [MQ-6, MQ-7, MQ-8, MQ-9, MQ-135]
+      [{MQ-2, MQ-3, MQ-4, MQ-5}]
+      [{MQ-6, MQ-7, MQ-8, MQ-9, MQ-135}]
     ]
     [PULSE
       [DHT22]
@@ -257,20 +264,19 @@ Menu Sensors hiển thị cảm biến theo từng giao tiếp; nguồn dữ li�
 \label{fig:tree-sensors}
 \end{figure}
 
-%==============================================================================
-\section{MenuSystem -- Cấu trúc menu và điều hướng}
-%==============================================================================
+\subsection{MenuSystem -- Cấu trúc menu và điều hướng}
 
-\subsection{Cây menu}
+\subsubsection{Cây menu}
 
 \begin{itemize}
     \item \textbf{Root:} WiFi Config, Sensors, Actuators, Battery Status, Information.
-    \item \textbf{Sensors:} Port 1, Port 2, Port 3, Show data sensor, Reset All Ports. Mỗi \textbf{Port 1/2/3} mở ra menu \textbf{UART, I2C, SPI, ANALOG, PULSE}. Mỗi giao tiếp mở ra \textbf{danh sách cảm biến} tương ứng (chỉ những driver có \texttt{interface} trùng với giao tiếp đó). Chọn một cảm biến $\to$ gọi \texttt{select\_sensor\_cb} (FunctionManager) để gán \texttt{Data->selectedSensor[port]}.
+    \item \textbf{Sensors:} Port 1, Port 2, Port 3, Show data sensor, Reset All Ports. Mỗi Port 1/2/3 mở ra menu UART, I2C, SPI, ANALOG, PULSE; mỗi giao tiếp mở ra danh sách cảm biến tương ứng (driver có \texttt{interface} trùng). Chọn cảm biến $\to$ gọi \texttt{select\_sensor\_cb}: chỉ khi driver init thành công mới gán \texttt{Data->selectedSensor[port]}; nếu thất bại thì \texttt{selectedSensor[port] = SENSOR\_NONE}, menu hiển thị ``Port X''. Callback \texttt{on\_sensor\_selected} (MenuSystem) cập nhật \texttt{Sensor\_Menu\_Items[0..2].name} và quay màn hình về menu Sensors, highlight port vừa chọn.
     \item \textbf{Actuators:} IO1-Port1, IO3-Port2, IO1-Port3. Mỗi mục có submenu \textbf{ON / OFF} để gọi \texttt{actuator\_on\_cb} / \texttt{actuator\_off\_cb} (FunctionManager) đặt mức GPIO tương ứng (CONFIG\_IO\_1\_PORT\_1, CONFIG\_IO\_3\_PORT\_2, CONFIG\_IO\_1\_PORT\_3).
-    \item \textbf{WiFi Config / Battery Status / Information:} Một hoặc vài mục con, callback do FunctionManager đảm nhiệm.
+    \item \textbf{WiFi Config / Battery Status:} Callback do FunctionManager đảm nhiệm.
+    \item \textbf{Information:} \texttt{information\_callback} (FunctionManager) gọi \texttt{ScreenShowInformation} hiển thị thông tin project (MRS Project, module quản lý cảm biến đa năng, tác giả MrKoi); sau vài giây tự vẽ lại Root menu.
 \end{itemize}
 
-\subsection{Sơ đồ cây menu (Menu Tree)}
+\subsubsection{Sơ đồ cây menu (Menu Tree)}
 
 Hình~\ref{fig:tree-menu} mô tả cây menu từ Root đến các mục lá (cảm biến theo giao tiếp, ON/OFF của actuator).
 
@@ -326,54 +332,58 @@ Hình~\ref{fig:tree-menu} mô tả cây menu từ Root đến các mục lá (c�
 \label{fig:tree-menu}
 \end{figure}
 
-\subsection{Khởi tạo menu động theo giao tiếp}
+\subsubsection{Khởi tạo menu động theo giao tiếp}
 
 Hàm \texttt{init\_sensor\_interface\_port\_menu\_items(Data)}:
 \begin{itemize}
-    \item Với mỗi cặp (port, interface): lấy \texttt{count = sensor\_registry\_get\_count\_by\_interface(iface)}, cấp phát \texttt{SelectionParam\_t} và \texttt{menu\_item\_t} cho từng cảm biến thuộc giao tiếp đó, điền \texttt{PortInterfaceMenus[port][i]}, \texttt{PortMenus[port].port\_index = port}.
-    \item Gán \texttt{PortMenus[port].items} = [UART, I2C, SPI, ANALOG, PULSE], \texttt{Sensor\_Menu\_Items} = [Port 1, Port 2, Port 3, Show data sensor, Reset All Ports].
+    \item Với mỗi cặp (port, interface): lấy \\ \texttt{count = sensor\_registry\_get\_count\_by\_interface(iface)}, cấp phát \\ \texttt{SelectionParam\_t} và \texttt{menu\_item\_t} cho từng cảm biến, điền \\ \texttt{PortInterfaceMenus[port][i]}, \texttt{PortMenus[port].port\_index = port}.
+    \item Gán \texttt{PortMenus[port].items} = [UART, I2C, SPI, ANALOG, PULSE]; \\ \texttt{Sensor\_Menu\_Items} = [Port 1, Port 2, Port 3, Show data sensor, Reset All Ports].
 \end{itemize}
 
-\subsection{Task điều hướng}
+\subsubsection{Cập nhật tên Port và quay về menu Sensors}
 
-\texttt{MenuNavigation\_Task} lặp vô hạn: đọc \texttt{ReadButtonStatus()}; nếu UP/DOWN thì thay đổi \texttt{selected} và gọi \texttt{MenuRender}; nếu SEL thì gọi callback của mục đang chọn hoặc chuyển vào \texttt{children}; nếu BACK thì chuyển về \texttt{parent}. Trước mỗi lần xử lý, cập nhật \texttt{data->objectInfo.selectedSensorName[p] = sensor\_type\_to\_name(data->selectedSensor[p])} cho mọi port \texttt{p} (phục vụ callback và màn hình dữ liệu cảm biến).
+MenuSystem dùng hàm nội bộ \texttt{update\_port\_names(Data)}: dựa trên \\ \texttt{data->selectedSensor[0..2]} gán \texttt{Sensor\_Menu\_Items[i].name} là ``Port $i+1$'' nếu \texttt{selectedSensor[i] == SENSOR\_NONE}, hoặc ``Port $i+1$ - tên cảm biến'' nếu đã chọn và init thành công (FunctionManager chỉ gán \texttt{selectedSensor[port]} trong trường hợp đó).
 
-%==============================================================================
-\section{ScreenManager -- Hiển thị OLED}
-%==============================================================================
+Hàm \texttt{go\_to\_sensor\_menu(Data, selected\_index)} đặt \texttt{data->screen.current = \&Sensor\_Menu}, \texttt{data->screen.selected = selected\_index} và gọi \texttt{MenuRender}. Trong \texttt{MenuSystemInit}, DataManager được gán \texttt{on\_sensor\_selected} và \texttt{on\_ports\_reset}; \texttt{Root\_Items[4].ctx = Data} để \texttt{information\_callback} nhận DataManager. Khi người dùng chọn xong cảm biến, FunctionManager gọi \texttt{on\_sensor\_selected} $\to$ MenuSystem cập nhật tên và quay về menu Sensors; khi chọn ``Reset All Ports'', FunctionManager gọi \texttt{on\_ports\_reset} $\to$ MenuSystem đưa tên ba mục Port về ``Port 1'', ``Port 2'', ``Port 3''.
 
-\subsection{Chức năng chính}
+\subsubsection{Task điều hướng}
+
+\texttt{MenuNavigation\_Task} lặp vô hạn: đọc \texttt{ReadButtonStatus()}; nếu UP/DOWN thì thay đổi \texttt{selected} và gọi \texttt{MenuRender}; nếu SEL thì gọi callback của mục đang chọn hoặc chuyển vào \texttt{children}; nếu BACK thì chuyển về \texttt{parent}.
+
+Trước mỗi lần xử lý, cập nhật \texttt{data->objectInfo.selectedSensorName[p] = sensor\_type\_to\_name(data->selectedSensor[p])} cho mọi port \texttt{p} (phục vụ callback và màn hình dữ liệu cảm biến).
+
+\subsection{ScreenManager -- Hiển thị OLED}
+
+\subsubsection{Chức năng chính}
 
 \begin{itemize}
     \item \texttt{ScreenManagerInit(\&MainScreen)}: Lưu handle OLED, tạo mutex \texttt{oled\_mutex}, gọi \texttt{initUIState()} (màn hình splash).
     \item \texttt{MenuRender(menu, selected, objectInfo)}: Lấy mutex; nếu menu có image/text (WiFi, Battery) thì vẽ bitmap và text theo \texttt{objectInfo}; sau đó vẽ danh sách \texttt{menu->items} với phân trang (MAX\_VISIBLE\_ITEMS); \texttt{ssd1306\_refresh\_gram}; trả mutex.
-    \item \texttt{ScreenWifiConnecting}, \texttt{ScreenShowMessage}, \texttt{ScreenShowDataSensor}: Các màn hình đặc biệt, đều dùng chung mutex và \texttt{ssd1306\_refresh\_gram}.
+    \item \texttt{ScreenShowInformation(lines, n\_lines)}: Hiển thị nhiều dòng text lên OLED (mỗi dòng cách nhau 12\,px), dùng cho màn \textbf{Information} (thông tin project, tác giả MrKoi). Dùng chung mutex và \texttt{ssd1306\_refresh\_gram}.
+    \item \texttt{ScreenWifiConnecting}, \texttt{ScreenShowMessage}, \texttt{ScreenShowDataSensor}: Các màn hình đặc biệt khác, đều dùng chung mutex và \texttt{ssd1306\_refresh\_gram}.
 \end{itemize}
 
-\subsection{Mutex và timeout I2C}
+\subsubsection{Mutex và timeout I2C}
 
 Để tránh lỗi \texttt{ESP\_ERR\_TIMEOUT} khi nhiều task cùng dùng I2C (OLED và cảm biến): (1) Trong driver SSD1306 tăng timeout \texttt{i2c\_master\_cmd\_begin} lên 2000\,ms; (2) Trong ScreenManager mọi thao tác vẽ/refresh đều nằm trong \texttt{xSemaphoreTake(oled\_mutex)} / \texttt{xSemaphoreGive(oled\_mutex)}.
 
-%==============================================================================
-\section{FunctionManager -- Callback menu}
-%==============================================================================
+\subsection{FunctionManager -- Callback menu}
 
 FunctionManager triển khai các callback được gán vào \texttt{menu\_item\_t}:
 
 \begin{itemize}
     \item \textbf{wifi\_config\_callback:} Tạo task \texttt{wifi\_config\_task} (WifiManager AP, cập nhật trạng thái, \texttt{ScreenWifiConnecting}, khi kết nối xong thì \texttt{MenuRender(MenuReturn[0])} và xóa task).
-    \item \textbf{select\_sensor\_cb:} Nhận \texttt{SelectionParam\_t} (data, port, sensor). Gán \texttt{data->selectedSensor[port] = sensor}; khởi tạo driver nếu cần; tạo task đọc cảm biến nếu chưa có; có thể gọi \texttt{ScreenShowDataSensor} hoặc \texttt{MenuRender}.
+    \item \textbf{select\_sensor\_cb:} Nhận \texttt{SelectionParam\_t} (data, port, sensor). Chỉ gán \\ \texttt{data->selectedSensor[port] = sensor} khi driver init thành công (hoặc port đã chọn/sensor đã init); nếu không có init hoặc init thất bại thì gán \texttt{selectedSensor[port] = SENSOR\_NONE} để menu hiển thị ``Port X''. Sau đó gọi \texttt{data->on\_sensor\_selected(data, port)} (MenuSystem) để cập nhật tên \texttt{Sensor\_Menu\_Items[0..2]} và quay màn hình về menu Sensors, highlight port vừa chọn.
     \item \textbf{show\_data\_sensor\_cb:} Bật flag hiển thị màn hình dữ liệu cảm biến cho port tương ứng.
-    \item \textbf{reset\_all\_ports\_callback:} Đặt \texttt{selectedSensor[i] = SENSOR\_NONE} cho mọi port \texttt{i}; dọn task đọc cảm biến.
+    \item \textbf{reset\_all\_ports\_callback:} Đặt \texttt{selectedSensor[i] = SENSOR\_NONE} cho mọi port \texttt{i}; gọi \texttt{data->on\_ports\_reset(data)} để MenuSystem đưa \\ \texttt{Sensor\_Menu\_Items[0..2].name} về ``Port 1'', ``Port 2'', ``Port 3''; dọn task đọc cảm biến.
     \item \textbf{battery\_status\_callback:} \texttt{BatteryManager\_UpdateInfo(\&objectInfo->batteryInfo)}; \texttt{MenuRender(MenuReturn[1], \ldots)}.
+    \item \textbf{information\_callback:} Nhận \texttt{ctx} = DataManager. Gọi \texttt{ScreenShowInformation} với các dòng (MRS Project, module quản lý cảm biến đa năng, tác giả MrKoi); delay 4\,s; \texttt{MenuRender} lại Root menu.
     \item \textbf{actuator\_on\_cb / actuator\_off\_cb:} Nhận \texttt{ctx} = số GPIO; cấu hình GPIO output và \texttt{gpio\_set\_level} 1 hoặc 0.
 \end{itemize}
 
-%==============================================================================
-\section{Cấu hình pin và Kconfig}
-%==============================================================================
+\subsection{Cấu hình pin và Kconfig}
 
-\subsection{main/Kconfig.projbuild}
+\subsubsection{main/Kconfig.projbuild}
 
 Các option pin được chọn theo target:
 \begin{itemize}
@@ -381,7 +391,7 @@ Các option pin được chọn theo target:
     \item \textbf{ESP32-C6:} TX=5, RX=4; MOSI=2, MISO=3, SCK=23, CS=22; IO\_1\_PORT\_1=0, IO\_1\_PORT\_2=1, IO\_2\_PORT\_2=10, IO\_3\_PORT\_2=11, IO\_1\_PORT\_3=18.
 \end{itemize}
 
-\subsection{component/drivers/i2cdev/Kconfig.projbuild}
+\subsubsection{component/drivers/i2cdev/Kconfig.projbuild}
 
 SDA/SCL cho I2C chung:
 \begin{itemize}
@@ -391,9 +401,28 @@ SDA/SCL cho I2C chung:
 
 Các driver BME280, DS3231 có thể có \texttt{Kconfig.projbuild} riêng (trong dự án có thể bị comment để dùng chung I2C từ main).
 
+\subsubsection{Cấu hình và tác dụng của chân trên từng Port}
+
+Hình~\ref{fig:port-config} mô tả sơ đồ chân (pinout) của Port 1, Port 2 và Port 3: mỗi port có 10 chân với nguồn 5V, 3V3, GND; Port 1 gồm MISO, SCK, MOSI, CS (SPI) và Analog/Pulse/GPIO; Port 2 gồm Pulse/GPIO, Analog/GPIO, SDA/SCL (I2C); Port 3 gồm TX2/RX2 (UART), Analog/Pulse/GPIO, SDA/SCL (I2C). Các chân được khai báo trong menuconfig và dùng trong firmware qua \texttt{CONFIG\_*} tương ứng.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Image/PortConfig.png}
+\caption{Cấu hình và tác dụng chân trên Port 1, Port 2, Port 3 (5V, 3V3, GND, SPI/I2C/UART/Analog/Pulse/GPIO).}
+\label{fig:port-config}
+\end{figure}
+
+\textbf{Giải thích chân đa năng:}
+\begin{itemize}
+    \item \textbf{Analog/Pulse/GPIO:} Chân này có thể dùng để đọc input Analog, GPIO và output: PWM, GPIO.
+    \item \textbf{Pulse/GPIO:} Chỉ là output và input GPIO, không có Analog. Hai chân Pulse/GPIO (trên sơ đồ) dùng cho giao tiếp Pulse 2 chân (DHT11, HC-SR04, \ldots).
+\end{itemize}
+
 %==============================================================================
-\section{Triển khai build và chạy}
+\section{Chương 2: Triển khai build, chạy và hướng dẫn mở rộng}
 %==============================================================================
+
+\textbf{Lưu ý (menuconfig):} Các chân GPIO (UART, SPI, I2C, IO port) và tùy chọn build được \textbf{khai báo trong menuconfig}: chạy \texttt{idf.py menuconfig}, vào menu ``Pin config'' (main) và ``I2C common config'' (driver i2cdev) để đặt SDA/SCL, TX/RX, IO\_1\_PORT\_1, IO\_3\_PORT\_2, \ldots theo đúng phần cứng và target (ESP32/ESP32-C6). Giá trị này được dùng trong \texttt{main.c} và các driver qua \texttt{CONFIG\_*}.
 
 \subsection{Build}
 
@@ -413,21 +442,20 @@ idf.py -p COMx flash monitor
 \subsection{Luồng dữ liệu điển hình}
 
 \begin{enumerate}
-    \item Người dùng mở Sensors $\to$ Port 1 $\to$ I2C $\to$ chọn BME280. \texttt{select\_sensor\_cb} gán \texttt{selectedSensor[PORT\_1] = SENSOR\_BME280}, khởi tạo BME280 nếu cần, tạo task đọc cảm biến.
+    \item Người dùng mở Sensors $\to$ Port 1 $\to$ I2C $\to$ chọn BME280. \texttt{select\_sensor\_cb} gọi \texttt{driver->init()}; chỉ khi init thành công mới gán \texttt{selectedSensor[PORT\_1] = SENSOR\_BME280}, rồi gọi \texttt{on\_sensor\_selected} $\to$ màn hình quay về menu Sensors, mục đầu tiên hiển thị ``Port 1 - BME280''. Nếu init thất bại hoặc không có init, \texttt{selectedSensor[PORT\_1]} giữ \texttt{SENSOR\_NONE} nên menu vẫn hiển thị ``Port 1''.
     \item Task đọc cảm biến gọi \texttt{sensor->read(\&data)} định kỳ; có thể gọi \texttt{ScreenShowDataSensor} hoặc cập nhật \texttt{DataManager} để menu hiển thị dữ liệu.
-    \item \texttt{MenuNavigation\_Task} cập nhật \texttt{objectInfo.selectedSensorName[p]} từ \texttt{selectedSensor[p]} cho mọi port, phục vụ màn hình ``Show data sensor'' và các callback.
-    \item Người dùng mở Actuators $\to$ IO1-Port1 $\to$ ON: \texttt{actuator\_on\_cb} đặt GPIO \texttt{CONFIG\_IO\_1\_PORT\_1} lên 1.
+    \item \texttt{MenuNavigation\_Task} cập nhật \texttt{objectInfo.selectedSensorName[p]} từ \\ \texttt{selectedSensor[p]} cho mọi port, phục vụ màn hình ``Show data sensor'' và các callback.
+    \item Khi chọn ``Reset All Ports'', \texttt{on\_ports\_reset} được gọi $\to$ tên ba mục Port trong menu Sensors trở lại ``Port 1'', ``Port 2'', ``Port 3''.
+    \item Người dùng mở Actuators $\to$ IO1-Port1 $\to$ ON: \texttt{actuator\_on\_cb} đặt GPIO \\ \texttt{CONFIG\_IO\_1\_PORT\_1} lên 1.
 \end{enumerate}
 
-%==============================================================================
-\section{Hướng dẫn chi tiết cách thêm cảm biến mới}
-%==============================================================================
+\subsection{Hướng dẫn chi tiết cách thêm cảm biến mới}
 
-Để thêm một loại cảm biến mới vào firmware MSMS, làm lần lượt các bước dưới đây. Sau khi hoàn tất, cảm biến sẽ tự xuất hiện trong menu Sensors $\to$ Port 1/2/3 $\to$ [UART|I2C|SPI|ANALOG|PULSE] tương ứng với \texttt{interface} đã gán (không cần sửa MenuSystem).
+Để thêm một loại cảm biến mới vào firmware MSMS, làm lần lượt các bước dưới đây. \textbf{Thứ tự quan trọng:} triển khai \texttt{init}/\texttt{read}/\texttt{deinit} trước; sau đó mới đăng ký driver trong \texttt{SensorRegistry.c} (gán con trỏ hàm vào \texttt{sensor\_drivers[]}). Sau khi hoàn tất, cảm biến sẽ tự xuất hiện trong menu Sensors $\to$ Port 1/2/3, nhánh UART / I2C / SPI / ANALOG / PULSE, tương ứng với \texttt{interface} đã gán (không cần sửa MenuSystem).
 
-\subsection{Bước 1: Thêm định danh cảm biến trong \texttt{SensorTypes.h}}
+\subsubsection{Bước 1: Thêm định danh cảm biến trong \texttt{SensorTypes.h}}
 
-Thêm một phần tử mới vào enum \texttt{SensorType\_t}, đặt ngay trước \texttt{SENSOR\_NONE} nếu có, hoặc theo thứ tự mong muốn (thứ tự enum phải trùng với thứ tự phần tử trong mảng \texttt{sensor\_drivers[]} ở Bước 2).
+Thêm một phần tử mới vào enum \texttt{SensorType\_t}, đặt ngay trước \texttt{SENSOR\_NONE} nếu có, hoặc theo thứ tự mong muốn (thứ tự enum phải trùng với thứ tự phần tử trong mảng \texttt{sensor\_drivers[]} ở Bước 3).
 
 \begin{lstlisting}[caption={Ví dụ thêm SENSOR\_XYZ vào SensorTypes.h}]
 // Trong SensorTypes.h, enum SensorType_t
@@ -440,17 +468,24 @@ typedef enum {
 } SensorType_t;
 \end{lstlisting}
 
-\subsection{Bước 2: Đăng ký driver trong \texttt{SensorRegistry.c}}
+\subsubsection{Bước 2: Triển khai init/read/deinit}
 
-Thêm một phần tử \texttt{sensor\_driver\_t} vào mảng \texttt{sensor\_drivers[]}. Các trường bắt buộc: \texttt{name}, \texttt{description}, \texttt{unit}, \texttt{unit\_count}, \texttt{interface} (UART/I2C/SPI/ANALOG/PULSE), và các con trỏ hàm \texttt{init}, \texttt{read}, \texttt{deinit} (có thể \texttt{NULL} nếu chưa triển khai).
+Triển khai trước các hàm \texttt{init}, \texttt{read}, \texttt{deinit} của cảm biến. Nếu cảm biến dùng driver riêng (ví dụ component \texttt{component/drivers/XYZ/}), triển khai \texttt{system\_err\_t xyzInitialize(void)}, \texttt{xyzReadData(SensorData\_t *)}, \texttt{xyzDeinitialize(void)}. Nếu logic đọc/init nằm trong \texttt{SensorConfig} (như BME280), có thể gọi từ \texttt{SensorConfig}; khi đăng ký vào registry sẽ gán con trỏ tới các hàm đó. Đảm bảo \texttt{read} ghi dữ liệu vào \texttt{data->data\_fl[]} hoặc \texttt{data->data\_uint32[]} theo \texttt{unit\_count} và \texttt{description} sẽ khai báo ở bước đăng ký.
+
+\subsubsection{Bước 3: Đăng ký driver trong \texttt{SensorRegistry.c}}
+
+Sau khi đã có \texttt{init}/\texttt{read}/\texttt{deinit}, \\
+thêm một phần tử \texttt{sensor\_driver\_t} vào mảng \texttt{sensor\_drivers[]} (trong \texttt{SensorRegistry.c}).
+
+Các trường bắt buộc: \texttt{name}, \texttt{description}, \texttt{unit}, \texttt{unit\_count}, \texttt{interface} (UART, I2C, SPI, ANALOG, PULSE), và các con trỏ hàm \texttt{init}, \texttt{read}, \texttt{deinit} trỏ tới các hàm đã triển khai ở Bước 2.
 
 \begin{lstlisting}[caption={Ví dụ thêm driver XYZ (I2C) vào sensor\_drivers[]}]
 // Trong SensorRegistry.c, mảng sensor_drivers[]
 {
     .name = "XYZ",
-    .init = xyzInitialize,      // hoac NULL
+    .init = xyzInitialize,
     .read = xyzReadData,
-    .deinit = xyzDeinitialize,  // hoac NULL
+    .deinit = xyzDeinitialize,
     .description = {"Temp", "Humidity"},
     .unit = {"C", "%"},
     .unit_count = 2,
@@ -461,7 +496,7 @@ Thêm một phần tử \texttt{sensor\_driver\_t} vào mảng \texttt{sensor\_d
 
 \textbf{Lưu ý:} Thứ tự phần tử trong \texttt{sensor\_drivers[]} phải tương ứng với giá trị số trong \texttt{SensorType\_t} (phần tử đầu tiên = 0, tiếp theo = 1, \ldots). Nếu thêm enum \texttt{SENSOR\_XYZ = 13}, phần tử mới phải là phần tử thứ 14 trong mảng (index 13).
 
-\subsection{Bước 3: Cập nhật \texttt{sensor\_type\_to\_name()} trong \texttt{SensorRegistry.c}}
+\subsubsection{Bước 4: Cập nhật \texttt{sensor\_type\_to\_name()} trong \texttt{SensorRegistry.c}}
 
 Hàm \texttt{sensor\_type\_to\_name(SensorType\_t t)} dùng để hiển thị tên cảm biến trong menu (vd trong Show data sensor, label port). Thêm một \texttt{case} cho \texttt{SENSOR\_XYZ}:
 
@@ -479,30 +514,21 @@ const char *sensor_type_to_name(SensorType_t t) {
 }
 \end{lstlisting}
 
-\subsection{Bước 4: Triển khai init/read/deinit (nếu chưa có)}
+\subsubsection{Bước 5: (Tùy chọn) Cấu hình Kconfig và GPIO}
 
-Nếu cảm biến dùng driver riêng (ví dụ component \texttt{component/drivers/XYZ/}), triển khai ba hàm \texttt{system\_err\_t xyzInitialize(void)}, \texttt{xyzReadData(SensorData\_t *)}, \texttt{xyzDeinitialize(void)} và khai báo trong \texttt{SensorRegistry.c} (include header tương ứng). Nếu logic đọc/init nằm trong \texttt{SensorConfig} (như BME280), có thể gọi từ \texttt{SensorConfig} và trong registry chỉ cần gán con trỏ tới các hàm đó. Đảm bảo \texttt{read} ghi dữ liệu vào \texttt{data->data\_fl[]} hoặc \texttt{data->data\_uint32[]} theo \texttt{unit\_count} và \texttt{description} đã khai báo.
+Nếu cảm biến cần pin riêng (UART, SPI, ADC), thêm option trong \\ \texttt{main/Kconfig.projbuild} hoặc \texttt{component/drivers/.../Kconfig.projbuild} và đọc trong \texttt{main.c} hoặc trong hàm \texttt{init} của driver. Cảm biến ANALOG thường dùng chân đã cấu hình sẵn (CONFIG\_IO\_*\_PORT\_*); cảm biến UART dùng UART port tương ứng (CONFIG\_UART\_TX/RX).
 
-\subsection{Bước 5: (Tùy chọn) Cấu hình Kconfig và GPIO}
 
-Nếu cảm biến cần pin riêng (UART, SPI, ADC), thêm option trong \texttt{main/Kconfig.projbuild} hoặc \texttt{component/drivers/.../Kconfig.projbuild} và đọc trong \texttt{main.c} hoặc trong hàm \texttt{init} của driver. Cảm biến ANALOG thường dùng chân đã cấu hình sẵn (CONFIG\_IO\_*\_PORT\_*); cảm biến UART dùng UART port tương ứng (CONFIG\_UART\_TX/RX).
-
-\subsection{Tóm tắt quy trình thêm cảm biến}
+\subsubsection{Tóm tắt quy trình thêm cảm biến}
 
 \begin{enumerate}
     \item Thêm enum trong \texttt{SensorTypes.h} (\texttt{SensorType\_t}).
-    \item Thêm một phần tử \texttt{sensor\_driver\_t} vào \texttt{sensor\_drivers[]} trong \texttt{SensorRegistry.c}, gán \texttt{interface} (UART/I2C/SPI/ANALOG/PULSE).
-    \item Cập nhật \texttt{sensor\_type\_to\_name()} trong \texttt{SensorRegistry.c}.
     \item Triển khai \texttt{init}/\texttt{read}/\texttt{deinit} (driver riêng hoặc SensorConfig).
+    \item Đăng ký driver: thêm phần tử \texttt{sensor\_driver\_t} vào \texttt{sensor\_drivers[]} trong \texttt{SensorRegistry.c}, gán \texttt{interface} và con trỏ \texttt{init}/\texttt{read}/\texttt{deinit}.
+    \item Cập nhật \texttt{sensor\_type\_to\_name()} trong \texttt{SensorRegistry.c}.
     \item (Tùy chọn) Thêm Kconfig/GPIO nếu cần.
 \end{enumerate}
 
-Sau các bước trên, menu Sensors $\to$ Port 1/2/3 $\to$ [giao tiếp tương ứng] sẽ tự hiển thị cảm biến mới nhờ \texttt{init\_sensor\_interface\_port\_menu\_items()} đã xây menu động từ \texttt{sensor\_registry\_get\_count\_by\_interface()} và \texttt{sensor\_registry\_get\_driver\_at\_interface()}.
-
-%==============================================================================
-\section{Tóm tắt}
-%==============================================================================
-
-Báo cáo này mô tả chi tiết cấu trúc mã nguồn và cách triển khai firmware MSMS: tổ chức theo component (main, core, sensors, ui, network, utils, drivers), vai trò từng module (DataManager, SensorRegistry, MenuSystem, ScreenManager, FunctionManager, WifiManager, ButtonManager, BatteryManager), cấu trúc menu (Sensors với ba port: Port 1/2/3 $\to$ giao tiếp $\to$ cảm biến; Actuators ON/OFF; Show data sensor, Reset All Ports), cấu hình pin qua Kconfig theo ESP32/ESP32-C6, và luồng khởi tạo cùng luồng dữ liệu điển hình. Báo cáo kèm các sơ đồ cây: cây thư mục dự án, cây menu (Root $\to$ Sensors/Actuators/$\ldots$), và cây cảm biến theo giao tiếp (SensorRegistry). Phần ``Hướng dẫn chi tiết cách thêm cảm biến mới'' mô tả từng bước: thêm enum trong SensorTypes.h, đăng ký driver trong SensorRegistry.c, cập nhật \texttt{sensor\_type\_to\_name()}, triển khai init/read/deinit, và (tùy chọn) Kconfig/GPIO; sau đó cảm biến tự xuất hiện trong menu theo \texttt{interface}. Firmware được thiết kế để dễ mở rộng và bảo trì nhờ tách lớp rõ ràng.
+Sau các bước trên, menu Sensors $\to$ Port 1/2/3 $\to$ [giao tiếp tương ứng] sẽ tự hiển thị cảm biến mới nhờ \texttt{init\_sensor\_interface\_port\_menu\_items()} đã xây menu động từ \texttt{sensor\_registry\_get\_count\_by\_interface()} và \\ \texttt{sensor\_registry\_get\_driver\_at\_interface()}.
 
 \end{document}

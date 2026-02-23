@@ -3,51 +3,58 @@
 \@nameuse{bbl@beforestart}
 \catcode `"\active 
 \providecommand*\new@tpo@label[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
 \babel@aux{vietnamese}{}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Tổng quan cấu trúc mã nguồn}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Cây thư mục và file nguồn}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Sơ đồ cây thư mục dự án}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Cây thư mục dự án (main và component).}}{4}{}\protected@file@percent }
-\newlabel{fig:tree-dir}{{1}{4}{Sơ đồ cây thư mục dự án}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Điểm vào và luồng khởi tạo}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}DataManager (Common) -- Dữ liệu dùng chung}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Vai trò}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Cấu trúc chính}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}SensorTypes và SensorRegistry}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}SensorTypes.h}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}SensorRegistry}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Sơ đồ cây cảm biến theo giao tiếp}{6}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Cây cảm biến theo giao tiếp (interface). Menu Port 1/2/3 $\to $ UART/I2C/$\ldots  $ lấy danh sách từ \texttt  {sensor\_registry\_get\_count\_by\_interface} và \texttt  {sensor\_registry\_get\_driver\_at\_interface}.}}{6}{}\protected@file@percent }
-\newlabel{fig:tree-sensors}{{2}{6}{Sơ đồ cây cảm biến theo giao tiếp}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}MenuSystem -- Cấu trúc menu và điều hướng}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Cây menu}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sơ đồ cây menu (Menu Tree)}{7}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cây menu: Root $\to $ Sensors (Port $\to $ giao tiếp $\to $ cảm biến), Actuators (chân $\to $ ON/OFF), và các mục khác.}}{7}{}\protected@file@percent }
-\newlabel{fig:tree-menu}{{3}{7}{Sơ đồ cây menu (Menu Tree)}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Khởi tạo menu động theo giao tiếp}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Task điều hướng}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}ScreenManager -- Hiển thị OLED}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Chức năng chính}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Mutex và timeout I2C}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}FunctionManager -- Callback menu}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Cấu hình pin và Kconfig}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}main/Kconfig.projbuild}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}component/drivers/i2cdev/Kconfig.projbuild}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8}Triển khai build và chạy}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Build}{9}{}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}Build firmware với ESP-IDF}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Flash và monitor}{9}{}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Nạp firmware và mở serial}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Luồng dữ liệu điển hình}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9}Hướng dẫn chi tiết cách thêm cảm biến mới}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Bước 1: Thêm định danh cảm biến trong \texttt  {SensorTypes.h}}{10}{}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}Ví dụ thêm SENSOR\_XYZ vào SensorTypes.h}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Bước 2: Đăng ký driver trong \texttt  {SensorRegistry.c}}{10}{}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}Ví dụ thêm driver XYZ (I2C) vào sensor\_drivers[}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Bước 3: Cập nhật \texttt  {sensor\_type\_to\_name()} trong \texttt  {SensorRegistry.c}}{10}{}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}Thêm case trong sensor\_type\_to\_name()}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}Bước 4: Triển khai init/read/deinit (nếu chưa có)}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.5}Bước 5: (Tùy chọn) Cấu hình Kconfig và GPIO}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.6}Tóm tắt quy trình thêm cảm biến}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}Tóm tắt}{11}{}\protected@file@percent }
-\gdef \@abspage@last{12}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Chương 1: Tổng quan cấu trúc và các module firmware}{2}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Tổng quan cấu trúc mã nguồn}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Cây thư mục và file nguồn}{2}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Sơ đồ cây thư mục dự án}{3}{subsection.1.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Cây thư mục dự án (main và component).}}{3}{figure.1}\protected@file@percent }
+\newlabel{fig:tree-dir}{{1}{3}{Cây thư mục dự án (main và component)}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Điểm vào và luồng khởi tạo}{3}{subsection.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}DataManager (Common) -- Dữ liệu dùng chung}{4}{subsection.1.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.5.1}Vai trò}{4}{subsubsection.1.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.5.2}Cấu trúc chính}{4}{subsubsection.1.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}SensorTypes và SensorRegistry}{5}{subsection.1.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.1}SensorTypes.h}{5}{subsubsection.1.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.2}SensorRegistry}{5}{subsubsection.1.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.3}Sơ đồ cây cảm biến theo giao tiếp}{5}{subsubsection.1.6.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Cây cảm biến theo giao tiếp (interface). Menu Port 1/2/3 $\to $ UART/I2C/$\ldots  $ lấy danh sách từ \texttt  {sensor\_registry\_get\_count\_by\_interface} và \texttt  {sensor\_registry\_get\_driver\_at\_interface}.}}{6}{figure.2}\protected@file@percent }
+\newlabel{fig:tree-sensors}{{2}{6}{Cây cảm biến theo giao tiếp (interface). Menu Port 1/2/3 $\to $ UART/I2C/$\ldots $ lấy danh sách từ \texttt {sensor\_registry\_get\_count\_by\_interface} và \texttt {sensor\_registry\_get\_driver\_at\_interface}}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}MenuSystem -- Cấu trúc menu và điều hướng}{6}{subsection.1.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.1}Cây menu}{6}{subsubsection.1.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.2}Sơ đồ cây menu (Menu Tree)}{6}{subsubsection.1.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cây menu: Root $\to $ Sensors (Port $\to $ giao tiếp $\to $ cảm biến), Actuators (chân $\to $ ON/OFF), và các mục khác.}}{6}{figure.3}\protected@file@percent }
+\newlabel{fig:tree-menu}{{3}{6}{Cây menu: Root $\to $ Sensors (Port $\to $ giao tiếp $\to $ cảm biến), Actuators (chân $\to $ ON/OFF), và các mục khác}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.3}Khởi tạo menu động theo giao tiếp}{7}{subsubsection.1.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.4}Cập nhật tên Port và quay về menu Sensors}{7}{subsubsection.1.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.5}Task điều hướng}{7}{subsubsection.1.7.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.8}ScreenManager -- Hiển thị OLED}{7}{subsection.1.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.8.1}Chức năng chính}{7}{subsubsection.1.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.8.2}Mutex và timeout I2C}{8}{subsubsection.1.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.9}FunctionManager -- Callback menu}{8}{subsection.1.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.10}Cấu hình pin và Kconfig}{8}{subsection.1.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.10.1}main/Kconfig.projbuild}{8}{subsubsection.1.10.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.10.2}component/drivers/i2cdev/Kconfig.projbuild}{9}{subsubsection.1.10.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.10.3}Cấu hình và tác dụng của chân trên từng Port}{9}{subsubsection.1.10.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Cấu hình và tác dụng chân trên Port 1, Port 2, Port 3 (5V, 3V3, GND, SPI/I2C/UART/Analog/Pulse/GPIO).}}{9}{figure.4}\protected@file@percent }
+\newlabel{fig:port-config}{{4}{9}{Cấu hình và tác dụng chân trên Port 1, Port 2, Port 3 (5V, 3V3, GND, SPI/I2C/UART/Analog/Pulse/GPIO)}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Chương 2: Triển khai build, chạy và hướng dẫn mở rộng}{10}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Build}{10}{subsection.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}Build firmware với ESP-IDF}{10}{lstlisting.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Flash và monitor}{10}{subsection.2.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Nạp firmware và mở serial}{10}{lstlisting.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Luồng dữ liệu điển hình}{10}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Hướng dẫn chi tiết cách thêm cảm biến mới}{11}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Bước 1: Thêm định danh cảm biến trong \texttt  {SensorTypes.h}}{11}{subsubsection.2.4.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}Ví dụ thêm SENSOR\_XYZ vào SensorTypes.h}{11}{lstlisting.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Bước 2: Triển khai init/read/deinit}{11}{subsubsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Bước 3: Đăng ký driver trong \texttt  {SensorRegistry.c}}{11}{subsubsection.2.4.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}Ví dụ thêm driver XYZ (I2C) vào sensor\_drivers[}{11}{lstlisting.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}Bước 4: Cập nhật \texttt  {sensor\_type\_to\_name()} trong \texttt  {SensorRegistry.c}}{12}{subsubsection.2.4.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}Thêm case trong sensor\_type\_to\_name()}{12}{lstlisting.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.5}Bước 5: (Tùy chọn) Cấu hình Kconfig và GPIO}{12}{subsubsection.2.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.6}Tóm tắt quy trình thêm cảm biến}{12}{subsubsection.2.4.6}\protected@file@percent }
+\gdef \@abspage@last{13}

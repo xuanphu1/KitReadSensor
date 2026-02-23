@@ -83,7 +83,22 @@ void actuator_off_cb(void *ctx) {
   actuator_set_level(ctx, 0);
 }
 
-void information_callback(void *ctx) {}
+void information_callback(void *ctx) {
+  DataManager_t *data = (DataManager_t *)ctx;
+  if (data == NULL) {
+    return;
+  }
+  static const char *info_lines[] = {
+    "MSMS Project",
+    "Module quan ly",
+    "cam bien da nang",
+    "Tac gia: MrKoi",
+  };
+  ScreenShowInformation(info_lines, sizeof(info_lines) / sizeof(info_lines[0]));
+  vTaskDelay(pdMS_TO_TICKS(4000));
+  /* Quay lai hien thi Root menu */
+  MenuRender(data->screen.current, &data->screen.selected, &data->objectInfo);
+}
 
 void read_temperature_cb(void *ctx) {}
 
@@ -169,13 +184,10 @@ void select_sensor_cb(void *ctx) {
     return;
   }
 
-  // 2. Lưu lựa chọn
-  param->data->selectedSensor[param->port] = (int8_t)param->sensor;
-
   ESP_LOGI(TAG_FUNCTION_MANAGER, "Selected sensor %d (%s) for port %d",
            param->sensor, sensor_type_to_name(param->sensor), param->port);
 
-  // 3. Xử lý khởi tạo sensor và cập nhật label
+  // 2. Lấy driver và kiểm tra init; chỉ gán selectedSensor khi init thành công (hoặc đã init)
   sensor_driver_t *driver = sensor_registry_get_driver(param->sensor);
   if (driver == NULL) {
     ESP_LOGW(TAG_FUNCTION_MANAGER, "select_sensor_cb: invalid sensor type %d",
@@ -183,55 +195,45 @@ void select_sensor_cb(void *ctx) {
     return;
   }
   Message_t message_type = MESSAGE_NONE;
+  bool allow_set_sensor = false;  // Chỉ set selectedSensor[port] khi true
 
   if (driver->init != NULL) {
     if (PortSelected[param->port] == param->port) {
-      // Port đã được chọn trước đó
       message_type = MESSAGE_PORT_SELECTED;
       ESP_LOGI(TAG_FUNCTION_MANAGER, "Port %d was selected", param->port);
-      const char *sensor_name = sensor_type_to_name(param->sensor);
-      snprintf(g_port_label_buf[param->port],
-               sizeof(g_port_label_buf[param->port]), "Port %d - %s",
-               (int)param->port + 1, sensor_name);
+      allow_set_sensor = true;
     } else if (!driver->is_init) {
-      PortSelected[param->port] = param->port; // Cập nhật PortSelected
-      // Sensor chưa được khởi tạo
       system_err_t init_ret = driver->init();
       if (init_ret != MRS_OK) {
         ESP_LOGE(TAG_FUNCTION_MANAGER,
                  "select_sensor_cb: init failed for sensor %d: %s",
                  param->sensor, system_err_to_name(init_ret));
         message_type = MESSAGE_SENSOR_NOT_INITIALIZED;
-        snprintf(g_port_label_buf[param->port],
-                 sizeof(g_port_label_buf[param->port]), "Port %d",
-                 (int)param->port + 1);
+        /* Không gán selectedSensor -> giữ "Port X" */
       } else {
         driver->is_init = true;
-        const char *sensor_name = sensor_type_to_name(param->sensor);
-        snprintf(g_port_label_buf[param->port],
-                 sizeof(g_port_label_buf[param->port]), "Port %d - %s",
-                 (int)param->port + 1, sensor_name);
+        PortSelected[param->port] = param->port;
+        allow_set_sensor = true;
       }
     } else {
-      // Sensor đã được khởi tạo
       PortSelected[param->port] = param->port;
       ESP_LOGI(TAG_FUNCTION_MANAGER,
                "select_sensor_cb: sensor %d is already initialized",
                param->sensor);
       message_type = MESSAGE_SENSOR_USED_OTHER_PORT;
-      const char *sensor_name = sensor_type_to_name(param->sensor);
-      snprintf(g_port_label_buf[param->port],
-               sizeof(g_port_label_buf[param->port]), "Port %d - %s",
-               (int)param->port + 1, sensor_name);
+      allow_set_sensor = true;
     }
   } else {
-    // Sensor không có hàm init
     ESP_LOGW(TAG_FUNCTION_MANAGER,
              "select_sensor_cb: init is NULL for sensor %d", param->sensor);
     message_type = MESSAGE_SENSOR_NOT_INITIALIZED;
-    snprintf(g_port_label_buf[param->port],
-             sizeof(g_port_label_buf[param->port]), "Port %d",
-             (int)param->port + 1);
+    /* Không có init -> không coi là đã chọn cảm biến, giữ "Port X" */
+  }
+
+  if (allow_set_sensor) {
+    param->data->selectedSensor[param->port] = (int8_t)param->sensor;
+  } else {
+    param->data->selectedSensor[param->port] = (int8_t)SENSOR_NONE;
   }
 
   // 4. Hiển thị message nếu cần
@@ -240,7 +242,7 @@ void select_sensor_cb(void *ctx) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 
-  // 5. Cập nhật tên Port trong menu Sensors (Port X - tên cảm biến) và quay về menu Sensors
+  // 5. Cập nhật tên Port và quay về menu Sensors (MenuSystem thực hiện qua callback)
   if (param->data->on_sensor_selected) {
     param->data->on_sensor_selected(param->data, param->port);
   }

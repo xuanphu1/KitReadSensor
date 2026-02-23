@@ -128,9 +128,9 @@ typedef struct {
 // Note: PortId_t và SensorType_t đã được định nghĩa trong SensorTypes.h
 
 struct DataManager_t;
-/** Callback sau khi chọn cảm biến cho port: cập nhật tên menu và quay về menu Sensors (MenuSystem gán). */
+/** Callback sau khi chọn cảm biến: cập nhật tên menu Port và quay về menu Sensors (MenuSystem gán). */
 typedef void (*on_sensor_selected_fn)(struct DataManager_t *data, int port);
-/** Callback sau khi reset all ports: cập nhật tên menu về "Port 1", "Port 2", "Port 3" (MenuSystem gán). */
+/** Callback sau khi reset all ports: cập nhật tên về "Port 1", "Port 2", "Port 3" (MenuSystem gán). */
 typedef void (*on_ports_reset_fn)(struct DataManager_t *data);
 
 typedef struct DataManager_t {
@@ -139,10 +139,9 @@ typedef struct DataManager_t {
   ScreenManager_t screen;
   objectInfoManager_t objectInfo;
   menu_list_t *MenuReturn[10];
-  // Mapping lựa chọn: mỗi port -> loại cảm biến đang chọn
-  SensorType_t selectedSensor[NUM_PORTS]; // dùng SENSOR_*; -1 nếu chưa chọn
-  on_sensor_selected_fn on_sensor_selected;  // optional
-  on_ports_reset_fn on_ports_reset;         // optional
+  SensorType_t selectedSensor[NUM_PORTS];
+  on_sensor_selected_fn on_sensor_selected;  // optional, MenuSystem gán
+  on_ports_reset_fn on_ports_reset;           // optional, MenuSystem gán
 } DataManager_t;
 
 // Tham số truyền qua callback chọn cảm biến

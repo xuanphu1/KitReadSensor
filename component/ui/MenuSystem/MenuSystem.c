@@ -4,34 +4,40 @@
 #include "SensorTypes.h"
 #include "sdkconfig.h"
 #include <stdbool.h>
-#include <sys/_types.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/_types.h>
+
 
 #define NUM_INTERFACES 5
+#define PORT_DISPLAY_NAME_LEN 28
 static const TypeCommunication_t MENU_INTERFACE_ORDER[] = {
-  COMMUNICATION_UART,
-  COMMUNICATION_I2C,
-  COMMUNICATION_SPI,
-  COMMUNICATION_ANALOG,
-  COMMUNICATION_PULSE,
+    COMMUNICATION_UART,   COMMUNICATION_I2C,   COMMUNICATION_SPI,
+    COMMUNICATION_ANALOG, COMMUNICATION_PULSE,
 };
-static const char *MENU_INTERFACE_NAMES[] = { "UART", "I2C", "SPI", "ANALOG", "PULSE" };
+static const char *MENU_INTERFACE_NAMES[] = {"UART", "I2C", "SPI", "ANALOG",
+                                             "PULSE"};
 
 menu_list_t WiFi_Config_Menu;
 DataManager_t *Data;
 static const char *port[NUM_PORTS] = {"Port 1", "Port 2", "Port 3"};
 
-/* -------------------- Dynamic Arrays (theo port + giao tiếp) -------------------- */
-static SelectionParam_t *SensorSelectionByIface[NUM_PORTS][NUM_INTERFACES] = {{NULL}};
+/* -------------------- Dynamic Arrays (theo port + giao tiếp)
+ * -------------------- */
+static SelectionParam_t *SensorSelectionByIface[NUM_PORTS][NUM_INTERFACES] = {
+    {NULL}};
 static menu_item_t *SensorItemsByIface[NUM_PORTS][NUM_INTERFACES] = {{NULL}};
-
+static char port_display_name[NUM_PORTS][PORT_DISPLAY_NAME_LEN];
 ShowDataSensorParam_t ShowDataSensorSelection[NUM_PORTS];
 
-/* -------------------- Menu: Sensors → Port 1/2 → UART/I2C/SPI/ANALOG/PULSE → danh sách cảm biến -------------------- */
-menu_list_t PortInterfaceMenus[NUM_PORTS][NUM_INTERFACES];   /* [port][interface] = menu cảm biến */
-menu_item_t PortInterfaceMenuItems[NUM_PORTS][NUM_INTERFACES];  /* "UART", "I2C", ... cho mỗi port */
-menu_list_t PortMenus[NUM_PORTS];  /* Port 1, 2, 3 menu */
+/* -------------------- Menu: Sensors → Port 1/2 → UART/I2C/SPI/ANALOG/PULSE →
+ * danh sách cảm biến -------------------- */
+menu_list_t PortInterfaceMenus[NUM_PORTS][NUM_INTERFACES]; /* [port][interface]
+                                                              = menu cảm biến */
+menu_item_t PortInterfaceMenuItems[NUM_PORTS]
+                                  [NUM_INTERFACES]; /* "UART", "I2C", ... cho
+                                                       mỗi port */
+menu_list_t PortMenus[NUM_PORTS];                   /* Port 1, 2, 3 menu */
 
 menu_item_t Show_Data_Sensor[] = {{NULL, MENU_ACTION, show_data_sensor_cb,
                                    &ShowDataSensorSelection[PORT_1], NULL},
@@ -47,7 +53,8 @@ menu_list_t Show_Data_Sensor_Menu = {
     .port_index = -1,
 };
 
-/* Sensor_Menu_Items: 5 mục = Port 1, Port 2, Port 3, Show data sensor, Reset All Ports (gán trong init) */
+/* Sensor_Menu_Items: 5 mục = Port 1, Port 2, Port 3, Show data sensor, Reset
+ * All Ports (gán trong init) */
 static menu_item_t Sensor_Menu_Items[5];
 menu_list_t Sensor_Menu = {
     .items = Sensor_Menu_Items,
@@ -108,18 +115,25 @@ menu_list_t Battery_Status_Menu = {
     .port_index = -1,
 };
 
-/* -------------------- Actuators: mỗi chân có submenu ON / OFF -------------------- */
+/* -------------------- Actuators: mỗi chân có submenu ON / OFF
+ * -------------------- */
 menu_item_t Actuator_IO1_Port1_Items[] = {
-    {"ON",  MENU_ACTION, actuator_on_cb,  (void *)(uintptr_t)CONFIG_IO_1_PORT_1, NULL},
-    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_1, NULL},
+    {"ON", MENU_ACTION, actuator_on_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_1,
+     NULL},
+    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_1,
+     NULL},
 };
 menu_item_t Actuator_IO3_Port2_Items[] = {
-    {"ON",  MENU_ACTION, actuator_on_cb,  (void *)(uintptr_t)CONFIG_IO_3_PORT_2, NULL},
-    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_3_PORT_2, NULL},
+    {"ON", MENU_ACTION, actuator_on_cb, (void *)(uintptr_t)CONFIG_IO_3_PORT_2,
+     NULL},
+    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_3_PORT_2,
+     NULL},
 };
 menu_item_t Actuator_IO1_Port3_Items[] = {
-    {"ON",  MENU_ACTION, actuator_on_cb,  (void *)(uintptr_t)CONFIG_IO_1_PORT_3, NULL},
-    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_3, NULL},
+    {"ON", MENU_ACTION, actuator_on_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_3,
+     NULL},
+    {"OFF", MENU_ACTION, actuator_off_cb, (void *)(uintptr_t)CONFIG_IO_1_PORT_3,
+     NULL},
 };
 
 menu_list_t Actuator_IO1_Port1_Menu = {
@@ -151,7 +165,7 @@ menu_list_t Actuators_Menu = {
     .items = Actuators_Items,
     .count = ARRAY_SIZE(Actuators_Items),
     .parent = NULL,
-    .port_index = NUM_PORTS,  /* hiển thị cả Port 1, 2, 3 đã chọn ở đầu menu */
+    .port_index = NUM_PORTS, /* hiển thị cả Port 1, 2, 3 đã chọn ở đầu menu */
 };
 
 // Root Menu
@@ -194,7 +208,8 @@ __attribute__((constructor)) static void link_menus(void) {
 /* -------------------- Menu Functions -------------------- */
 
 /**
- * @brief Khởi tạo menu Sensors: Port 1/2 → UART/I2C/SPI/ANALOG/PULSE → danh sách cảm biến.
+ * @brief Khởi tạo menu Sensors: Port 1/2 → UART/I2C/SPI/ANALOG/PULSE → danh
+ * sách cảm biến.
  */
 static void init_sensor_interface_port_menu_items(DataManager_t *data) {
   for (PortId_t port = PORT_1; port < NUM_PORTS; port++) {
@@ -219,16 +234,20 @@ static void init_sensor_interface_port_menu_items(DataManager_t *data) {
         continue;
       }
 
-      SensorSelectionByIface[port][i] = (SelectionParam_t *)malloc(count * sizeof(SelectionParam_t));
-      SensorItemsByIface[port][i] = (menu_item_t *)malloc(count * sizeof(menu_item_t));
+      SensorSelectionByIface[port][i] =
+          (SelectionParam_t *)malloc(count * sizeof(SelectionParam_t));
+      SensorItemsByIface[port][i] =
+          (menu_item_t *)malloc(count * sizeof(menu_item_t));
       if (!SensorSelectionByIface[port][i] || !SensorItemsByIface[port][i]) {
-        ESP_LOGE(TAG_MENU_SYSTEM, "Failed to allocate for port %d interface %d", (int)port, i);
+        ESP_LOGE(TAG_MENU_SYSTEM, "Failed to allocate for port %d interface %d",
+                 (int)port, i);
         continue;
       }
 
       for (size_t k = 0; k < count; k++) {
         SensorType_t sensor_type;
-        sensor_driver_t *driver = sensor_registry_get_driver_at_interface(iface, k, &sensor_type);
+        sensor_driver_t *driver =
+            sensor_registry_get_driver_at_interface(iface, k, &sensor_type);
         if (!driver) {
           continue;
         }
@@ -264,7 +283,8 @@ static void init_sensor_interface_port_menu_items(DataManager_t *data) {
     PortMenus[port].items = PortInterfaceMenuItems[port];
     PortMenus[port].count = NUM_INTERFACES;
     PortMenus[port].parent = &Sensor_Menu;
-    PortMenus[port].port_index = (int8_t)port;  /* menu Port 1/2/3 hiển thị cảm biến đã chọn */
+    PortMenus[port].port_index =
+        (int8_t)port; /* menu Port 1/2/3 hiển thị cảm biến đã chọn */
   }
 
   Sensor_Menu_Items[0] = (menu_item_t){
@@ -299,7 +319,7 @@ static void init_sensor_interface_port_menu_items(DataManager_t *data) {
       .name = "Reset All Ports",
       .type = MENU_ACTION,
       .callback = reset_all_ports_callback,
-      .ctx = NULL,  /* gán Data trong MenuSystemInit */
+      .ctx = NULL, /* gán Data trong MenuSystemInit */
       .children = NULL,
   };
 }
@@ -311,10 +331,9 @@ static void init_show_data_sensor_selection(DataManager_t *data) {
   }
 }
 
-#define PORT_DISPLAY_NAME_LEN 28
-static char port_display_name[NUM_PORTS][PORT_DISPLAY_NAME_LEN];
-
-void MenuSystem_UpdatePortNames(DataManager_t *data) {
+/** Cập nhật tên Sensor_Menu_Items[0..2]: "Port X" hoặc "Port X - tên cảm biến"
+ * theo data->selectedSensor. */
+static void update_port_names(DataManager_t *data) {
   if (data == NULL) {
     return;
   }
@@ -323,13 +342,16 @@ void MenuSystem_UpdatePortNames(DataManager_t *data) {
       snprintf(port_display_name[i], PORT_DISPLAY_NAME_LEN, "Port %d", i + 1);
     } else {
       snprintf(port_display_name[i], PORT_DISPLAY_NAME_LEN, "Port %d - %s",
-               i + 1, sensor_type_to_name((SensorType_t)data->selectedSensor[i]));
+               i + 1,
+               sensor_type_to_name((SensorType_t)data->selectedSensor[i]));
     }
     Sensor_Menu_Items[i].name = port_display_name[i];
   }
 }
 
-void MenuSystem_GoToSensorMenu(DataManager_t *data, int8_t selected_index) {
+/** Chuyển màn hình về menu Sensors, highlight mục selected_index (0=Port1,
+ * 1=Port2, 2=Port3). */
+static void go_to_sensor_menu(DataManager_t *data, int8_t selected_index) {
   if (data == NULL) {
     return;
   }
@@ -345,12 +367,12 @@ void MenuSystem_GoToSensorMenu(DataManager_t *data, int8_t selected_index) {
 }
 
 static void menu_on_sensor_selected(DataManager_t *data, int port) {
-  MenuSystem_UpdatePortNames(data);
-  MenuSystem_GoToSensorMenu(data, (int8_t)port);
+  update_port_names(data);
+  go_to_sensor_menu(data, (int8_t)port);
 }
 
 static void menu_on_ports_reset(DataManager_t *data) {
-  MenuSystem_UpdatePortNames(data);
+  update_port_names(data);
 }
 
 void MenuSystemInit(DataManager_t *data) {
@@ -364,7 +386,7 @@ void MenuSystemInit(DataManager_t *data) {
   for (int i = 0; i < NUM_PORTS; ++i) {
     Data->selectedSensor[i] = SENSOR_NONE;
   }
-  
+
   init_sensor_interface_port_menu_items(Data);
   init_show_data_sensor_selection(Data);
 
@@ -374,17 +396,18 @@ void MenuSystemInit(DataManager_t *data) {
 
   WiFi_Config_Items[0].ctx = Data;
   Battery_Status_Items[0].ctx = Data;
-  Sensor_Menu_Items[3].ctx = Data;  /* Show data sensor */
-  Sensor_Menu_Items[4].ctx = Data;  /* Reset All Ports */
+  Sensor_Menu_Items[3].ctx = Data; /* Show data sensor */
+  Sensor_Menu_Items[4].ctx = Data; /* Reset All Ports */
 
-  MenuSystem_UpdatePortNames(Data);  /* "Port 1", "Port 2", "Port 3" */
-
+  update_port_names(Data); /* "Port 1", "Port 2", "Port 3" */
   Data->on_sensor_selected = menu_on_sensor_selected;
   Data->on_ports_reset = menu_on_ports_reset;
 
   // Cập nhật callback cho Battery Status menu item trong Root Menu
   Root_Items[3].callback = battery_status_callback;
   Root_Items[3].ctx = Data;
+  // Information callback cần Data để vẽ lại menu sau khi hiển thị thông tin
+  Root_Items[4].ctx = Data;
 }
 
 /* -------------------- Navigation Task -------------------- */
@@ -395,13 +418,15 @@ void MenuNavigation_Task(void *pvParameter) {
   data->screen.selected = 0;
   data->screen.prev_selected = 0;
   for (int p = 0; p < NUM_PORTS; p++) {
-    data->objectInfo.selectedSensorName[p] = sensor_type_to_name(data->selectedSensor[p]);
+    data->objectInfo.selectedSensorName[p] =
+        sensor_type_to_name(data->selectedSensor[p]);
   }
   MenuRender(data->screen.current, &data->screen.selected, &data->objectInfo);
 
   while (1) {
     for (int p = 0; p < NUM_PORTS; p++) {
-      data->objectInfo.selectedSensorName[p] = sensor_type_to_name(data->selectedSensor[p]);
+      data->objectInfo.selectedSensorName[p] =
+          sensor_type_to_name(data->selectedSensor[p]);
     }
     switch (ReadButtonStatus()) {
     case BTN_UP:
@@ -428,7 +453,8 @@ void MenuNavigation_Task(void *pvParameter) {
       menu_item_t *item = &data->screen.current->items[data->screen.selected];
 
       if (item->type == MENU_ACTION && item->callback) {
-        if (data->screen.current == &Show_Data_Sensor_Menu && data->screen.selected < NUM_PORTS) {
+        if (data->screen.current == &Show_Data_Sensor_Menu &&
+            data->screen.selected < NUM_PORTS) {
           ShowDataSensorSelection[data->screen.selected].ShowDataScreen = true;
         }
         item->callback(item->ctx);
@@ -444,7 +470,8 @@ void MenuNavigation_Task(void *pvParameter) {
     case BTN_BACK:
 
       if (data->screen.current->parent) {
-        if (data->screen.current == &Show_Data_Sensor_Menu && data->screen.selected < NUM_PORTS) {
+        if (data->screen.current == &Show_Data_Sensor_Menu &&
+            data->screen.selected < NUM_PORTS) {
           ShowDataSensorSelection[data->screen.selected].ShowDataScreen = false;
         }
         data->screen.current = data->screen.current->parent;

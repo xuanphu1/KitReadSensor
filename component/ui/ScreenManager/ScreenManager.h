@@ -17,6 +17,8 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,objectInfoManager_t 
 system_err_t SensorRender(PortId_t port, SensorData_t *data);
 system_err_t ScreenWifiConnecting(DataManager_t *data);
 system_err_t ScreenShowMessage(Message_t message);
+/** Hiển thị nhiều dòng text lên OLED (vd màn Information). lines[0..n-1], mỗi dòng cách nhau 12px. */
+system_err_t ScreenShowInformation(const char **lines, size_t n_lines);
 system_err_t ScreenShowDataSensor(const char **field_names,
                                   const float *values,
                                   const char **units,

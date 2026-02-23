@@ -142,6 +142,10 @@ void app_main(void) {
     vTaskDelay(portMAX_DELAY);
   }
   ScreenManagerInit(&MainScreen);
+  /* Đảm bảo chưa chọn cảm biến nào -> menu hiển thị "Port 1", "Port 2", "Port 3" chứ không "Port 1 - BME280" do zero-init */
+  for (int i = 0; i < NUM_PORTS; i++) {
+    DataManager.selectedSensor[i] = SENSOR_NONE;
+  }
   MenuSystemInit(&DataManager);
   
   // Khởi tạo Battery Manager

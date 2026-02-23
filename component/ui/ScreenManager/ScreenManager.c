@@ -303,6 +303,34 @@ system_err_t ScreenShowMessage(Message_t message) {
   return MRS_OK;
 }
 
+system_err_t ScreenShowInformation(const char **lines, size_t n_lines) {
+  if (oled == NULL) {
+    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowInformation: oled is not initialized");
+    return MRS_ERR_SCREENMANAGER_NOT_INIT;
+  }
+  if (lines == NULL || n_lines == 0) {
+    return MRS_ERR_CORE_INVALID_PARAM;
+  }
+  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+    return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
+  }
+  ssd1306_clear_screen(oled, 0);
+  for (size_t i = 0; i < n_lines && i < 6; i++) {
+    if (lines[i] != NULL) {
+      ssd1306_draw_string(oled, 0, (int)(i * 12), (const uint8_t *)lines[i], 12, 1);
+    }
+  }
+  esp_err_t ret = ssd1306_refresh_gram(oled);
+  if (oled_mutex != NULL) {
+    xSemaphoreGive(oled_mutex);
+  }
+  if (ret != ESP_OK) {
+    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowInformation: refresh_gram failed: %s", esp_err_to_name(ret));
+    return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
+  }
+  return MRS_OK;
+}
+
 system_err_t ScreenShowDataSensor(const char **field_names, const float *values,
                           const char **units, size_t count) {
   if (oled == NULL) {
