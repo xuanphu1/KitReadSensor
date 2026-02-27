@@ -48,11 +48,53 @@ void wifi_config_task(void *pvParameters) {
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
+void System_CleanupNetwork(void) {
+  ESP_LOGI("CLEANUP", "Cleaning up existing WiFi and Netif...");
+
+  // 1. Dừng WiFi và ngắt kết nối
+  esp_wifi_stop();
+  esp_wifi_disconnect();
+
+  // 2. Hủy các Interface (Netif) đã tạo
+  // Chúng ta tìm handle bằng key và destroy chúng
+  esp_netif_t *sta_netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+  if (sta_netif) {
+      esp_netif_destroy_default_wifi(sta_netif);
+      ESP_LOGI("CLEANUP", "Destroyed STA Netif");
+  }
+
+  esp_netif_t *ap_netif = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
+  if (ap_netif) {
+      esp_netif_destroy_default_wifi(ap_netif);
+      ESP_LOGI("CLEANUP", "Destroyed AP Netif");
+  }
+
+  // 3. Xóa cấu hình WiFi trong NVS (SSID, Password cũ...)
+  esp_wifi_restore();
+  
+  // 4. De-init WiFi để giải phóng hoàn toàn driver
+  esp_wifi_deinit();
+
+  ESP_LOGI("CLEANUP", "System is clean. Ready for Mesh-lite.");
+}
 
 void wifi_config_callback(void *ctx) {
   DataManager_t *data = (DataManager_t *)ctx;
   ESP_LOGI(TAG_FUNCTION_MANAGER, "WiFi Config callback triggered");
   xTaskCreate(wifi_config_task, "wifi_connect_task", 4096, data, 5, NULL);
+}
+
+void wifi_mesh_join_callback(void *ctx) {
+  DataManager_t *data = (DataManager_t *)ctx;
+  (void)data;
+  ESP_LOGI(TAG_FUNCTION_MANAGER, "Join WiFi Mesh callback triggered");
+
+  // 1. Dừng WiFi hiện tại (WiFiManager) trước khi vào mesh (tránh cấu hình cũ còn hoạt động)
+  System_CleanupNetwork();
+
+
+  // 2. Khởi động MeshManager (mesh-lite client), truyền DataManager để gửi dữ liệu thật
+  MeshManager_StartMeshClient(data);
 }
 
 

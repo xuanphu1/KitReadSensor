@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.15)  23 FEB 2026 08:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.15)  23 FEB 2026 08:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex"
-(d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex
+**./BaoCaoCode.tex
+(BaoCaoCode.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
 (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -23,13 +23,16 @@ File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
 \abovecaptionskip=\skip48
 \belowcaptionskip=\skip49
 \bibindent=\dimen140
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.def
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.def
 File: t5enc.def 2006/11/21 v1.4 Vietnamese T5 encoding
 Now handling font encoding T5 ...
 ... processing UTF-8 mapping file for font encoding T5
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.dfu
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.dfu
 File: t5enc.dfu 2006/08/19 v1.1 UTF8 support for Vietnamese
    defining Unicode char U+00AB (decimal 171)
    defining Unicode char U+00BB (decimal 187)
@@ -183,19 +186,24 @@ File: t5enc.dfu 2006/08/19 v1.1 UTF8 support for Vietnamese
    defining Unicode char U+203A (decimal 8250)
    defining Unicode char U+2423 (decimal 9251)
 ))
-LaTeX Font Info:    Trying to load font information for T5+cmr on input line 112.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmr.fd
+LaTeX Font Info:    Trying to load font information for T5+cmr on input line 11
+2.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmr.fd
 File: t5cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
 Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
 Package: babel 2024/01/07 v24.1 The Babel package
 \babel@savecnt=\count195
 \U@D=\dimen141
 \l@unhyphenated=\language79
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count196
 
@@ -203,8 +211,11 @@ Package: babel 2024/01/07 v24.1 The Babel package
 * Local config file bblopts.cfg used
 *
 (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
-File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/babel-vietnamese\vietnamese.ldf
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/babel-vietnamese\vietna
+mese.ldf
 Language: vietnamese 
 
 
@@ -218,41 +229,66 @@ Package babel Info: Hyphen rules for 'vietnamese' set to \l@english
 (babel)             (\language0). Reported on input line 37.
 Package babel Info: Hyphen rules for 'vietnam' set to \l@english
 (babel)             (\language0). Reported on input line 38.
-Loading definitions for the Vietnamese font encoding (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.def
+Loading definitions for the Vietnamese font encoding
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.def
 File: t5enc.def 2006/11/21 v1.4 Vietnamese T5 encoding
 LaTeX Font Info:    Redeclaring font encoding T5 on input line 75.
 )
 Package babel Info: Making " an active character on input line 147.
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/vi\babel-vietnamese.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/vi\babel
+-vietnamese.tex
 Package babel Info: Importing font and identification data for vietnamese
 (babel)             from babel-vi.ini. Reported on input line 11.
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrextend.sty
-Package: scrextend 2025/09/09 v3.48 KOMA-Script package (extend other classes with features of KOMA-Script classes)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrkbase.sty
-Package: scrkbase 2025/09/09 v3.48 KOMA-Script package (KOMA-Script-dependent basics and keyval usage)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrbase.sty
-Package: scrbase 2025/09/09 v3.48 KOMA-Script package (KOMA-Script-independent basics and keyval usage)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrextend.s
+ty
+Package: scrextend 2025/09/09 v3.48 KOMA-Script package (extend other classes w
+ith features of KOMA-Script classes)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrkbase.st
+y
+Package: scrkbase 2025/09/09 v3.48 KOMA-Script package (KOMA-Script-dependent b
+asics and keyval usage)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrbase.sty
+Package: scrbase 2025/09/09 v3.48 KOMA-Script package (KOMA-Script-independent 
+basics and keyval usage)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile.st
+y
 Package: scrlfile 2025/09/09 v3.48 KOMA-Script package (file load hooks)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile-hook.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile-ho
+ok.sty
 Package: scrlfile-hook 2025/09/09 v3.48 KOMA-Script package (using LaTeX hooks)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlogo.sty
+
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlogo.sty
 Package: scrlogo 2025/09/09 v3.48 KOMA-Script package (logo)
 ))) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks19
 )
 Applying: [2021/05/01] Usage of raw or classic option list on input line 254.
-Already applied: [0000/00/00] Usage of raw or classic option list on input line 370.
+Already applied: [0000/00/00] Usage of raw or classic option list on input line
+ 370.
 )))
-Package scrextend Info: File `scrsize12pt.clo' used to setup font sizes on input line 9.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrsize12pt.clo
-File: scrsize12pt.clo 2025/09/09 v3.48 KOMA-Script font size class option (12pt)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package scrextend Info: File `scrsize12pt.clo' used to setup font sizes on inpu
+t line 9.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrsize12pt
+.clo
+File: scrsize12pt.clo 2025/09/09 v3.48 KOMA-Script font size class option (12pt
+)
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ))
 \Gm@cnth=\count197
@@ -267,7 +303,9 @@ Package: iftex 2022/02/03 v1.0f TeX engine tests
 \Gm@layouthoffset=\dimen148
 \Gm@layoutvoffset=\dimen149
 \Gm@dimlist=\toks20
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\mathptmx.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\mathptmx.sty
 Package: mathptmx 2020/03/25 PSNFSS-v9.3 Times w/ Math, improved (SPQR, WaS) 
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -302,17 +340,23 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
 LaTeX Info: Redefining \hbar on input line 50.
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen150
@@ -324,7 +368,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box51
 \@float@everytoks=\toks22
 \@floatcapt=\box52
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
 Package: enumitem 2025/02/06 v3.11 Customized lists
 \labelindent=\skip50
 \enit@outerparindent=\dimen152
@@ -332,7 +377,8 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \enit@inbox=\box53
 \enit@count@id=\count267
 \enitdp@description=\count268
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
 Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen153
 \ar@mcellbox=\box54
@@ -341,7 +387,8 @@ Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \extratabsurround=\skip51
 \backup@length=\skip52
 \ar@cellbox=\box55
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
 \lst@mode=\count269
 \lst@gtempboxa=\box56
 \lst@token=\toks25
@@ -354,22 +401,25 @@ Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \lst@newlines=\count273
 \lst@lineno=\count274
 \lst@maxwidth=\dimen158
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 \c@lstnumber=\count275
 \lst@skipnumbers=\count276
 \lst@framebox=\box57
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
 File: listings.cfg 2023/02/27 1.9 listings configuration
 ))
 Package: listings 2023/02/27 1.9 (Carsten Heinz)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
 Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 274.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
 Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
 Package xcolor Info: Model `RGB' extended on input line 1366.
@@ -386,14 +436,17 @@ Package: amsmath 2023/05/13 v2.17o AMS math features
 For additional information on amsmath, use the `?' option.
 (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
 Package: amstext 2021/08/26 v2.01 AMS text
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks26
 \ex@=\dimen159
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen160
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
 \inf@bad=\count277
@@ -443,24 +496,47 @@ LaTeX Info: Redefining \Relbar on input line 971.
 \mathdisplay@stack=\toks30
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/tools\indentfirst.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/tools\indentfirst.sty
 Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-common.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.
+sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.st
+y
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
+-common.tex
 \pgfutil@everybye=\toks31
 \pgfutil@tempdima=\dimen168
 \pgfutil@tempdimb=\dimen169
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-latex.def
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
+-latex.def
 \pgfutil@abb=\box60
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.code.tex (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.
+code.tex
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
 Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
 ))
 Package: pgf 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.
+sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.
+sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s.code.tex
 Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+.code.tex
 \pgfkeys@pathtoks=\toks32
 \pgfkeys@temptoks=\toks33
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeyslibraryfiltered.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+libraryfiltered.code.tex
 \pgfkeys@tmptoks=\toks34
 ))
 \pgf@x=\dimen170
@@ -483,32 +559,76 @@ Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
 \t@pgf@tokb=\toks36
 \t@pgf@tokc=\toks37
 \pgf@sys@id@count=\count293
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.cfg
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.c
+fg
 File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
 )
 Driver file for pgf: pgfsys-pdftex.def
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-pdftex.def
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s-pdftex.def
 File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s-common-pdf.def
 File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.tex
+)))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+ssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfsyssoftpath@smallbuffer@items=\count294
 \pgfsyssoftpath@bigbuffer@items=\count295
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsysprotocol.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+sprotocol.code.tex
 File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcore.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+e.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparser.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
+.tex
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.
+code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparse
+r.code.tex
 \pgfmath@dimen=\dimen180
 \pgfmath@count=\count296
 \pgfmath@box=\box61
 \pgfmath@toks=\toks38
 \pgfmath@stack@operand=\toks39
 \pgfmath@stack@operation=\toks40
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.basic.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.trigonometric.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.random.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.comparison.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.base.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.round.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.misc.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.integerarithmetics.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.basic.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.trigonometric.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.random.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.comparison.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.base.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.round.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.misc.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.integerarithmetics.code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.
+code.tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat
+.code.tex
 \c@pgfmathroundto@lastzeros=\count297
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.tex) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.
+tex)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epoints.code.tex
 File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@picminx=\dimen181
 \pgf@picmaxx=\dimen182
@@ -524,75 +644,130 @@ File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@yy=\dimen192
 \pgf@zx=\dimen193
 \pgf@zy=\dimen194
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathconstruct.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@path@lastx=\dimen195
 \pgf@path@lasty=\dimen196
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathusage.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathusage.code.tex
 File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@shorten@end@additional=\dimen197
 \pgf@shorten@start@additional=\dimen198
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+escopes.code.tex
 File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfpic=\box62
 \pgf@hbox=\box63
 \pgf@layerbox@main=\box64
 \pgf@picture@serial@count=\count298
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoregraphicstate.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+egraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgflinewidth=\dimen199
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransformations.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+etransformations.code.tex
 File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@pt@x=\dimen256
 \pgf@pt@y=\dimen257
 \pgf@pt@temp=\dimen258
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorequick.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+equick.code.tex
 File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreobjects.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eobjects.code.tex
 File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathprocessing.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathprocessing.code.tex
 File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+earrows.code.tex
 File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfarrowsep=\dimen259
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eshade.code.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@max=\dimen260
 \pgf@sys@shading@range@num=\count299
 \pgf@shadingcount=\count300
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreimage.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreexternal.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eexternal.code.tex
 File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfexternal@startupbox=\box65
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+elayers.code.tex
 File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransparency.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+etransparency.code.tex
 File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepatterns.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epatterns.code.tex
 File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+erdf.code.tex
 File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleshapes.code.tex
+)))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+shapes.code.tex
 File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfnodeparttextbox=\box66
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleplot.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+plot.code.tex
 File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-0-65.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-0-65.sty
 Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
 \pgf@nodesepstart=\dimen261
 \pgf@nodesepend=\dimen262
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-1-18.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-1-18.sty
 Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.st
+y
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.s
+ty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+.code.tex))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
+.tex))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.
+code.tex
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
 \pgffor@iter=\dimen263
 \pgffor@skip=\dimen264
 \pgffor@stack=\toks41
 \pgffor@toks=\toks42
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z\tikz.code.tex
 Package: tikz 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryplothandlers.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@plot@mark@count=\count301
 \pgfplotmarksize=\dimen265
@@ -613,42 +788,77 @@ File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \tikznumberofchildren=\count303
 \tikznumberofcurrentchild=\count304
 \tikz@fig@count=\count305
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodulematrix.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+matrix.code.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfmatrixcurrentrow=\count306
 \pgfmatrixcurrentcolumn=\count307
 \pgf@matrix@numberofcolumns=\count308
 )
 \tikz@expandcount=\count309
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytrees.code.tex
+)))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarytrees.code.tex
 File: tikzlibrarytrees.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarypositioning.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.geometric.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.geometric.code.tex
 File: tikzlibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.geometric.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.geometric.code.tex
 File: pgflibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/forest\forest.sty
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/forest\forest.sty
 Package: forest 2017/07/14 v2.1.5 Drawing (linguistic) trees
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.code.tex
 File: tikzlibraryshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.misc.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.misc.code.tex
 File: tikzlibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.misc.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.misc.code.tex
 File: pgflibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.symbols.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.symbols.code.tex
 File: tikzlibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.symbols.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.symbols.code.tex
 File: pgflibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.arrows.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.arrows.code.tex
 File: tikzlibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.arrows.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.arrows.code.tex
 File: pgflibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.callouts.code.tex (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.callouts.code.tex)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryshapes.multipart.code.tex
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.callouts.code.tex
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.callouts.code.tex))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.multipart.code.tex
 File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\pgflibraryshapes.multipart.code.tex
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.multipart.code.tex
 File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfnodepartlowerbox=\box71
 \pgfnodeparttwobox=\box72
@@ -670,34 +880,53 @@ File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfnodepartsevenbox=\box88
 \pgfnodepartsixbox=\box89
 \pgfnodepartfivebox=\box90
-))) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryfit.code.tex
+)))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryfit.code.tex
 File: tikzlibraryfit.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarycalc.code.tex
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarycalc.code.tex
 File: tikzlibrarycalc.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryintersections.code.tex (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryfpu.code.tex)
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryintersections.code.tex
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryfpu.code.tex)
 \pgf@intersect@solutions=\count310
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgfopts\pgfopts.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/pgfopts\pgfopts.sty
 Package: pgfopts 2014/07/10 v2.1a LaTeX package options with pgfkeys
 \pgfopts@list@add@a@toks=\toks43
 \pgfopts@list@add@b@toks=\toks44
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count311
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/elocalloc\elocalloc.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/elocalloc\elocalloc.sty
 Package: elocalloc 2016/12/15 v0.03 local allocation for LaTeX 2015+ (DPC)
 ) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.s
+ty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xparse.sty (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
+e.sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
 Package: expl3 2024-01-04 L3 programming layer (loader) 
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
+tex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count312
 \l__pdf_internal_box=\box91
 ))
 Package: xparse 2023-10-10 L3 Experimental document command parser
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/inlinedef\inlinedef.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/inlinedef\inlinedef.sty
 Package: inlinedef 2008/07/10 v1.0 Inlined expansions within definitions
 \ID@toks=\toks45
 \ID@count=\count313
@@ -748,7 +977,8 @@ Package: inlinedef 2008/07/10 v1.0 Inlined expansions within definitions
 \forest@copy@out=\write4
 \forest@externalize@max@outer@n=\count338
 \forest@externalize@inner@n=\count339
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \ttl@box=\box93
 \beforetitleunit=\skip56
@@ -759,41 +989,63 @@ Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \titlewidth=\dimen282
 \titlewidthlast=\dimen283
 \titlewidthfirst=\dimen284
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2023-11-26 v7.01g Hypertext links for LaTeX
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.s
+ty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 )
-(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefine
+keys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.s
+ty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds
+.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-)) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+))
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/letltxmacro\letltxmacro.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/letltxmacro\letltxmacro
+.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettit
+lestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
 \c@section@level=\count340
@@ -816,8 +1068,11 @@ Now handling font encoding PU ...
 )
 Package hyperref Info: Option `unicode' set `true' on input line 4064.
 Package hyperref Info: Option `unicode' set `true' on input line 4064.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.sty
-Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
+ty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 4064.
 
@@ -840,10 +1095,14 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4786.
 \XeTeXLinkMargin=\dimen286
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
-Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc
+.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
 ))
 \Fld@menulength=\count345
 \Field@Width=\dimen287
@@ -855,7 +1114,8 @@ Package hyperref Info: backreferencing OFF on input line 6080.
 Package hyperref Info: Link coloring ON on input line 6083.
 Package hyperref Info: Link coloring with OCG OFF on input line 6090.
 Package hyperref Info: PDF/A mode OFF on input line 6095.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
@@ -864,27 +1124,37 @@ package with kernel methods
 \c@Hfootnote=\count348
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2023-11-26 v7.01g Hyperref driver for pdfTeX
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\atveryend-ltx.sty
-Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/base\atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
 with kernel methods
 )
 \Fld@listcount=\count349
 \c@bookmark@seq@number=\count350
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
+echeck.sty
 Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquec
+ounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
 )
 \Hy@SectionHShift=\skip58
 )
-LaTeX Font Info:    Trying to load font information for T5+ptm on input line 59.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5ptm.fd
+LaTeX Font Info:    Trying to load font information for T5+ptm on input line 59
+.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5ptm.fd
 File: t5utm.fd 2005/08/24 Fontinst v1.929 font definitions for T5/ptm.
-) (BaoCaoCode.aux)
+)
+(BaoCaoCode.aux)
 \openout1 = `BaoCaoCode.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
@@ -942,7 +1212,9 @@ LaTeX Font Info:    ... okay on input line 59.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
+ii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count351
 \scratchdimen=\dimen289
@@ -955,35 +1227,51 @@ LaTeX Font Info:    ... okay on input line 59.
 \MPnumerator=\count355
 \makeMPintoPDFobject=\count356
 \everyMPtoPDFconversion=\toks59
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+)
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
+ase.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
+fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 \c@lstlisting=\count357
 Package hyperref Info: Link coloring ON on input line 59.
+ (BaoCaoCode.out) (BaoCaoCode.out)
 \@outlinefile=\write5
 \openout5 = `BaoCaoCode.out'.
 
-LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 61.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ztmcm.fd
+LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line
+ 61.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 61.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlztmcm.fd
+LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line
+ 61.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 61.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omsztmcm.fd
+LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line
+ 61.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 61.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxztmcm.fd
+LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line
+ 61.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 61.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 6
+1.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
@@ -993,43 +1281,52 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
 
-No file BaoCaoCode.toc.
-\tf@toc=\write6
-\openout6 = `BaoCaoCode.toc'.
+(BaoCaoCode.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
 
-(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\se-pdfdoc.def
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\se-pdfdoc.d
+ef
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) [1
 
-{C:/Users/MrKoi/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/vntex/t5.enc}]
-LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 71.
- (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmtt.fd
+{C:/Users/MrKoi/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/MrKo
+i/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/vntex/t5.enc}]
+LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 3
+3.
+
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmtt.fd
 File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 76.
+))
+\tf@toc=\write6
+\openout6 = `BaoCaoCode.toc'.
+
+
+[2]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 7
+6.
  (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 Underfull \hbox (badness 2285) in paragraph at lines 83--84
-[]\T5/ptm/b/n/12 DataManager/ \T5/ptm/m/n/12 -- \T5/cmtt/m/n/12 Common.c\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 Common.h\T5/ptm/m/n/12 : ^^^ành ngh¾a c¡c kiºu dú li»u dòng
+[]\T5/ptm/b/n/12 DataManager/ \T5/ptm/m/n/12 -- \T5/cmtt/m/n/12 Common.c\T5/ptm
+/m/n/12 , \T5/cmtt/m/n/12 Common.h\T5/ptm/m/n/12 : ^^^ành ngh¾a c¡c kiºu dú li»
+u dòng
  []
 
 
 Underfull \hbox (badness 1484) in paragraph at lines 83--84
-\T5/ptm/m/n/12 chung (\T5/cmtt/m/n/12 DataManager_t\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 menu_item_t\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 menu_list_t\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 objectInfoManager_t\T5/ptm/m/n/12 ,
+\T5/ptm/m/n/12 chung (\T5/cmtt/m/n/12 DataManager_t\T5/ptm/m/n/12 , \T5/cmtt/m/
+n/12 menu_item_t\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 menu_list_t\T5/ptm/m/n/12 , \T
+5/cmtt/m/n/12 objectInfoManager_t\T5/ptm/m/n/12 ,
  []
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 97.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 97.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 97.
-[2{C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
-
-LaTeX Warning: Reference `fig:tree-dir' on page 3 undefined on input line 122.
-
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:167: Missing number, treated as zero.
+[3{C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
+BaoCaoCode.tex:167: Missing number, treated as zero.
 <to be read again> 
                    \forest@id@of@main 
 l.167 }
@@ -1038,14 +1335,14 @@ A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:167: Missing = inserted for \ifnum.
+BaoCaoCode.tex:167: Missing = inserted for \ifnum.
 <to be read again> 
                    \forest@id@of@main 
 l.167 }
        
 I was expecting to see `<', `=', or `>'. Didn't.
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:167: Missing number, treated as zero.
+BaoCaoCode.tex:167: Missing number, treated as zero.
 <to be read again> 
                    \forest@id@of@main 
 l.167 }
@@ -1056,65 +1353,71 @@ look up `weird error' in the index to The TeXbook.)
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 167.
-[3]
+[4]
 Overfull \hbox (15.58112pt too wide) in paragraph at lines 184--185
-[]\T5/ptm/b/n/12 Menu: \T5/cmtt/m/n/12 MenuSystemInit(&DataManager) \T5/ptm/m/n/12 -- g¡n \T5/cmtt/m/n/12 Data->screen.current = &Root_Menu\T5/ptm/m/n/12 ,
+[]\T5/ptm/b/n/12 Menu: \T5/cmtt/m/n/12 MenuSystemInit(&DataManager) \T5/ptm/m/n
+/12 -- g¡n \T5/cmtt/m/n/12 Data->screen.current = &Root_Menu\T5/ptm/m/n/12 ,
  []
 
 
 Underfull \hbox (badness 7722) in paragraph at lines 199--200
-[]\T5/ptm/b/n/12 Nót b§m: \T5/cmtt/m/n/12 button_type_t \T5/ptm/m/n/12 (BTN_UP, BTN_DOWN, BTN_SEL, BTN_BACK,
+[]\T5/ptm/b/n/12 Nót b§m: \T5/cmtt/m/n/12 button_type_t \T5/ptm/m/n/12 (BTN_UP,
+ BTN_DOWN, BTN_SEL, BTN_BACK,
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 204--205
-\T5/cmtt/m/n/12 selectedSensor[NUM_PORTS]\T5/ptm/m/n/12 ; còng hai call-back: \T5/cmtt/m/n/12 on_sensor_selected(data,
+\T5/cmtt/m/n/12 selectedSensor[NUM_PORTS]\T5/ptm/m/n/12 ; còng hai call-back: \
+T5/cmtt/m/n/12 on_sensor_selected(data,
  []
 
-[4]
+[5]
 Underfull \hbox (badness 2368) in paragraph at lines 216--217
-[]\T5/cmtt/m/n/12 PortId_t \T5/ptm/m/n/12 (PORT_1, PORT_2, PORT_3), \T5/cmtt/m/n/12 NUM_PORTS = 3\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 SensorType_t \T5/ptm/m/n/12 (SEN-
+[]\T5/cmtt/m/n/12 PortId_t \T5/ptm/m/n/12 (PORT_1, PORT_2, PORT_3), \T5/cmtt/m/
+n/12 NUM_PORTS = 3\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 SensorType_t \T5/ptm/m/n/12 
+(SEN-
  []
 
 
 Underfull \hbox (badness 1112) in paragraph at lines 217--218
-[]\T5/cmtt/m/n/12 TypeCommunication_t\T5/ptm/m/n/12 : COM-MU-NI-CA-TION_UART, I2C, SPI, ANA-LOG, PULSE
+[]\T5/cmtt/m/n/12 TypeCommunication_t\T5/ptm/m/n/12 : COM-MU-NI-CA-TION_UART, I
+2C, SPI, ANA-LOG, PULSE
  []
 
 
 Overfull \hbox (4.90039pt too wide) in paragraph at lines 226--228
-\T5/cmtt/m/n/12 sensor_registry_get_driver_at_interface(iface, index, out_sensor_type)\T5/ptm/m/n/12 .
+\T5/cmtt/m/n/12 sensor_registry_get_driver_at_interface(iface, index, out_senso
+r_type)\T5/ptm/m/n/12 .
  []
-
-
-LaTeX Warning: Reference `fig:tree-sensors' on page 5 undefined on input line 232.
 
 Missing character: There is no ) in font nullfont!
 
 Underfull \hbox (badness 10000) in paragraph at lines 263--263
-[]\T5/ptm/m/n/12 H¼nh 2: []C¥y c£m bi¸n theo giao ti¸p (in-ter-face). Menu Port 1/2/3 $\OMS/ztmcm/m/n/12 !$
+[]\T5/ptm/m/n/12 H¼nh 2: []C¥y c£m bi¸n theo giao ti¸p (in-ter-face). Menu Port
+ 1/2/3 $\OMS/ztmcm/m/n/12 !$
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 263--263
-\T5/ptm/m/n/12 UART/I2C/$[]$ l§y danh s¡ch tø \T5/cmtt/m/n/12 sensor_registry_get_count_by_interface \T5/ptm/m/n/12 v 
+\T5/ptm/m/n/12 UART/I2C/$[]$ l§y danh s¡ch tø \T5/cmtt/m/n/12 sensor_registry_g
+et_count_by_interface \T5/ptm/m/n/12 v 
  []
 
-[5]
+[6]
 Underfull \hbox (badness 1178) in paragraph at lines 273--274
-\T5/ptm/m/n/12 ch¿ khi driver init th nh cæng mîi g¡n \T5/cmtt/m/n/12 Data->selectedSensor[port]\T5/ptm/m/n/12 ; n¸u th§t
+\T5/ptm/m/n/12 ch¿ khi driver init th nh cæng mîi g¡n \T5/cmtt/m/n/12 Data->sel
+ectedSensor[port]\T5/ptm/m/n/12 ; n¸u th§t
  []
 
 
 Overfull \hbox (6.48328pt too wide) in paragraph at lines 276--277
-[]\T5/ptm/b/n/12 Information: \T5/cmtt/m/n/12 information_callback \T5/ptm/m/n/12 (Func-tion-Man-ager) gåi \T5/cmtt/m/n/12 ScreenShowInformation
+[]\T5/ptm/b/n/12 Information: \T5/cmtt/m/n/12 information_callback \T5/ptm/m/n/
+12 (Func-tion-Man-ager) gåi \T5/cmtt/m/n/12 ScreenShowInformation
  []
 
 
-LaTeX Warning: Reference `fig:tree-menu' on page 6 undefined on input line 281.
-
-
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:330: Package pgfkeys Error: I do not know the key '/tikz/PMS7003' and I am going to ignore it. Perhaps you misspelled it.
+BaoCaoCode.tex:330: Package pgfkeys Error: I do not know the key '/tikz/PMS7003
+' and I am going to ignore it. Perhaps you misspelled it.
 
 See the pgfkeys package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -1128,7 +1431,7 @@ Pretend that you're Hercule Poirot: Examine all clues,
 and deduce the truth by order and method.
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:330: Package pgf Error: Unknown arrow tip kind 'MQ'.
+BaoCaoCode.tex:330: Package pgf Error: Unknown arrow tip kind 'MQ'.
 
 See the pgf package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -1147,7 +1450,7 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no p in font nullfont!
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:330: Package pgf Error: Unknown arrow tip kind '3'.
+BaoCaoCode.tex:330: Package pgf Error: Unknown arrow tip kind '3'.
 
 See the pgf package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -1165,74 +1468,70 @@ Missing character: There is no s in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no p in font nullfont!
-[6]
+[7]
 Underfull \hbox (badness 1057) in paragraph at lines 345--346
-\T5/cmtt/m/n/12 data->selectedSensor[0..2] \T5/ptm/m/n/12 g¡n \T5/cmtt/m/n/12 Sensor_Menu_Items[i].name \T5/ptm/m/n/12 l  ``Port $\OML/ztmcm/m/it/12 i \OT1/ztmcm/m/n/12 + 1$\T5/ptm/m/n/12 '' n¸u
+\T5/cmtt/m/n/12 data->selectedSensor[0..2] \T5/ptm/m/n/12 g¡n \T5/cmtt/m/n/12 S
+ensor_Menu_Items[i].name \T5/ptm/m/n/12 l  ``Port $\OML/ztmcm/m/it/12 i \OT1/zt
+mcm/m/n/12 + 1$\T5/ptm/m/n/12 '' n¸u
  []
 
 
 Underfull \hbox (badness 2197) in paragraph at lines 347--348
-\T5/cmtt/m/n/12 MenuSystemInit\T5/ptm/m/n/12 , Data-Man-ager ^^_÷ñc g¡n \T5/cmtt/m/n/12 on_sensor_selected \T5/ptm/m/n/12 v  \T5/cmtt/m/n/12 on_ports_reset\T5/ptm/m/n/12 ;
+\T5/cmtt/m/n/12 MenuSystemInit\T5/ptm/m/n/12 , Data-Man-ager ^^_÷ñc g¡n \T5/cmt
+t/m/n/12 on_sensor_selected \T5/ptm/m/n/12 v  \T5/cmtt/m/n/12 on_ports_reset\T5
+/ptm/m/n/12 ;
  []
 
 
 Underfull \hbox (badness 2443) in paragraph at lines 353--354
-[]\T5/ptm/m/n/12 Tr÷îc méi l¦n xû lþ, cªp nhªt \T5/cmtt/m/n/12 data->objectInfo.selectedSensorName[p] =
+[]\T5/ptm/m/n/12 Tr÷îc méi l¦n xû lþ, cªp nhªt \T5/cmtt/m/n/12 data->objectInfo
+.selectedSensorName[p] =
  []
 
-[7]
+[8]
 Underfull \hbox (badness 1478) in paragraph at lines 363--364
-[]\T5/cmtt/m/n/12 ScreenWifiConnecting\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 ScreenShowMessage\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 ScreenShowDataSensor\T5/ptm/m/n/12 : C¡c m n
+[]\T5/cmtt/m/n/12 ScreenWifiConnecting\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 ScreenSh
+owMessage\T5/ptm/m/n/12 , \T5/cmtt/m/n/12 ScreenShowDataSensor\T5/ptm/m/n/12 : 
+C¡c m n
  []
 
 
 Overfull \hbox (16.97935pt too wide) in paragraph at lines 376--377
-\T5/cmtt/m/n/12 = SENSOR_NONE \T5/ptm/m/n/12 ^^_º menu hiºn thà ``Port X''. Sau ^^_â gåi \T5/cmtt/m/n/12 data->on_sensor_selected(data,
+\T5/cmtt/m/n/12 = SENSOR_NONE \T5/ptm/m/n/12 ^^_º menu hiºn thà ``Port X''. Sau
+ ^^_â gåi \T5/cmtt/m/n/12 data->on_sensor_selected(data,
  []
 
 
 Overfull \hbox (16.12619pt too wide) in paragraph at lines 379--380
-[]\T5/ptm/b/n/12 battery_status_callback: \T5/cmtt/m/n/12 BatteryManager_UpdateInfo(&objectInfo->batteryInfo)\T5/ptm/m/n/12 ;
+[]\T5/ptm/b/n/12 battery_status_callback: \T5/cmtt/m/n/12 BatteryManager_Update
+Info(&objectInfo->batteryInfo)\T5/ptm/m/n/12 ;
  []
 
-[8]
-
-LaTeX Warning: Reference `fig:port-config' on page 9 undefined on input line 406.
-
-<Image/PortConfig.png, id=85, 1052.93375pt x 427.5975pt>
+[9]
+<Image/PortConfig.png, id=254, 1052.93375pt x 427.5975pt>
 File: Image/PortConfig.png Graphic file (type png)
 <use Image/PortConfig.png>
 Package pdftex.def Info: Image/PortConfig.png  used on input line 410.
 (pdftex.def)             Requested size: 455.24411pt x 184.87465pt.
 
 Underfull \hbox (badness 1997) in paragraph at lines 411--411
-[]\T5/ptm/m/n/12 H¼nh 4: []C§u h¼nh v  t¡c döng ch¥n tr¶n Port 1, Port 2, Port 3 (5V, 3V3, GND,
+[]\T5/ptm/m/n/12 H¼nh 4: []C§u h¼nh v  t¡c döng ch¥n tr¶n Port 1, Port 2, Port 
+3 (5V, 3V3, GND,
  []
 
-[9 <./Image/PortConfig.png>] (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-) (C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+[10 <./Image/PortConfig.png>]
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 429.
+(C:\Users\MrKoi\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 429.
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst@FillFixed@).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.430 idf.py set-target esp32   # hoáº·c 
-                                         esp32c6
-The document does not appear to be in UTF-8 encoding.
-Try adding \UseRawInputEncoding as the first line of the file
-or specify an encoding such as \usepackage [latin1]{inputenc}
-in the document preamble.
-Alternatively, save the file in UTF-8 using your editor or another tool
-
-
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte "BA.
+BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst
+@FillFixed@).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1247,7 +1546,22 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte "B7.
+BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte "BA.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.430 idf.py set-target esp32   # hoáº·c 
+                                         esp32c6
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+BaoCaoCode.tex:430: LaTeX Error: Invalid UTF-8 byte "B7.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1263,15 +1577,16 @@ Alternatively, save the file in UTF-8 using your editor or another tool
 
 
 Overfull \hbox (9.05157pt too wide) in paragraph at lines 446--447
-[]\T5/ptm/m/n/12 Task ^^_åc c£m bi¸n gåi \T5/cmtt/m/n/12 sensor->read(&data) \T5/ptm/m/n/12 ^^_ành ký; câ thº gåi \T5/cmtt/m/n/12 ScreenShowDataSensor
+[]\T5/ptm/m/n/12 Task ^^_åc c£m bi¸n gåi \T5/cmtt/m/n/12 sensor->read(&data) \T
+5/ptm/m/n/12 ^^_ành ký; câ thº gåi \T5/cmtt/m/n/12 ScreenShowDataSensor
  []
 
-[10]
+[11]
 LaTeX Font Info:    Font shape `T5/cmtt/bx/it' in size <12> not available
 (Font)              Font shape `T5/cmtt/m/it' tried instead on input line 456.
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1286,7 +1601,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "A1.
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "A1.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1301,7 +1616,8 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst@FillFixed@).
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst
+@FillFixed@).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1316,7 +1632,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "BB.
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "BB.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1331,7 +1647,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "87.
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "87.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1346,7 +1662,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1361,7 +1677,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "B3.
+BaoCaoCode.tex:465: LaTeX Error: Invalid UTF-8 byte "B3.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1376,7 +1692,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
+BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte sequence (Ã\expandafter).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1391,7 +1707,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "AA.
+BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "AA.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1406,7 +1722,8 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst@FillFixed@).
+BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst
+@FillFixed@).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1421,7 +1738,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "BB.
+BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "BB.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1436,7 +1753,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "9B.
+BaoCaoCode.tex:467: LaTeX Error: Invalid UTF-8 byte "9B.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1452,16 +1769,20 @@ Alternatively, save the file in UTF-8 using your editor or another tool
 
 
 Underfull \hbox (badness 2050) in paragraph at lines 473--474
-\T5/ptm/m/n/12 driver ri¶ng (v½ dö com-po-nent \T5/cmtt/m/n/12 component/drivers/XYZ/\T5/ptm/m/n/12 ), triºn khai \T5/cmtt/m/n/12 system_err_t
+\T5/ptm/m/n/12 driver ri¶ng (v½ dö com-po-nent \T5/cmtt/m/n/12 component/driver
+s/XYZ/\T5/ptm/m/n/12 ), triºn khai \T5/cmtt/m/n/12 system_err_t
  []
 
 
 Overfull \hbox (10.95001pt too wide) in paragraph at lines 477--479
-\T5/ptm/m/n/12 th¶m mët ph¦n tû \T5/cmtt/m/n/12 sensor_driver_t \T5/ptm/m/n/12 v o m£ng \T5/cmtt/m/n/12 sensor_drivers[] \T5/ptm/m/n/12 (trong \T5/cmtt/m/n/12 SensorRegistry.c\T5/ptm/m/n/12 ). 
+\T5/ptm/m/n/12 th¶m mët ph¦n tû \T5/cmtt/m/n/12 sensor_driver_t \T5/ptm/m/n/12 
+v o m£ng \T5/cmtt/m/n/12 sensor_drivers[] \T5/ptm/m/n/12 (trong \T5/cmtt/m/n/12
+ SensorRegistry.c\T5/ptm/m/n/12 ). 
  []
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst@FillFixed@).
+BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte sequence (á\expandafter\lst
+@FillFixed@).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1476,7 +1797,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte "BA.
+BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte "BA.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1491,7 +1812,7 @@ in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
 
-d:/esp_5_2/MRS_Project/Report/BÃ¡o cÃ¡o code/BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte "A3.
+BaoCaoCode.tex:483: LaTeX Error: Invalid UTF-8 byte "A3.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -1505,49 +1826,53 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-[11]
+[12]
 Underfull \hbox (badness 1024) in paragraph at lines 519--520
-\T5/cmtt/m/n/12 main/Kconfig.projbuild \T5/ptm/m/n/12 ho°c \T5/cmtt/m/n/12 component/drivers/.../Kconfig.projbuild \T5/ptm/m/n/12 v  ^^_åc
+\T5/cmtt/m/n/12 main/Kconfig.projbuild \T5/ptm/m/n/12 ho°c \T5/cmtt/m/n/12 comp
+onent/drivers/.../Kconfig.projbuild \T5/ptm/m/n/12 v  ^^_åc
  []
 
 
 Underfull \hbox (badness 1845) in paragraph at lines 527--528
-[]\T5/ptm/m/n/12 ^^^«ng kþ driver: th¶m ph¦n tû \T5/cmtt/m/n/12 sensor_driver_t \T5/ptm/m/n/12 v o \T5/cmtt/m/n/12 sensor_drivers[] \T5/ptm/m/n/12 trong
+[]\T5/ptm/m/n/12 ^^^«ng kþ driver: th¶m ph¦n tû \T5/cmtt/m/n/12 sensor_driver_t
+ \T5/ptm/m/n/12 v o \T5/cmtt/m/n/12 sensor_drivers[] \T5/ptm/m/n/12 trong
  []
 
-[12] [13] (BaoCaoCode.aux)
+[13] [14] (BaoCaoCode.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-
-Package rerunfilecheck Warning: File `BaoCaoCode.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `BaoCaoCode.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  1712F387443DAEB931A5490F9CC0E605;7874.
+Package rerunfilecheck Info: File `BaoCaoCode.out' has not changed.
+(rerunfilecheck)             Checksum: 1712F387443DAEB931A5490F9CC0E605;7874.
  ) 
 Here is how much of TeX's memory you used:
- 39653 strings out of 474485
- 831787 string characters out of 5743734
+ 39698 strings out of 474485
+ 832621 string characters out of 5743734
  2025542 words of memory out of 5000000
- 61288 multiletter control sequences out of 15000+600000
+ 61328 multiletter control sequences out of 15000+600000
  609986 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 123i,13n,124p,1644b,3151s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/urwvn/utmb8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/urwvn/utmbi8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/urwvn/utmr8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnitt10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on BaoCaoCode.pdf (13 pages, 230868 bytes).
+ 123i,13n,124p,1599b,3151s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmmi10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmr10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fonts
+/type1/vntex/urwvn/utmb8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/fon
+ts/type1/vntex/urwvn/utmbi8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/
+fonts/type1/urw/times/utmr8a.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTeX/
+fonts/type1/vntex/urwvn/utmr8v.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKTe
+X/fonts/type1/urw/times/utmri8a.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiKT
+eX/fonts/type1/vntex/vnr/vnitt10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiK
+TeX/fonts/type1/vntex/vnr/vntt10.pfb><C:/Users/MrKoi/AppData/Local/Programs/MiK
+TeX/fonts/type1/vntex/vnr/vntt12.pfb>
+Output written on BaoCaoCode.pdf (14 pages, 255190 bytes).
 PDF statistics:
- 247 PDF objects out of 1000 (max. 8388607)
- 113 named destinations out of 1000 (max. 500000)
- 18 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 404 PDF objects out of 1000 (max. 8388607)
+ 114 named destinations out of 1000 (max. 500000)
+ 314 words of extra memory for PDF output out of 10000 (max. 10000000)
 

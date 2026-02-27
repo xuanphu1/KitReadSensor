@@ -8,9 +8,11 @@
 #include "Common.h"
 #include "SensorConfig.h"
 #include "ErrorCodes.h"
+#include "MeshManager.h"
 #define TAG_FUNCTION_MANAGER "FUNCTION_MANAGER"
 
 void wifi_config_callback(void *ctx);
+void wifi_mesh_join_callback(void *ctx);
 void information_callback(void *ctx);
 void read_temperature_cb(void *ctx);
 void read_humidity_cb(void *ctx);

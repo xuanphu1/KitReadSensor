@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/_types.h>
+#include <time.h>
 
 
 #define NUM_INTERFACES 5
@@ -63,7 +64,7 @@ menu_list_t Sensor_Menu = {
     .port_index = -1,
 };
 
-// Submenu "WiFi Config"
+// Submenu "WiFi Config" (kết nối WiFi thông thường)
 menu_item_t WiFi_Config_Items[] = {
     {"OK", MENU_ACTION, wifi_config_callback, NULL, NULL},
 };
@@ -85,6 +86,20 @@ menu_list_t WiFi_Config_Menu = {
     .image = WiFi_Config_Image,
     .object = OBJECT_WIFI,
     .count = ARRAY_SIZE(WiFi_Config_Items),
+    .parent = NULL,
+    .port_index = -1,
+};
+
+// Submenu chọn chế độ WiFi: Connect WiFi / Join WiFi Mesh
+menu_item_t WiFi_Mode_Items[] = {
+    {"Connect WiFi", MENU_SUBMENU, NULL, NULL, &WiFi_Config_Menu},
+    {"Join WiFi Mesh", MENU_ACTION, wifi_mesh_join_callback, NULL, NULL},
+};
+
+menu_list_t WiFi_Mode_Menu = {
+    .items = WiFi_Mode_Items,
+    .object = OBJECT_NONE,
+    .count = ARRAY_SIZE(WiFi_Mode_Items),
     .parent = NULL,
     .port_index = -1,
 };
@@ -170,7 +185,7 @@ menu_list_t Actuators_Menu = {
 
 // Root Menu
 menu_item_t Root_Items[] = {
-    {"WiFi Config", MENU_SUBMENU, NULL, NULL, &WiFi_Config_Menu},
+    {"WiFi Config", MENU_SUBMENU, NULL, NULL, &WiFi_Mode_Menu},
     {"Sensors", MENU_SUBMENU, NULL, NULL, &Sensor_Menu},
     {"Actuators", MENU_SUBMENU, NULL, NULL, &Actuators_Menu},
     {"Battery Status", MENU_SUBMENU, NULL, NULL, &Battery_Status_Menu},
@@ -190,7 +205,8 @@ menu_list_t Root_Menu = {
 // Liên kết parent cho submenu
 __attribute__((constructor)) static void link_menus(void) {
   Sensor_Menu.parent = &Root_Menu;
-  WiFi_Config_Menu.parent = &Root_Menu;
+  WiFi_Mode_Menu.parent = &Root_Menu;
+  WiFi_Config_Menu.parent = &WiFi_Mode_Menu;
   Battery_Status_Menu.parent = &Root_Menu;
   Actuators_Menu.parent = &Root_Menu;
   Actuator_IO1_Port1_Menu.parent = &Actuators_Menu;
@@ -395,6 +411,7 @@ void MenuSystemInit(DataManager_t *data) {
   Show_Data_Sensor[2].name = port[2];
 
   WiFi_Config_Items[0].ctx = Data;
+  WiFi_Mode_Items[1].ctx = Data;  // Join WiFi Mesh dùng DataManager nếu cần
   Battery_Status_Items[0].ctx = Data;
   Sensor_Menu_Items[3].ctx = Data; /* Show data sensor */
   Sensor_Menu_Items[4].ctx = Data; /* Reset All Ports */
