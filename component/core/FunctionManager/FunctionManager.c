@@ -81,6 +81,8 @@ void System_CleanupNetwork(void) {
 void wifi_config_callback(void *ctx) {
   DataManager_t *data = (DataManager_t *)ctx;
   ESP_LOGI(TAG_FUNCTION_MANAGER, "WiFi Config callback triggered");
+  vTaskDelete(data->TaskHandle_Array[TASK_MESH_UDP_CLIENT]);
+  System_CleanupNetwork();
   xTaskCreate(wifi_config_task, "wifi_connect_task", 4096, data, 5, NULL);
 }
 

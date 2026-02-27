@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "SensorTypes.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #define MAX_TEXT_LENGTH 21
@@ -47,6 +49,20 @@ typedef enum {
   OBJECT_INFORMATION,
   OBJECT_NONE,
 } object_type_t;
+
+enum {
+  TASK_MESH_UDP_CLIENT,
+  TASK_WIFI_CONFIG,
+  TASK_WIFI_MESH_JOIN,
+  TASK_READ_SENSOR,
+  TASK_SHOW_DATA_SENSOR,
+  TASK_BATTERY_STATUS,
+  TASK_RESET_ALL_PORTS,
+  TASK_ACTUATOR_ON,
+  TASK_ACTUATOR_OFF,
+  TASK_NONE,
+};
+
 
 typedef struct {
   uint8_t state;
@@ -142,6 +158,8 @@ typedef struct DataManager_t {
   SensorType_t selectedSensor[NUM_PORTS];
   on_sensor_selected_fn on_sensor_selected;  // optional, MenuSystem gán
   on_ports_reset_fn on_ports_reset;           // optional, MenuSystem gán
+
+  TaskHandle_t TaskHandle_Array[10];
 } DataManager_t;
 
 // Tham số truyền qua callback chọn cảm biến

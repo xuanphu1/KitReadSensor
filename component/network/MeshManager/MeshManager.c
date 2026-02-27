@@ -1,7 +1,6 @@
 #include "MeshManager.h"
 
 static const char *TAG_MESH = "MeshManager";
-
 // Con trỏ tới DataManager toàn cục của app (được truyền từ FunctionManager)
 static DataManager_t *s_data_manager = NULL;
 
@@ -49,7 +48,7 @@ static void mesh_udp_client_task(void *pvParameters)
 
         // Bắt đầu JSON: level + mảng ports
         offset += snprintf(payload + offset, sizeof(payload) - offset,
-                           "{\"level\":%d,\"ports\":[",
+                           "{\"Node_ID\":%d,\"ports\":[",
                            esp_mesh_lite_get_level());
 
         bool first_port = true;
@@ -159,17 +158,6 @@ static void mesh_print_system_info_timercb(TimerHandle_t timer)
              esp_mesh_lite_get_level(), esp_get_free_heap_size());
 }
 
-// static esp_err_t mesh_storage_init(void)
-// {
-//     esp_err_t ret = nvs_flash_init();
-
-//     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-//         ESP_ERROR_CHECK(nvs_flash_erase());
-//         ret = nvs_flash_init();
-//     }
-
-//     return ret;
-// }
 
 static void mesh_wifi_init(void)
 {
@@ -261,9 +249,8 @@ void MeshManager_StartMeshClient(DataManager_t *data)
     esp_mesh_lite_set_disallowed_level(1);
 
     esp_mesh_lite_start();
-
     /* UDP client task for child */
-    xTaskCreate(mesh_udp_client_task, "mesh_udp_client", 4096, NULL, 5, NULL);
+    xTaskCreate(mesh_udp_client_task, "mesh_udp_client", 4096, NULL, 5, &data->TaskHandle_Array[TASK_MESH_UDP_CLIENT]);
 
     TimerHandle_t timer = xTimerCreate("mesh_print_system_info", 10000 / portTICK_PERIOD_MS,
                                        pdTRUE, NULL, mesh_print_system_info_timercb);
@@ -271,5 +258,5 @@ void MeshManager_StartMeshClient(DataManager_t *data)
         xTimerStart(timer, 0);
     }
 
-    started = true;
+    started = true; 
 }
