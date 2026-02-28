@@ -6,11 +6,23 @@ static DataManager_t *s_data_manager = NULL;
 
 #define MESH_UDP_PORT 12345
 
+
+
+bool MeshManager_IsConnected(void) {
+    return esp_mesh_lite_get_level() > 0;
+}
+
+
 static void mesh_udp_client_task(void *pvParameters)
 {
     (void)pvParameters;
     while (1) {
-        uint32_t size = 0;
+        if (!MeshManager_IsConnected()) {
+            s_data_manager->objectInfo.meshInfo.meshStatus = DISCONNECTED;
+        } else {
+            s_data_manager->objectInfo.meshInfo.meshStatus = CONNECTED;
+        }
+        uint32_t size = 0;  
         const node_info_list_t *node = esp_mesh_lite_get_nodes_list(&size);
         const node_info_list_t *target = NULL;
 
@@ -38,11 +50,11 @@ static void mesh_udp_client_task(void *pvParameters)
         struct sockaddr_in dest_addr;
         memset(&dest_addr, 0, sizeof(dest_addr));
         dest_addr.sin_family = AF_INET;
-        dest_addr.sin_port = htons(MESH_UDP_PORT);
+        dest_addr.sin_port = htons(CONFIG_UDP_PORT);
         /* Root node IP trong mạng mesh-lite thường là 192.168.5.1.
          * Nếu cấu hình khác, bạn chỉnh lại IP này cho đúng. */
-        dest_addr.sin_addr.s_addr = inet_addr("192.168.5.1");
-
+        dest_addr.sin_addr.s_addr = inet_addr(CONFIG_IP_ROOT);
+        
         char payload[512];
         int offset = 0;
 
@@ -133,7 +145,7 @@ static void mesh_udp_client_task(void *pvParameters)
         }
 
         ESP_LOGI(TAG_MESH, "Sending JSON to 192.168.5.1:%d, payload: %s",
-                 MESH_UDP_PORT, payload);
+                 CONFIG_UDP_PORT, payload);
 
         int err = sendto(sock, payload, strlen(payload), 0,
                          (struct sockaddr *)&dest_addr, sizeof(dest_addr));
@@ -220,7 +232,7 @@ void MeshManager_StartMeshClient(DataManager_t *data)
 
     // Lưu con trỏ DataManager để task mesh có thể đọc dữ liệu cảm biến
     s_data_manager = data;
-
+    s_data_manager->objectInfo.meshInfo.ipRoot = CONFIG_IP_ROOT;
     ESP_LOGI(TAG_MESH, "Starting mesh-lite client...");
 
     // NVS, netif, event loop đã được khởi tạo trong main/WifiManager

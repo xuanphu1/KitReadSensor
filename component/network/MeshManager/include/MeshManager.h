@@ -25,3 +25,4 @@
 struct DataManager_t;
 
 void MeshManager_StartMeshClient(struct DataManager_t *data);
+bool MeshManager_IsConnected(void);

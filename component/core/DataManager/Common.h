@@ -47,6 +47,7 @@ typedef enum {
   OBJECT_DIFFERENT,
   OBJECT_SENSOR,
   OBJECT_INFORMATION,
+  OBJECT_WIFI_MESH,
   OBJECT_NONE,
 } object_type_t;
 
@@ -134,8 +135,14 @@ typedef struct {
 } wifiInfo_t;
 
 typedef struct {
+  status meshStatus;
+  char *ipRoot;
+} meshInfo_t;
+
+typedef struct {
   BatteryInfo_t batteryInfo;
   wifiInfo_t wifiInfo;
+  meshInfo_t meshInfo;
   /** Tên cảm biến đã chọn theo port (để hiển thị ở menu Port 1/2/3), do MenuSystem cập nhật từ selectedSensor */
   const char *selectedSensorName[NUM_PORTS];
 } objectInfoManager_t;

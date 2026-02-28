@@ -81,9 +81,28 @@ void System_CleanupNetwork(void) {
 void wifi_config_callback(void *ctx) {
   DataManager_t *data = (DataManager_t *)ctx;
   ESP_LOGI(TAG_FUNCTION_MANAGER, "WiFi Config callback triggered");
-  vTaskDelete(data->TaskHandle_Array[TASK_MESH_UDP_CLIENT]);
+  if (data->TaskHandle_Array[TASK_MESH_UDP_CLIENT] != NULL) {
+    vTaskDelete(data->TaskHandle_Array[TASK_MESH_UDP_CLIENT]);
+    data->TaskHandle_Array[TASK_MESH_UDP_CLIENT] = NULL;
+  }
   System_CleanupNetwork();
   xTaskCreate(wifi_config_task, "wifi_connect_task", 4096, data, 5, NULL);
+}
+
+
+void wifi_mesh_join_task(void *pvParameters) {
+  DataManager_t *data = (DataManager_t *)pvParameters;
+  System_CleanupNetwork();
+  MeshManager_StartMeshClient(data);
+  while (1) {
+    if (data->objectInfo.meshInfo.meshStatus == CONNECTED) {
+      MenuRender(data->MenuReturn[2], &(data->screen.selected),
+      &(data->objectInfo));
+      vTaskDelete(NULL);
+    }
+    ScreenShowMeshInformation(data);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
 }
 
 void wifi_mesh_join_callback(void *ctx) {
@@ -92,11 +111,8 @@ void wifi_mesh_join_callback(void *ctx) {
   ESP_LOGI(TAG_FUNCTION_MANAGER, "Join WiFi Mesh callback triggered");
 
   // 1. Dừng WiFi hiện tại (WiFiManager) trước khi vào mesh (tránh cấu hình cũ còn hoạt động)
-  System_CleanupNetwork();
-
-
-  // 2. Khởi động MeshManager (mesh-lite client), truyền DataManager để gửi dữ liệu thật
-  MeshManager_StartMeshClient(data);
+  //System_CleanupNetwork();
+ xTaskCreate(wifi_mesh_join_task, "wifi_mesh_join_task", 4096, data, 5, NULL);
 }
 
 

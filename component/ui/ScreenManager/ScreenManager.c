@@ -2,6 +2,7 @@
 #include "Common.h"
 #include "freertos/semphr.h"
 #include <stdio.h>
+#include <string.h>
 
 ssd1306_handle_t oled = NULL;
 static SemaphoreHandle_t oled_mutex = NULL;
@@ -26,7 +27,8 @@ system_err_t ScreenManagerInit(ssd1306_handle_t *_oled) {
   if (oled_mutex == NULL) {
     oled_mutex = xSemaphoreCreateMutex();
     if (oled_mutex == NULL) {
-      ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenManagerInit: failed to create oled mutex");
+      ESP_LOGE(TAG_SCREEN_MANAGER,
+               "ScreenManagerInit: failed to create oled mutex");
       return MRS_ERR_SCREENMANAGER_NOT_INIT;
     }
   }
@@ -46,31 +48,32 @@ static void initUIState(void) {
 }
 
 system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
-                objectInfoManager_t *objectInfo) {
+                        objectInfoManager_t *objectInfo) {
   if (oled == NULL) {
     ESP_LOGE(TAG_SCREEN_MANAGER, "MenuRender: oled is not initialized");
     return MRS_ERR_SCREENMANAGER_NOT_INIT;
   }
-  
+
   if (menu == NULL) {
     ESP_LOGW(TAG_SCREEN_MANAGER, "MenuRender: menu is NULL");
     return MRS_ERR_UI_INVALID_MENU;
   }
-  
+
   if (selected == NULL) {
     ESP_LOGW(TAG_SCREEN_MANAGER, "MenuRender: selected is NULL");
     return MRS_ERR_UI_INVALID_MENU;
   }
-  
+
   if (objectInfo == NULL) {
     ESP_LOGW(TAG_SCREEN_MANAGER, "MenuRender: objectInfo is NULL");
     return MRS_ERR_CORE_INVALID_PARAM;
   }
 
-  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
-  
+
   ssd1306_clear_screen(oled, 0);
 
   uint32_t offset = 0;
@@ -94,12 +97,18 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
       // Map batteryLevel vào index đúng (0-6)
       uint8_t index = objectInfo->batteryInfo.batteryLevel;
       if (index >= 7) {
-        index = 0;  // Default to 0% nếu index không hợp lệ
+        index = 0; // Default to 0% nếu index không hợp lệ
       }
-      ssd1306_draw_bitmap(
-          oled, 55, 0,
-          (uint8_t *)menu->image.image[menu->object][index],
-          menu->image.width, menu->image.height);
+      ssd1306_draw_bitmap(oled, 55, 0,
+                          (uint8_t *)menu->image.image[menu->object][index],
+                          menu->image.width, menu->image.height);
+      break;
+    }
+    case OBJECT_WIFI_MESH: {
+      /* Icon mesh nằm ở imageManagerWifi[2], không phải
+       * imageManager[OBJECT_WIFI_MESH] */
+      ssd1306_draw_bitmap(oled, 48, 0, (uint8_t *)menu->image.image[0][2],
+                          menu->image.width, menu->image.height);
       break;
     }
     case OBJECT_DIFFERENT:
@@ -150,18 +159,35 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
       } else {
         // Fallback: dùng mảng text với index đã được map
         uint8_t index = objectInfo->batteryInfo.batteryLevel;
-        if (index < 7) {  // Có 7 mức: 0, 17, 33, 50, 67, 83, 100
+        if (index < 7) { // Có 7 mức: 0, 17, 33, 50, 67, 83, 100
           battery_text = menu->text.text[menu->object][index];
         } else {
-          battery_text = menu->text.text[menu->object][0];  // Default to 0%
+          battery_text = menu->text.text[menu->object][0]; // Default to 0%
         }
       }
-      
+
       if (battery_text != NULL) {
-        ssd1306_draw_string(oled, 0, offset, (uint8_t *)battery_text, menu->text.size, 1);
+        ssd1306_draw_string(oled, 0, offset, (uint8_t *)battery_text,
+                            menu->text.size, 1);
         if (strlen(battery_text) > MAX_TEXT_LENGTH)
           extraText = true;
       }
+      break;
+    }
+    case OBJECT_WIFI_MESH: {
+      char mesh_information_text[64];
+      const char *base ;
+      if (objectInfo->meshInfo.meshStatus == CONNECTED &&
+          objectInfo->meshInfo.ipRoot != NULL) {
+        base = menu->text.text[2][1];
+        snprintf(mesh_information_text, sizeof(mesh_information_text), "%s %s",
+                 base, objectInfo->meshInfo.ipRoot);
+      } else {
+        base = menu->text.text[2][0];
+        snprintf(mesh_information_text, sizeof(mesh_information_text), "%s", base);
+      }
+      ssd1306_draw_string(oled, 0, offset, (uint8_t *)mesh_information_text,
+                          menu->text.size, 1);
       break;
     }
     case OBJECT_DIFFERENT:
@@ -208,10 +234,11 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
                            offset);
     display_index++;
   }
-  
+
   esp_err_t ret = ssd1306_refresh_gram(oled);
   if (ret != ESP_OK) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "MenuRender: refresh_gram failed: %s", esp_err_to_name(ret));
+    ESP_LOGE(TAG_SCREEN_MANAGER, "MenuRender: refresh_gram failed: %s",
+             esp_err_to_name(ret));
     if (oled_mutex != NULL)
       xSemaphoreGive(oled_mutex);
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
@@ -223,19 +250,21 @@ system_err_t MenuRender(menu_list_t *menu, int8_t *selected,
 
 system_err_t ScreenWifiConnecting(DataManager_t *data) {
   if (oled == NULL) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenWifiConnecting: oled is not initialized");
+    ESP_LOGE(TAG_SCREEN_MANAGER,
+             "ScreenWifiConnecting: oled is not initialized");
     return MRS_ERR_SCREENMANAGER_NOT_INIT;
   }
-  
+
   if (data == NULL) {
     ESP_LOGW(TAG_SCREEN_MANAGER, "ScreenWifiConnecting: data is NULL");
     return MRS_ERR_CORE_INVALID_PARAM;
   }
 
-  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
-  
+
   static uint8_t dot_count = 0;
   const char *base_message = "Connecting to WiFi";
   char display_buffer[30];
@@ -248,10 +277,12 @@ system_err_t ScreenWifiConnecting(DataManager_t *data) {
     dot_count++;
     ssd1306_clear_screen(oled, 0);
     ssd1306_draw_string(oled, 0, 0, (uint8_t *)display_buffer, 12, 1);
-    
+
     esp_err_t ret = ssd1306_refresh_gram(oled);
     if (ret != ESP_OK) {
-      ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenWifiConnecting: refresh_gram failed: %s", esp_err_to_name(ret));
+      ESP_LOGE(TAG_SCREEN_MANAGER,
+               "ScreenWifiConnecting: refresh_gram failed: %s",
+               esp_err_to_name(ret));
       if (oled_mutex != NULL)
         xSemaphoreGive(oled_mutex);
       return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
@@ -268,32 +299,89 @@ system_err_t ScreenWifiConnecting(DataManager_t *data) {
   }
 }
 
+system_err_t ScreenShowMeshInformation(DataManager_t *data) {
+  if (oled == NULL) {
+    ESP_LOGE(TAG_SCREEN_MANAGER,
+             "ScreenShowMeshInformation: oled is not initialized");
+    return MRS_ERR_SCREENMANAGER_NOT_INIT;
+  }
+  if (data == NULL) {
+    return MRS_ERR_CORE_INVALID_PARAM;
+  }
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+    return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
+  }
+  static uint8_t dot_count = 0;
+  char display_buffer[100];
+  if (data->objectInfo.meshInfo.meshStatus == DISCONNECTED ||
+      data->objectInfo.meshInfo.meshStatus == ERROR) {
+    const char *ip = (data->objectInfo.meshInfo.ipRoot != NULL)
+                         ? data->objectInfo.meshInfo.ipRoot
+                         : "?";
+    snprintf(display_buffer, sizeof(display_buffer), "Connecting to Root IP: %s", ip);
+    for (int i = 0; i < (dot_count % 4); i++) {
+      strcat(display_buffer, ".");
+    }
+    dot_count++;
+    ssd1306_clear_screen(oled, 0);
+    ssd1306_draw_string(oled, 0, 0, (uint8_t *)display_buffer, 12, 1);
+
+    esp_err_t ret = ssd1306_refresh_gram(oled);
+    if (ret != ESP_OK) {
+      ESP_LOGE(TAG_SCREEN_MANAGER,
+               "ScreenWifiConnecting: refresh_gram failed: %s",
+               esp_err_to_name(ret));
+      if (oled_mutex != NULL)
+        xSemaphoreGive(oled_mutex);
+      return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
+    }
+    if (oled_mutex != NULL)
+      xSemaphoreGive(oled_mutex);
+    return MRS_OK;
+  } else {
+    ESP_LOGW(TAG_SCREEN_MANAGER,
+             "ScreenShowMeshInformation: mesh status is not DISCONNECTED or ERROR");
+    if (oled_mutex != NULL)
+      xSemaphoreGive(oled_mutex);
+    return MRS_ERR_NETWORK_INVALID_CONFIG;
+  }
+  if (oled_mutex != NULL)
+    xSemaphoreGive(oled_mutex);
+  return MRS_OK;
+}
+
 system_err_t ScreenShowMessage(Message_t message) {
   if (oled == NULL) {
     ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowMessage: oled is not initialized");
     return MRS_ERR_SCREENMANAGER_NOT_INIT;
   }
-  
+
   if (message < 0 || message > MESSAGE_PORT_NOT_SELECTED) {
-    ESP_LOGW(TAG_SCREEN_MANAGER, "ScreenShowMessage: invalid message type: %d", message);
-    return MRS_ERR_UI_INVALID_MENU;
-  }
-  
-  if (MessageText[message] == NULL) {
-    ESP_LOGW(TAG_SCREEN_MANAGER, "ScreenShowMessage: message text is NULL for message: %d", message);
+    ESP_LOGW(TAG_SCREEN_MANAGER, "ScreenShowMessage: invalid message type: %d",
+             message);
     return MRS_ERR_UI_INVALID_MENU;
   }
 
-  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+  if (MessageText[message] == NULL) {
+    ESP_LOGW(TAG_SCREEN_MANAGER,
+             "ScreenShowMessage: message text is NULL for message: %d",
+             message);
+    return MRS_ERR_UI_INVALID_MENU;
+  }
+
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
-  
+
   ssd1306_clear_screen(oled, 0);
   ssd1306_draw_string(oled, 0, 0, (uint8_t *)MessageText[message], 12, 1);
-  
+
   esp_err_t ret = ssd1306_refresh_gram(oled);
   if (ret != ESP_OK) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowMessage: refresh_gram failed: %s", esp_err_to_name(ret));
+    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowMessage: refresh_gram failed: %s",
+             esp_err_to_name(ret));
     if (oled_mutex != NULL)
       xSemaphoreGive(oled_mutex);
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
@@ -305,19 +393,22 @@ system_err_t ScreenShowMessage(Message_t message) {
 
 system_err_t ScreenShowInformation(const char **lines, size_t n_lines) {
   if (oled == NULL) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowInformation: oled is not initialized");
+    ESP_LOGE(TAG_SCREEN_MANAGER,
+             "ScreenShowInformation: oled is not initialized");
     return MRS_ERR_SCREENMANAGER_NOT_INIT;
   }
   if (lines == NULL || n_lines == 0) {
     return MRS_ERR_CORE_INVALID_PARAM;
   }
-  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
   ssd1306_clear_screen(oled, 0);
   for (size_t i = 0; i < n_lines && i < 6; i++) {
     if (lines[i] != NULL) {
-      ssd1306_draw_string(oled, 0, (int)(i * 12), (const uint8_t *)lines[i], 12, 1);
+      ssd1306_draw_string(oled, 0, (int)(i * 12), (const uint8_t *)lines[i], 12,
+                          1);
     }
   }
   esp_err_t ret = ssd1306_refresh_gram(oled);
@@ -325,19 +416,22 @@ system_err_t ScreenShowInformation(const char **lines, size_t n_lines) {
     xSemaphoreGive(oled_mutex);
   }
   if (ret != ESP_OK) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowInformation: refresh_gram failed: %s", esp_err_to_name(ret));
+    ESP_LOGE(TAG_SCREEN_MANAGER,
+             "ScreenShowInformation: refresh_gram failed: %s",
+             esp_err_to_name(ret));
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
   return MRS_OK;
 }
 
 system_err_t ScreenShowDataSensor(const char **field_names, const float *values,
-                          const char **units, size_t count) {
+                                  const char **units, size_t count) {
   if (oled == NULL) {
-    ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowDataSensor: oled is not initialized");
+    ESP_LOGE(TAG_SCREEN_MANAGER,
+             "ScreenShowDataSensor: oled is not initialized");
     return MRS_ERR_SCREENMANAGER_NOT_INIT;
   }
-  
+
   if (field_names == NULL || values == NULL || units == NULL || count == 0) {
     ESP_LOGW(TAG_SCREEN_MANAGER,
              "ScreenShowDataSensor: invalid arguments (fields=%p, values=%p, "
@@ -346,7 +440,8 @@ system_err_t ScreenShowDataSensor(const char **field_names, const float *values,
     return MRS_ERR_CORE_INVALID_PARAM;
   }
 
-  if (oled_mutex != NULL && xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
+  if (oled_mutex != NULL &&
+      xSemaphoreTake(oled_mutex, portMAX_DELAY) != pdTRUE) {
     return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
   }
 
@@ -416,12 +511,14 @@ system_err_t ScreenShowDataSensor(const char **field_names, const float *values,
 
     esp_err_t ret = ssd1306_refresh_gram(oled);
     if (ret != ESP_OK) {
-      ESP_LOGE(TAG_SCREEN_MANAGER, "ScreenShowDataSensor: refresh_gram failed: %s", esp_err_to_name(ret));
+      ESP_LOGE(TAG_SCREEN_MANAGER,
+               "ScreenShowDataSensor: refresh_gram failed: %s",
+               esp_err_to_name(ret));
       if (oled_mutex != NULL)
         xSemaphoreGive(oled_mutex);
       return MRS_ERR_SCREENMANAGER_DISPLAY_FAIL;
     }
-    
+
     vTaskDelay(pdMS_TO_TICKS(300));
     current_index = (current_index + 1) % count;
   }
