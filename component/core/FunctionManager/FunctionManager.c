@@ -330,6 +330,9 @@ void readDataSensorTask(void *pvParameters) {
       return;
     }
 
+    // Thông báo cho SensorConfig biết đang đọc port nào (phục vụ MQ analog)
+    SensorConfigSetCurrentPort(param->port);
+
     system_err_t read_ret = driver->read(&data);
     if (read_ret != MRS_OK) {
       ESP_LOGW(TAG_FUNCTION_MANAGER, "readDataSensorTask: read failed: %s",

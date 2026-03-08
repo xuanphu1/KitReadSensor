@@ -13,9 +13,9 @@
 #define NUM_OBJECT_MAX 5
 #define NUM_SENSORS 20
 #define BTN_UP_GPIO 18 //13
-#define BTN_DOWN_GPIO 19 //14
-#define BTN_SEL_GPIO 20 //25
-#define BTN_BACK_GPIO 21 //35
+#define BTN_DOWN_GPIO 14 //14
+#define BTN_SEL_GPIO 25 //25
+#define BTN_BACK_GPIO 13 //35
 #define MAX_VISIBLE_ITEMS 4
 /* -------------------- Button -------------------- */
 typedef enum { BTN_UP, BTN_DOWN, BTN_SEL, BTN_BACK, BTN_NONE } button_type_t;

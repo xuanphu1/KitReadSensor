@@ -7,6 +7,9 @@
 #include "driver/adc.h"
 #include "driver/uart.h"
 #include "sdkconfig.h"
+#include "ds3231.h"
+#include "SD_Card.h"
+#include <time.h>
 
 /**
  * @brief Khởi tạo chân Trigger (output), Echo (input) và các chân Analog (ADC).
@@ -108,6 +111,54 @@ static esp_err_t InitGPIO(void) {
   return ESP_OK;
 }
 
+// static void rtc_sd_log_task(void *pvParameters) {
+//   (void)pvParameters;
+//   esp_err_t ret;
+
+//   // Khởi tạo descriptor cho DS3231 dùng bus I2C chung
+//   i2c_dev_t rtc;
+//   memset(&rtc, 0, sizeof(rtc));
+//   ret = ds3231_init_desc(&rtc, CONFIG_I2CDEV_COMMON_PORT,
+//                          CONFIG_I2CDEV_COMMON_SDA, CONFIG_I2CDEV_COMMON_SCL);
+//   if (ret != ESP_OK) {
+//     ESP_LOGE(TAG_MAIN, "DS3231 init failed: %s", esp_err_to_name(ret));
+//     vTaskDelete(NULL);
+//   }
+
+//   // Khởi tạo SD Card
+//   ret = initSDCard();
+//   if (ret != ESP_OK) {
+//     ESP_LOGE(TAG_MAIN, "SD card init failed: %s", esp_err_to_name(ret));
+//     vTaskDelete(NULL);
+//   }
+
+//   while (1) {
+//     struct tm now = {0};
+//     char time_str[40];
+//     char line[80];
+
+//     ret = ds3231_get_time(&rtc, &now);
+//     if (ret == ESP_OK) {
+//       ds3231_get_time_str(&now, time_str, sizeof(time_str));
+//       snprintf(line, sizeof(line), "%s", time_str);
+
+//       // Ghi thêm 1 dòng vào file log trên SD
+//       esp_err_t wret = writeFinalFileSD_Card("rtc_log.txt", line);
+//       if (wret != ESP_OK) {
+//         ESP_LOGW(TAG_MAIN, "Failed to write RTC log to SD: %s",
+//                  esp_err_to_name(wret));
+//       }
+
+//       // In log ra UART để kiểm tra
+//       ESP_LOGI(TAG_MAIN, "RTC time: %s", time_str);
+//     } else {
+//       ESP_LOGW(TAG_MAIN, "DS3231 read failed: %s", esp_err_to_name(ret));
+//     }
+
+//     vTaskDelay(pdMS_TO_TICKS(5000)); // 5s ghi 1 lần để test
+//   }
+// }
+
 void app_main(void) {
 
   // Khởi tạo trigger, echo và các chân analog trước (theo Kconfig)
@@ -160,6 +211,9 @@ void app_main(void) {
   xTaskCreate(wifi_init_sta, "wifi_init_sta", 4096, &DataManager, 5, NULL);
   xTaskCreate(MenuNavigation_Task, "MenuNavigation_Task", 4096,
               &DataManager, 5, NULL);
+
+  // Task test: đọc thời gian DS3231 và ghi log vào SD card
+  //xTaskCreate(rtc_sd_log_task, "rtc_sd_log_task", 4096, NULL, 5, NULL);
   while (1) {
     vTaskDelay(50 / portTICK_PERIOD_MS);
   }

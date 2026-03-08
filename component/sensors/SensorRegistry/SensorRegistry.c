@@ -71,8 +71,8 @@ static sensor_driver_t sensor_drivers[] = {
     // MQ Series Sensors (analog)
     {
         .name = "MQ-2",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"Gas"},
         .unit = {"ppm"},
@@ -81,9 +81,20 @@ static sensor_driver_t sensor_drivers[] = {
         .interface = COMMUNICATION_ANALOG,
     },
     {
+        .name = "AHT10",
+        .init = aht10Initialize,
+        .read = aht10ReadData,
+        .deinit = NULL,
+        .description = {"Temperature", "Humidity"},
+        .unit = {"°C", "%"},
+        .unit_count = 2,
+        .is_init = false,
+        .interface = COMMUNICATION_I2C,
+    },
+    {
         .name = "MQ-3",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"Alcohol"},
         .unit = {"ppm"},
@@ -93,8 +104,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-4",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"CH4"},
         .unit = {"ppm"},
@@ -104,8 +115,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-5",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"LPG"},
         .unit = {"ppm"},
@@ -115,8 +126,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-6",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"LPG"},
         .unit = {"ppm"},
@@ -126,8 +137,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-7",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"CO"},
         .unit = {"ppm"},
@@ -137,8 +148,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-8",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"H2"},
         .unit = {"ppm"},
@@ -148,8 +159,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-9",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"CO/LPG"},
         .unit = {"ppm"},
@@ -159,8 +170,8 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "MQ-135",
-        .init = NULL,
-        .read = NULL,
+        .init = mq_analog_init,
+        .read = mq_analog_read,
         .deinit = NULL,
         .description = {"Air Quality"},
         .unit = {"ppm"},
@@ -200,6 +211,8 @@ const char *sensor_type_to_name(SensorType_t t) {
     return "MQ-9";
   case SENSOR_MQ135:
     return "MQ-135";
+  case SENSOR_AHT10:
+    return "AHT10";
   case SENSOR_NONE:
     return "None";
   default:
