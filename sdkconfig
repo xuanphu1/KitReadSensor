@@ -395,6 +395,15 @@ CONFIG_LED_RGB_GPIO=8
 # end of LED RGB Config
 
 #
+# PMS7003 configuration
+#
+CONFIG_PMS_PIN_TX=17
+CONFIG_PMS_PIN_RX=16
+CONFIG_UART_BAUD_RATE=9600
+CONFIG_PMS_UART_PORT=2
+# end of PMS7003 configuration
+
+#
 # SD Card Configuration
 #
 CONFIG_MISO_SDCARD=19

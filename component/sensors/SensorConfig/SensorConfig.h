@@ -4,6 +4,7 @@
 #include "SensorTypes.h"
 #include "bme280.h"
 #include "esp_log.h"
+#include "pms7003.h"
 #include "ErrorCodes.h"
 
 /* -------------------- Sensor Config Functions -------------------- */
@@ -24,6 +25,13 @@ system_err_t bme280Deinitialize(void);
 system_err_t aht10Initialize(void);
 system_err_t aht10ReadData(SensorData_t *data);
 system_err_t aht10Deinitialize(void);
+
+
+/* -------------------- PMS7003 Driver Wrapper Functions -------------------- */
+system_err_t pms7003Initialize(void);
+system_err_t pms7003ReadData(SensorData_t *data);
+system_err_t pms7003Deinitialize(void);
+
 
 /* -------------------- MQ Analog Sensors (MQ2, MQ3, ...) -------------------- */
 // Thiết lập port hiện tại (PORT_1, PORT_2, PORT_3) trước khi đọc analog

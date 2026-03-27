@@ -235,9 +235,6 @@ void MeshManager_StartMeshClient(DataManager_t *data)
     s_data_manager->objectInfo.meshInfo.ipRoot = CONFIG_IP_ROOT;
     ESP_LOGI(TAG_MESH, "Starting mesh-lite client...");
 
-    // NVS, netif, event loop đã được khởi tạo trong main/WifiManager
-    // Không gọi esp_bridge_create_all_netif() nữa để tránh tạo lại default WiFi AP/STA netif
-
     ESP_ERROR_CHECK(esp_netif_init());
     esp_err_t err = esp_event_loop_create_default();
     if (err == ESP_ERR_INVALID_STATE) {
