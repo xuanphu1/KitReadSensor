@@ -48,9 +48,9 @@ static sensor_driver_t sensor_drivers[] = {
     },
     {
         .name = "PMS7003",
-        .init = NULL,
-        .read = NULL,
-        .deinit = NULL,
+        .init = pms7003Initialize,
+        .read = pms7003ReadData,
+        .deinit = pms7003Deinitialize,
         .description = {"PM1.0", "PM2.5", "PM10"},
         .unit = {"ug/m3", "ug/m3", "ug/m3"},
         .unit_count = 3,

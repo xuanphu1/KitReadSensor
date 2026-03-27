@@ -9,6 +9,9 @@ static bool bme280_initialized = false;
 static aht_t aht10_device;
 static bool aht10_initialized = false;
 
+
+
+
 /* -------------------- MQ analog state -------------------- */
 static PortId_t s_current_port = PORT_1;
 static bool mq_adc_initialized = false;
@@ -140,6 +143,34 @@ system_err_t aht10Deinitialize(void) {
   aht10_initialized = false;
   return MRS_OK;
 }
+
+// tên hàm tùy chỉnh, kiểu khai báo system_err_t giống nhau, tham số đầu vào giống nahu
+
+/* -------------------- PMS7003 Driver Wrapper Functions -------------------- */
+system_err_t pms7003Initialize(void) {
+  uart_config_t uart_config = UART_CONFIG_DEFAULT() ;
+  pms7003_initUart(&uart_config);
+  pms7003_activeMode();
+  return MRS_OK;
+}
+
+system_err_t pms7003ReadData(SensorData_t *data) {
+  if (data == NULL) {
+    ESP_LOGE("sensor_pms7003_read", "data pointer is NULL");
+    return MRS_ERR_CORE_INVALID_PARAM;
+  }
+
+  pms7003_readData(outdoor, &data->data_fl[0], &data->data_fl[1], &data->data_fl[2]);
+  return MRS_OK;
+}
+
+
+system_err_t pms7003Deinitialize(void) {
+  return MRS_OK;
+}
+
+
+
 
 /* -------------------- Sensor Config Functions -------------------- */
 

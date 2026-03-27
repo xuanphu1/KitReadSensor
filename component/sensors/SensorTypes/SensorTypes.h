@@ -39,7 +39,7 @@ typedef enum {
   SENSOR_MQ8 = 10,
   SENSOR_MQ9 = 11,
   SENSOR_MQ135 = 12,
-  SENSOR_AHT10 = 13,
+  SENSOR_AHT10 = 13
 } SensorType_t;
 
 typedef enum {
