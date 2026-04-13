@@ -1,0 +1,50 @@
+# Một chân ADC (thang điện trở) → UP / SELECT / BACK. Không có BTN_DOWN trừ khi bổ sung khoảng/menu.
+menu "Button Manager"
+
+    config BUTTON_ANALOG_GPIO
+        int "GPIO đọc analog (nút)"
+        default 4 if IDF_TARGET_ESP32C6
+        default 4 if IDF_TARGET_ESP32C3
+        default 32 if IDF_TARGET_ESP32
+        range 0 48
+        help
+            Chân nối thang điện trở. ESP32-C6/C3: ADC1 thường GPIO 0–6 (C6) hoặc 0–4 (C3); ESP32: GPIO 32–39 (ADC1).
+
+    config BUTTON_ANALOG_ATTEN_DB
+        int "Suy hao ADC (dB)"
+        default 0
+        range 0 12
+        help
+            Chọn 0, 2, 6 hoặc 12 (giá trị khác được làm tròn khi khởi tạo).
+
+    config BUTTON_ANALOG_DOWN_MIN
+        int "UP — ADC raw tối thiểu (gồm)"
+        default 2000
+        range 0 4095
+
+    config BUTTON_ANALOG_DOWN_MAX
+        int "UP — ADC raw tối đa (gồm)"
+        default 2300
+        range 0 4095
+
+    config BUTTON_ANALOG_SEL_MIN
+        int "SELECT — ADC raw tối thiểu (gồm)"
+        default 1300
+        range 0 4095
+
+    config BUTTON_ANALOG_SEL_MAX
+        int "SELECT — ADC raw tối đa (gồm)"
+        default 1900
+        range 0 4095
+
+    config BUTTON_ANALOG_BACK_MIN
+        int "BACK — ADC raw tối thiểu (gồm)"
+        default 3200
+        range 0 4095
+
+    config BUTTON_ANALOG_BACK_MAX
+        int "BACK — ADC raw tối đa (gồm)"
+        default 3400
+        range 0 4095
+
+endmenu
